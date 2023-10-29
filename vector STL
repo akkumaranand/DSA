@@ -9,6 +9,7 @@ void printvector( vector<int > &s1){
      }
 }
 
+
 int main(){
     // Array of vector 
     // it is 2D vector where no of rows is constant but  column is  varrying ...
