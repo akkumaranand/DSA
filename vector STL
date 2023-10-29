@@ -1,3 +1,5 @@
+ //-----------------------------------------------#1 Array of vector ---------------------------------------------------------
+
 #include <bits/stdc++.h>
 using namespace std; 
 
@@ -38,3 +40,46 @@ int main(){
 
   return 0;
 }
+
+ //------------------------------------ #2 vector of vector -------------------------------------------------------------------
+#include <bits/stdc++.h>
+using namespace std; 
+
+// hamesa pass by reference hi lenaaa 
+void printvector( vector<int > &s1){
+     cout<<"size"<<s1.size()<<endl;
+     for(int i = 0; i<s1.size() ; i++){
+        cout<<s1[i]<<" ";
+     }
+}
+
+int main(){
+    // vector of vector 
+    // Here no of rows and column is dynamic not fixed
+    vector<vector<int> > s;
+    int N;
+    cout<<"No of vector you want to store in vector"<<endl;
+    cin>>N;
+    for(int i = 0 ; i< N ; i++){
+        vector<int>temp;
+        int n;
+        cout<<"Enter the size of vector"<<endl;
+        cin>>n;
+        for(int j = 0 ; j<n ; j++){
+            int x;
+            cout<<"Enter the value"<<endl;
+            cin>>x;
+            temp.push_back(x);
+        }
+        s.push_back(temp);
+    }
+
+    for(int i = 0 ; i<N ; i++){
+        printvector(s[i]);
+    }
+  
+
+ 
+
+  return 0;
+
