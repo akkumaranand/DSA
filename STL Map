@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std; 
+
+
+// Iterator 
+int main(){
+// ordered map 
+   map <int , string > m;
+//    m.insert({4, "afg"} , {2, "abss"} , {3, "ANand"});  ye multiple nahi leta ek barr me sirf do parameter leta hai 
+   m.insert({4, "afg"});
+   m.insert({2, "arrg"});
+   m.insert({1, "ANAND"});
+   m[6] = "Pawan";
+
+   for(auto it = m.begin() ; it != m.end() ; it++){
+    cout<<it->first<<"  "<<it->second;
+    cout<<endl;
+   }
+  
+  m[1] = "Anamika";
+  //   Range based Loop using Auto keyword
+ // pr value hai isliye yaha pointer nahi hoga     
+  for(auto &pr:m){
+  
+   cout<< pr.first <<" "<<pr.second<<endl;
+  }
+
+  
+
+  return 0;
+}
