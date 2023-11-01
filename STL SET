@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Iterator
+int main()
+{
+    // order set 
+     set <string> s;
+     int n;
+     cout<<"Enter the number of string "<<endl;
+     cin>>n;
+     for(int i = 0 ; i<n; i++){
+        string str;
+        cout<<"Enter the string "<<endl;
+        cin>>str;
+        s.insert(str);   // time complexity O(log(n)); 
+        
+     }
+     for(auto value : s){
+        cout<<value<<endl;
+     }
+
+   
+
+    return 0;
+}
