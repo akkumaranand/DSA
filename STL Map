@@ -1,31 +1,49 @@
 #include <bits/stdc++.h>
-using namespace std; 
+using namespace std;
 
+// Iterator
+int main()
+{
+    // ordered map
+    map<int, string> m;
+    //    m.insert({4, "afg"} , {2, "abss"} , {3, "ANand"});  ye multiple nahi leta ek barr me sirf do parameter leta hai
+    m.insert({4, "afg"});
+    m.insert({2, "arrg"});
+    m.insert({1, "ANAND"});
+    m[6] = "Pawan";
 
-// Iterator 
-int main(){
-// ordered map 
-   map <int , string > m;
-//    m.insert({4, "afg"} , {2, "abss"} , {3, "ANand"});  ye multiple nahi leta ek barr me sirf do parameter leta hai 
-   m.insert({4, "afg"});
-   m.insert({2, "arrg"});
-   m.insert({1, "ANAND"});
-   m[6] = "Pawan";
+    for (auto it = m.begin(); it != m.end(); it++)
+    {
+        cout << it->first << "  " << it->second;
+        cout << endl;
+    }
 
-   for(auto it = m.begin() ; it != m.end() ; it++){
-    cout<<it->first<<"  "<<it->second;
-    cout<<endl;
-   }
-  
-  m[1] = "Anamika";
-  //   Range based Loop using Auto keyword
- // pr value hai isliye yaha pointer nahi hoga     
-  for(auto &pr:m){
-  
-   cout<< pr.first <<" "<<pr.second<<endl;
-  }
+    m[1] = "Anamika";
+    //   Range based Loop using Auto keyword
+    // pr value hai isliye yaha pointer nahi hoga
+    for (auto &pr : m)
+    {
 
-  
+        cout << pr.first << " " << pr.second << endl;
+    }
+    // m.find(key) = return iterator
+    auto it = m.find(0);
+    if (it == m.end())
+    {
+        cout << "NO value " << endl;
+    }
+    else
+    {
+        cout << it->first << " " << it->second;
+    }
+    auto is = m.find(2);
+    m.erase(1);
+    m.erase(is);
+    for (auto it = m.begin(); it != m.end(); it++)
+    {
+        cout << it->first << "  " << it->second;
+        cout << endl;
+    }
 
-  return 0;
+    return 0;
 }
