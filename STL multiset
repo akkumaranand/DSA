@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Iterator
+int main()
+{
+    //    multiset more than one same value can be insert rest of the thing is same as set
+    int t;
+    cout<<"Enter the no of testcase"<<endl;
+    cin>>t;
+    while (t--)
+    {
+        int n, k;
+        cout << "Enter No of bags And No. of minutes " << endl;
+        cin >> n >> k;
+        multiset<long long> bags;
+        for (int i = 0; i < n; i++)
+        {
+            long long candy_ct;
+            cout << "Enter the NO of candy for bag" << endl;
+            cin >> candy_ct;
+            bags.insert(candy_ct);
+        }
+
+        long long totalcandis = 0;
+        for (int i = 0; i < k; ++i)
+        {
+            auto last_it = (--bags.end());
+            int candy_ct = *(last_it);
+            totalcandis += candy_ct;
+            bags.erase(last_it);
+            bags.insert(candy_ct / 2);
+        }
+        cout<<"Taotal Candies"<<totalcandis<<endl;
+    }
+
+    return 0;
+}
