@@ -26,6 +26,37 @@ bool isValidParenthesis(string s)
         }
        
     }
+
+// ----------------------------------------- we can also do from switch case---------------------
+bool isValidParenthesis(string s) {
+    stack<char> bal;
+
+    if (s.size() % 2 != 0) {
+        return false;  // Odd length strings are not balanced
+    }
+
+    for (char ch : s) {
+        switch (ch) {
+            case '(':
+            case '{':
+            case '[':
+                bal.push(ch);
+                break;
+            case ')':
+            case '}':
+            case ']':
+                if (bal.empty() || ((ch == ')' && bal.top() != '(') || (ch == '}' && bal.top() != '{') || (ch == ']' && bal.top() != '['))) {
+                    return false;
+                }
+                bal.pop();
+                break;
+            default:
+                return false;  // Invalid characters
+        }
+    }
+
+    return bal.empty();  // Stack should be empty for balanced parentheses
+}
     if(bal.empty()){
         return true;
     }
