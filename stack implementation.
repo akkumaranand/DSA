@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+#include <stack>
+
+class Stack {
+// properties 
+public:
+
+int *arr;
+int  top ;
+int size;
+
+// behaviour
+// constructor
+Stack(int size){
+    this->size = size;
+    arr = new int[size];
+    top = -1;
+    
+}
+
+// function haiii
+void push( int element ){
+    if(size - top >1){
+        top++;
+        arr[top] = element;
+    }
+    else{
+      cout<<"Stack  is overflowed"<<endl;
+    }
+
+}
+
+void pop(){
+    if(top >=  0){
+       top--;
+    }
+    else{
+        cout<<"Stack is underflow"<<endl;
+    }
+}
+
+int peak(){
+    if(top>= 0 ){
+        return arr[top];
+    }
+    else{
+        cout<<"Stack is empty"<<endl;
+        return -1;
+    }
+}
+
+bool  empty(){
+   if(top == -1){
+    return true;
+   }
+   else{
+    return false;
+   }
+
+}
+};
+
+
+
+int main(){
+    Stack st(4);
+    st.push(33);
+    st.push(34);
+    st.push(21);
+    st.push(22);
+
+    cout<<"Top Element"<<st.peak()<<endl;
+    st.pop();
+    cout<<"Top Element"<<st.peak()<<endl;
+    st.pop();
+    cout<<"Top Element"<<st.peak()<<endl;
+    st.pop();
+    cout<<"Top Element"<<st.peak()<<endl;
+    st.pop();
+    if(st.empty()){
+        cout<<"stack is empty "<<endl;
+    }
+    else{
+        cout<<"stack is not empty "<<endl;
+    }
+
+
+
+    return 0;
+}
