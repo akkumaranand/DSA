@@ -1,0 +1,35 @@
+bool isValidParenthesis(string s)
+{  
+    stack<char> bal;
+
+    // Write your code here.
+    for(int i = 0 ; i<s.size() ; i++){
+        char ch = s[i];
+        if(ch == '(' || ch =='{' || ch == '['){
+            bal.push(ch);
+        }
+        else{
+            if(!bal.empty()){
+               char top = bal.top();
+               if(ch ==')' && top == '(' || ch == '}' && top == '{'  ||  ch== ']' && top == '['){
+                   bal.pop();
+               }
+            
+               else{
+                   return false;
+               }
+            }
+
+            else{
+               return false;
+            }
+        }
+       
+    }
+    if(bal.empty()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
