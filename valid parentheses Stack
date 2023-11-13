@@ -33,3 +33,30 @@ bool isValidParenthesis(string s)
         return false;
     }
 }
+
+
+-----------------------------------------------------------------optimisation--------------------------------------
+//  If the length of the input string is odd, you can immediately return false because valid parentheses expressions must have an even number of characters.
+//  You can simplify the code by reducing the number of else blocks.
+bool isValidParenthesis(string s) {
+    stack<char> bal;
+
+    // If the length is odd, it's not balanced
+    if (s.size() % 2 != 0) {
+        return false;
+    }
+
+    for (char ch : s) {
+        if (ch == '(' || ch == '{' || ch == '[') {
+            bal.push(ch);
+        } else if (!bal.empty() && ((ch == ')' && bal.top() == '(') || (ch == '}' && bal.top() == '{') || (ch == ']' && bal.top() == '['))) {
+            bal.pop();
+        } else {
+            return false;
+        }
+    }
+
+    return bal.empty();
+}
+
+
