@@ -1,0 +1,36 @@
+// --------------------------------------------------------------- Using Recursion ----------------------------------------------------------------------------------------
+
+void insertAtbottom(stack<int> &stack , int ans){
+
+if(stack.empty()){
+    stack.push(ans);
+    return ;
+}
+
+   int top = stack.top();
+   stack.pop();
+
+   insertAtbottom(stack , ans);
+   stack.push(top);
+}
+
+
+
+void reverseStack(stack<int> &stack) {
+    // Write your code here
+
+  if(stack.empty()){
+
+     return ;
+  }
+
+  int ans = stack.top();
+  stack.pop();
+  
+  reverseStack(stack);
+
+  // Insert at the bottom 
+  insertAtbottom(stack ,ans);
+}
+
+//------------------------------------------------------------------------------Using Iterative approach --------------------------------------------------------------------------------------------------
