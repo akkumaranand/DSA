@@ -29,5 +29,27 @@ vector<int> nextSmallerElement(vector<int> &arr, int n) {
     reverse(ans.begin(), ans.end()); // Reverse the result vector
     return ans;
 }
+// --------------------------------- optimisation in the length of the code -----------------------------------------------
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> nextSmallerElement(vector<int> &arr, int n) {
+    vector<int> ans(n);
+    stack<int> sta;
+    sta.push(-1);
+
+    for(int i = n-1 ; i>= 0 ; i--){
+      int curr = arr[i];
+      while(sta.top() >= curr){
+          sta.pop();
+      }
+      ans[i] = sta.top();
+      sta.push(curr);
+
+
+    }
+ return ans;
+}
+
 // Withe the help of stack you can solve with complexity of O(n) 
 // but in iterative approach it will take time complexity of O(n^2) 
