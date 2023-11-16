@@ -1,0 +1,32 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+// what is redundant :- if ther is  not operator between opening and closing tag then that is redundant :-   ((a+b)) or () or ((ab))
+// if it has operator :- (a+b) then is not redundant 
+bool findRedundantBrackets(string &s) {
+    stack<char> st;
+    for (int i = 0; i < s.size(); i++) {
+        char ch = s[i];
+        if (ch == '(' || ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+            st.push(ch);
+        } else {
+            if (ch == ')') {
+                bool redundant = true;
+                while (st.top() != '(') {
+                    char top = st.top();
+                    if (top == '+' || top == '-' || top == '*' || top == '/') {
+                        redundant = false;
+                    }
+                    st.pop();
+                }
+                st.pop(); // Pop the opening parenthesis
+                if (redundant == true) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// time complexity = O(N*N)
