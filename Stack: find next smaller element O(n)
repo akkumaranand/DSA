@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> nextSmallerElement(vector<int> &arr, int n) {
+    vector<int> ans;
+    stack<int> sta;
+    sta.push(-1);
+    int j = n - 1;
+    while (j >= 0) {
+        int element = arr[j];
+        if (sta.top() < element) {
+            ans.push_back(sta.top());
+            sta.push(element);
+        } else {
+            // When stack's top element is bigger, find the next smaller element
+            while (!sta.empty() && sta.top() >= element) {
+                sta.pop();
+            }
+            if (sta.empty()) {
+                ans.push_back(-1);
+            } else {
+                ans.push_back(sta.top());
+            }
+        }
+        sta.push(element);  // Move this line inside the while-else block
+        j--;
+    }
+
+    reverse(ans.begin(), ans.end()); // Reverse the result vector
+    return ans;
+}
+// Withe the help of stack you can solve with complexity of O(n) 
+// but in iterative approach it will take time complexity of O(n^2) 
