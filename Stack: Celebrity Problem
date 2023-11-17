@@ -1,0 +1,70 @@
+// Brute bhi milega yaha  jo time complexity hai O(n^2) 
+
+
+
+// GFG ka question hai waise codestudio me bhi hia 
+// ============================================================== Optimal solution =================================================================================
+class Solution 
+{    
+private:
+    bool isknow(int a, int b, vector<vector<int> >& M) {
+        return M[a][b] == 1;
+    }
+    
+public:
+    // Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        stack<int> s;
+        for (int i = 0; i < n; i++) {
+            s.push(i);
+        }
+        
+        while (s.size() > 1) {
+            int a = s.top();
+            s.pop();
+            
+            int b = s.top();
+            s.pop();
+            
+            if (isknow(a, b, M)) {
+                s.push(b);
+            }
+            else {
+                s.push(a);
+            }
+        }
+        
+        // stack me jo bachega, ek potential candidate hoga ki woh hi celebrity hai.
+        // check karna hai ki nahi 
+        int candidate = s.top();
+        
+        // row check
+
+// digonal element ko kaise ignore kiye isse dhayan me rakhan i!= candidate ============ very important hai =======================================================
+        int zerocount = 0;
+        for (int i = 0; i < n; i++) {
+            if (i != candidate && M[candidate][i] == 0) {
+                zerocount++;
+            }
+        }
+        if (zerocount != n - 1) {
+            return -1;
+        }
+        
+        // column check 
+        int onecount = 0;
+        for (int i = 0; i < n; i++) {
+            if (i != candidate && M[i][candidate] == 1) {
+                onecount++;
+            }
+        }
+        if (onecount != n - 1) {
+            return -1;
+        }
+        
+        return candidate;   
+    }
+};
+
+// Here time complexity is O(n)
