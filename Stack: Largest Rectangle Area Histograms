@@ -1,0 +1,75 @@
+//===========================================================================OPTIMAL SOLUTION============================================================================================================
+// 1. Very important generally O(n) 
+//The for loop iterates over each element in the array once, and the while loop inside it runs a constant number of times for each element.
+// Therefore, the time complexity of nextSmallerElement is O(n), where n is the size of the input array.
+
+// 2. In a worst case 
+//vector<int> heights = {5, 4, 3, 2, 1};
+// int result = largestRectangle(heights);
+//In this example, the nextSmallerElement and prevSmallerElement functions would need to traverse the entire array for each element, resulting in a scenario where the overall time complexity could be closer to O(n^2) due to the cumulative effect.
+// It's important to note that this is a specific case, and in many practical situations, the provided code performs efficiently with a time complexity of O(n). The worst-case scenario depends on the specific characteristics of the input data. In typical histograms or random input distributions, the code tends to perform well with a linear time complexity.
+// ========================================================================================================================================================================================================================================================================================
+ #include<bits/stdc++.h>
+ 
+ vector<int>nextSmallerElement(vector<int> arr ,int n){
+  stack<int>s;
+  s.push(-1);
+  vector<int>ans(n);
+  for(int i = n-1 ; i>= 0 ; i--){
+      int curr = arr[i];
+    while(s.top()!= -1 && arr[s.top()]>= curr){
+      s.pop();
+    }
+    // index ko push kar dete hai 
+     ans[i] = s.top();
+     s.push(i);
+
+
+  }
+
+   return ans;
+ }
+  
+  vector<int>prevSmallerElement(vector<int> arr ,int n){
+  stack<int>s;
+  s.push(-1);
+  vector<int>ans(n);
+  for(int i = 0 ; i<n ; i++){
+      int curr = arr[i];
+    while(s.top()!= -1 && arr[s.top()]>= curr){
+      s.pop();
+    }
+    // index ko push kar dete hai 
+     ans[i] = s.top();
+     s.push(i);
+
+
+  }
+
+   return ans;
+ }
+
+ 
+ 
+ int largestRectangle(vector < int > & heights) {
+   // Write your code here.
+   int n = heights.size();
+   vector<int> next(n);
+   next = nextSmallerElement(heights , n);
+   
+   vector<int> prev(n);
+   prev = prevSmallerElement(heights , n);
+
+   int newarea = INT_MIN;
+
+   for(int i = 0 ; i<n ; i++){
+      int l = heights[i];
+      if(next[i] == -1){
+        next[i] = n;
+      }
+      int b = next[i]- prev[i] - 1;
+      int area = l*b;
+      newarea = max(area , newarea); 
+   }
+  return newarea;
+ }
