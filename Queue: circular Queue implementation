@@ -79,6 +79,7 @@ class CircularQueue{
  
 
         int ans = arr[front];
+//
 
         arr[front] = -1;
 
