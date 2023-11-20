@@ -1,0 +1,52 @@
+// Most common operation are:- 
+// 1. push_back(value);
+// 2. push_front(value);
+// 3. pop_front();
+// 4. pop_back();
+// 5.que.front() ---> first element agge se ||| que.back()---> pahle element piche se 
+// 6. que.size()--- > size of the deque   ||| q.clear() --> erase karne ke liye deque koo 
+
+// ==========================================================================================================================================================================
+#include <bits/stdc++.h> 
+using namespace std;
+
+int main()
+{
+    // 
+	deque<int> q;
+    q.push_back(33);
+    q.push_back(12);
+    q.push_back(33);
+    q.push_back(12);
+    cout<<q.front()<<endl;
+    cout<<q.back();
+    // yaha pe ye laga sakte hai iterate karne ke liye 
+
+    // deque <int > :: iterator it;
+    // for(auto it = q.begin() ; it!= q.end(); it++){
+    //     cout<<*(it)<<" ";
+    // }
+    cout<<endl;
+    // another method :- short method 
+    for(auto value : q){
+        cout<<value<<" ";
+    }
+     cout<<endl;
+    q.pop_front();
+    q.pop_back();
+    for(auto value : q){
+        cout<<value<<" ";
+    }
+    cout<<endl<<q.size();
+    q.clear();
+    if(q.empty()){
+        cout<<"deque empty hai "<<endl;
+    }
+    else{
+        cout<<q.front();
+    }
+
+
+	return 0;
+}
+// =============================================================================================================================================================================
