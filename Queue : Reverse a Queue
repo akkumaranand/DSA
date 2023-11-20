@@ -1,4 +1,6 @@
 //Function to reverse the queue.
+// bahut hi aasan hai 
+complexity : - both space and time are O(n) for both the solution.
 method 1:- 
 // ============================================================= by poping element from queue and storing element in the stack and again pushing into the queue ===================================== 
 class Solution
@@ -21,4 +23,32 @@ class Solution
     }
    
 };
-// ===================================================================================================================================================================================================
+
+method:- 2
+// ==================================================================================Using Recursion =================================================================================================================
+class Solution
+{
+    private:
+    void reverse(queue <int>& q){
+        if(q.empty()){
+            return ;
+        }
+        int ans = q.front();
+        q.pop();
+        
+        reverse(q);
+        
+        q.push(ans);
+    }
+    
+    public:
+    queue<int> rev(queue<int> q)
+    {
+        // add code here.
+       reverse(q);
+       
+    return q ;
+    }
+   
+};
+// =================================================================== =============================================================================================================================
