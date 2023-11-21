@@ -1,0 +1,65 @@
+// Reverse First K elements of Queue
+// complexity :- Time complexity O(n)
+//               space complexity O(k) 
+// =============================================================== Using Recursion ==================================================================
+void reverse(queue<int> &q, int count, int k) {
+    if (count == k ) {
+        return;
+    }
+
+    int ans = q.front();
+    q.pop(); // Corrected from q.dequeue()
+
+    count++;
+
+    reverse(q, count, k);
+
+    q.push(ans); // Corrected from q.enqueue()
+}
+
+// Function to reverse first k elements of a queue.
+queue<int> modifyQueue(queue<int> q, int k) {
+    // add code here.
+    // using recursion karte hai
+
+    int count = 0;
+   
+
+    reverse(q, count, k);
+
+    for (int i = 0; i < q.size() - k; ++i) {
+        q.push(q.front());
+        q.pop();
+    }
+
+    return q;
+}
+// ============================================== Using stack ================================================================================================
+// Function to reverse first k elements of a queue.
+queue<int> modifyQueue(queue<int> q, int k) {
+    // add code here.
+  // Method 2 usig stack 
+  stack<int> s;
+  
+  // 1. first k elememt ko stack me daalo 
+  for(int i = 0; i < k ; i++ ){
+      int temp = q.front();
+      s.push(temp);
+      q.pop();
+  }
+  
+  for(int i = 0; i < k ; i++ ){
+      int temp = s.top();
+      q.push(temp);
+      s.pop();
+  }
+  
+  for (int i = 0; i < q.size() - k; ++i) {
+        q.push(q.front());
+        q.pop();
+    }
+  
+  
+    return q;
+}
+// =================================================================================================================================================================== 
