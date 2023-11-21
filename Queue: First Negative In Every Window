@@ -1,0 +1,81 @@
+// Isko puchna hai kaha problem hai pata nahi chal paa raha hai 
+// ===================================================================My solution ========================================================================
+void findfirstnegate(vector<int> &ans, queue<int> q, int k)
+{
+    int count = 0;
+    int mini = INT_MAX;
+    while (count < k)
+    {
+        int front = q.front();
+        if (mini >= front)
+        {
+            mini = front;
+        }
+        q.pop();
+        count++;
+    }
+    if (mini < 0)
+    {
+        ans.push_back(mini);
+    }
+    else
+    {
+        ans.push_back(0);
+    }
+}
+
+vector<int> firstNegative(vector<int> arr, int n, int k)
+{
+    // Write your code here.
+    vector<int> ans;
+    queue<int> q;
+    for (int i = 0; i < n; i++)
+    {
+        q.push(arr[i]);
+    }
+
+    while (q.size() > k - 1)
+    {
+        findfirstnegate(ans, q, k);
+        q.pop();
+    }
+
+    return ans;
+}
+
+
+
+
+
+
+// ========================================================================Another solution ================================================================
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> firstNegative(vector<int> arr, int n, int k) {
+    vector<int> ans;
+    queue<int> q;
+
+    for (int i = 0; i < n; i++) {
+        q.push(arr[i]);
+        if (i >= k - 1) {
+            // Process the front element of the queue
+            while (!q.empty() && q.front() >= 0) {
+                q.pop();
+            }
+
+            if (!q.empty()) {
+                ans.push_back(q.front());
+            } else {
+                ans.push_back(0);
+            }
+
+            // Remove the processed element from the queue
+            if (!q.empty() && arr[i - k + 1] == q.front()) {
+                q.pop();
+            }
+        }
+    }
+
+    return ans;
+}
+
