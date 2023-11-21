@@ -24,6 +24,8 @@ void findfirstnegate(vector<int> &ans, queue<int> q, int k)
     }
 }
 
+
+
 vector<int> firstNegative(vector<int> arr, int n, int k)
 {
     // Write your code here.
@@ -48,7 +50,7 @@ vector<int> firstNegative(vector<int> arr, int n, int k)
 
 
 
-// ========================================================================Another solution ================================================================
+// ========================================================================Another solution (pahle niche wala padna then )================================================================
 #include <bits/stdc++.h>
 using namespace std;
 vector<int> firstNegative(vector<int> arr, int n, int k) {
@@ -79,3 +81,59 @@ vector<int> firstNegative(vector<int> arr, int n, int k) {
     return ans;
 }
 
+
+// ======================================================================= BY Love babaar(index ko push kiye hai ) =========================================
+//1.processing first window of k element check each element is negative or not if negative then push its index into the deque 
+// 2. Ans me store karn --> agar size 0 se bada then usme element hai first window ka hi then ==> usse ans me store kar do agar nahi hai deque me to zero ko stor kar dooo 
+// 3. Now abb processing karge bache huyee means i = k ; i< n tak window ke liye ==> 
+//    1. agar start empty nahi hai or agar pahle element dq.front() wo index hai i-k == dq.front(jo delete karna chahtee the wahi hai to pop kar do )
+//    2. Element ko add karna ho i = k wala dque me agar check karge wo negative hai to daale warna nahi
+//    3. phir se wahi agar dq.size() agar 0 se bada hai then q.front ko ans me store kar do agar nahi ahi to ==> 0 ko strore kar dooo 
+// --------------------------------------------------------------Here is the code-------------------------------------------------
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> firstNegative(vector<int> arr, int n, int k) {
+    vector<int> ans;
+    deque<int>dq;
+
+    // processing 1st window of elememt 
+    for(int i = 0; i< k ; i++){
+        if(arr[i] < 0){
+            dq.push_back(i);
+        }  
+    }
+
+    // storing ans of first size window 
+    if(dq.size() >0){
+        ans.push_back(arr[dq.front()]);
+    }
+    else{
+        ans.push_back(0);
+    }
+
+    // now rest of the window ko process karna hai 
+    for(int i = k ; i< n ; i++){
+        // basicaaly removal kar hia 
+        if(!dq.empty() && i- k == dq.front()){
+            dq.pop_front();
+        }
+        
+        // basically next window ke liye element daal rahe hai 
+        if(arr[i]<0){
+            dq.push_back(i);
+        }
+
+        if(dq.size() > 0){
+            ans.push_back(arr[dq.front()]);
+        }
+        else{
+            ans.push_back(0);
+        }
+
+    }
+
+
+    return ans;
+}
+
+Note :- OPtimal solution nahi bina dequeue se banega to wo or optimal hoga homework 
