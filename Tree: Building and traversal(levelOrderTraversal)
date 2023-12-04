@@ -1,0 +1,90 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int d)
+    {
+        this->data = d;
+        this->left = NULL;
+        this->right = NULL;
+    };
+};
+
+Node *BuildTree(Node *root)
+{
+    int data;
+    cout << "Enter the data " << endl;
+    cin >> data;
+    root = new Node(data);
+
+    if(data == -1){
+        return NULL;
+    }
+
+    // using recursion se agge wala part ko connnect karungaa
+    cout << "Enter the data for the left node of the root " << root->data << endl;
+    root->left = BuildTree(root->left);
+
+    // right me daalna hai
+    cout << "Enter the data for the right node of the root " << root->data << endl;
+    root->right = BuildTree(root->right);
+
+    return root;
+}
+
+void levelorderTraversal(Node *root)
+{
+    queue<Node *> q;
+    q.push(root);
+    q.push(NULL);
+
+    while (!q.empty())
+    {
+        Node *temp = q.front();
+        q.pop();
+
+        if (temp == NULL)
+        {
+            // yaha pe hi seperation dalne hai
+            cout << endl;
+            if (!q.empty())
+            {
+                q.push(NULL);
+            }
+            else
+            {
+                return  ;
+            }
+        }
+
+        else
+        {
+            cout << temp->data;
+
+            if (temp->left)
+            {
+                q.push(temp->left);
+            }
+
+            if (temp->right)
+            {
+                q.push(temp->right);
+            }
+        }
+    }
+}
+
+int main()
+{
+    Node *root = NULL;
+    root = BuildTree(root);
+
+    // Level order traversal or BFS breadth first search
+    levelorderTraversal(root);
+}
