@@ -1,0 +1,48 @@
+// long pathe including root node and leaf node i,e all node that appear that is the answer
+
+// ------------------------------my Answer --------------------------------------------------
+// Method 1 :- BY level Order traversal by simply counting NULL in the  queue 
+int heightOfBinaryTree(TreeNode<int> *root)
+{
+    // Write your code here.
+    queue<TreeNode<int> *> q; // Specify the template parameter T for TreeNode pointer
+    q.push(root);
+    q.push(NULL);
+    int count = 0;
+
+    while (!q.empty())
+    {
+        TreeNode<int> *temp = q.front(); // Specify the template parameter T for TreeNode pointer
+        q.pop();
+
+        if (temp == NULL)
+        {
+            count++;
+            cout << endl;
+            if (!q.empty())
+            {
+                q.push(NULL);
+            }
+            else
+            {
+                return count;
+            }
+        }
+        else
+        {
+
+            if (temp->left)
+            {
+                q.push(temp->left);
+            }
+
+            if (temp->right)
+            {
+                q.push(temp->right);
+            }
+        }
+    }
+
+    return count;
+}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
