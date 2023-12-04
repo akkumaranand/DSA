@@ -1,0 +1,29 @@
+/ ************************** Very Easy question bss koii traversal laga ke check kar lena hai only  *********************************/
+void CountleafNode(BinaryTreeNode<int>* root ,int  &count){
+    // pre- Order traversal 
+    if(root == NULL ){
+        return ;
+    }
+    
+    if(root->data != -1){
+        if(root->left == NULL && root->right == NULL){
+            count ++;
+        }
+    }
+    CountleafNode(root->left , count);
+
+    CountleafNode(root->right , count);
+
+}
+
+
+int noOfLeafNodes(BinaryTreeNode<int> *root){
+    // Write your code here.
+
+    int count  = 0;
+    CountleafNode(root , count);
+
+
+return count;
+
+}
