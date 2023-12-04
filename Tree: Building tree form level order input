@@ -1,0 +1,61 @@
+oid BuildTreeFromlevelinput(Node * &root){
+    queue<Node *> q;
+    int data;
+    cout<<"Enter the data "<<endl;
+    cin>>data;
+
+    if (data == -1) {
+        root = NULL;
+        return;
+    }
+
+    root = new Node(data);
+    q.push(root);
+
+    while(!q.empty()){
+        Node *temp = q.front();
+        q.pop();
+
+        int leftdata;
+        cout<<"Enter the left child of node "<<temp->data<<endl;
+        cin>>leftdata;
+
+        if(leftdata != -1){
+            temp->left = new Node(leftdata);
+            q.push(temp->left);
+        }
+
+        int rightdata;
+        cout<<"Enter the right child of node "<<temp->data<<endl;
+        cin>>rightdata;
+
+        if(rightdata != -1){
+            temp->right = new Node(rightdata);
+            q.push(temp->right);
+        }
+        
+        
+    }
+}
+
+
+
+
+int main()
+{
+    Node *root = NULL;
+    // root = BuildTree(root);
+
+    // // Level order traversal or BFS breadth first search
+    // levelorderTraversal(root);
+
+    // // Preoder Traversal hai
+    // preorderTraversal(root);
+
+    // // Inorder Traversal
+    // InorderTraversal(root);
+
+
+     BuildTreeFromlevelinput(root);
+    levelorderTraversal(root);
+}
