@@ -80,6 +80,36 @@ void levelorderTraversal(Node *root)
     }
 }
 
+void preorderTraversal(Node * root){
+ if(root == NULL){
+    return ;
+ }
+ 
+cout<<root->data;
+
+preorderTraversal(root->left);
+
+preorderTraversal(root->right);
+
+
+}
+
+void InorderTraversal(Node * root){
+    if(root == NULL){
+        return ;
+    }
+
+    // pahle left jana hai 
+    InorderTraversal(root->left);
+
+    // phir node print karna hai 
+    cout<<root->data;
+
+    // right wala part 
+    InorderTraversal(root->right);
+
+}
+
 int main()
 {
     Node *root = NULL;
@@ -87,4 +117,10 @@ int main()
 
     // Level order traversal or BFS breadth first search
     levelorderTraversal(root);
+   
+// Preoder Traversal hai 
+    preorderTraversal(root);
+
+// Inorder Traversal 
+   InorderTraversal(root);
 }
