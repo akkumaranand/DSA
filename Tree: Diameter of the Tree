@@ -1,0 +1,63 @@
+// ================================== brute solution hai =========================================================
+// complexity Time :- O(n2) and space :- O(n)
+
+int heightofsubtree(BinaryTreeNode<int>* root){
+	if(root == NULL){
+		return 0;
+	}
+
+    int leftheight = heightofsubtree(root->left);
+	int rightheight = heightofsubtree(root->right);
+	int ans = max(leftheight , rightheight) + 1;
+
+  return ans;
+}
+
+
+int diameterOfBinaryTree(BinaryTreeNode<int>* root) {
+	// Write your code here
+	if(root == NULL){
+		return 0;
+	}
+
+	int op1 = diameterOfBinaryTree(root->left);
+	int op2 = diameterOfBinaryTree(root->right);
+	int op3 = heightofsubtree(root->left) + heightofsubtree(root->right) + 1;
+
+	int ans = max(op1, max(op2, op3)); // Nest the max calls
+
+	return ans; 
+
+}
+
+// ===================================================== optimise solution hai =================================================
+time :- O(n)
+space:_ O(n)
+pair <int,int> heightanddiameter(BinaryTreeNode<int>* root){
+	if(root == NULL ){
+		pair<int , int > p;
+		p.first = 0;
+		p.second = 0;
+		return p;
+	}
+    
+	pair <int, int> left = heightanddiameter(root->left);
+	pair <int,int> right = heightanddiameter(root->right);
+
+    int LS  = left.first;
+	int RS  = right.first;
+	int BOTH  =left.second + right.second +1;
+
+
+	pair <int, int > ans;
+	ans.first = max(LS , max(RS , BOTH));
+	ans.second = max(left.second , right.second)+1;
+
+  return ans;
+}
+
+int diameterOfBinaryTree(BinaryTreeNode<int>* root) {
+	// Write your code here
+     
+  return heightanddiameter(root).first;
+}
