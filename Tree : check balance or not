@@ -1,0 +1,39 @@
+// ============================================ MY solution using pair<bool , int> =======================================================================================
+// complexity :- space complexity O(n)
+              :- time complexity O(n)
+
+using namespace std;
+pair<bool, int> checkbalance(TreeNode<int>* root){
+    if(root == NULL){
+        pair<bool , int > p;
+        p.first = true;
+        p.second = 0;
+        
+        return p;
+    }
+
+    pair<bool , int> left = checkbalance(root->left);
+    pair<bool , int > right = checkbalance(root->right);
+
+    int leftheight = left.second;
+    int rightheight = right.second;
+
+
+    bool isBalanced = abs(leftheight - rightheight) <= 1;
+
+    int currentHeight = 1 + max(leftheight, rightheight);
+
+    return {isBalanced && left.first && right.first, currentHeight};
+
+  
+}
+
+bool isBalancedBT(TreeNode<int>* root){
+    // Write your code here.
+    // pair se banatee hai 
+    bool ans = checkbalance(root).first;
+    return ans;
+
+}
+
+// =======================================================================Love babar solution =======================================================
