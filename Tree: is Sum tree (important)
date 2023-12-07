@@ -48,3 +48,46 @@ public:
     }
 };
 //================================================== isko bhi pair se optimised karna hai =======================================================================================
+// --------------------------------------Asaaan hi tha raata rataya hi lgg raha tha or lgg raha tha ho jayegaa-------------
+class Solution
+{
+public:
+    pair<bool, int> checksumtree(Node *root)
+    {
+        if (root == NULL)
+        {
+            pair<bool, int> p;
+            p.first = true;
+            p.second = 0;
+            return p;
+        }
+
+        pair<bool, int> leftsubtree = checksumtree(root->left);
+        pair<bool, int> rightsubtree = checksumtree(root->right);
+
+        bool leftree = leftsubtree.first;
+        bool righttree = rightsubtree.first;
+        bool checkbalance = (root->left == NULL && root->right == NULL) || (root->data == leftsubtree.second + rightsubtree.second);
+
+        int current = leftsubtree.second + rightsubtree.second + root->data;
+
+        pair<bool, int> ans;
+        ans.second = current;
+        if (leftree && righttree && checkbalance)
+        {
+            ans.first = true;
+        }
+        else
+        {
+            ans.first = false;
+        }
+
+        return ans;
+    }
+
+    bool isSumTree(Node *root)
+    {
+        return checksumtree(root).first;
+    }
+};
+
