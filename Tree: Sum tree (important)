@@ -1,0 +1,50 @@
+// very important solution hai 
+complexity :- time - O(n2)
+           :- space - O(n)
+// ============================================== brute solution = =====================================================================
+class Solution
+{
+public:
+    int datasubtree(Node* root)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+
+        int leftdata = datasubtree(root->left);
+        int rightdata = datasubtree(root->right);
+
+        int subtreeSum = leftdata + rightdata + root->data;
+
+        return subtreeSum;
+    }
+
+    bool isSumTree(Node* root)
+    {
+        if (root == NULL)
+        {
+            return true;
+        }
+
+   
+       bool leftsubtree = isSumTree(root->left);
+       bool rightsubtree = isSumTree(root->right);
+       // Leaf node ko sepearte solve kar liya jisse assan ho gaya solve karn 
+
+//====================================================================================================================================================
+       // most important question hai bahut sahi ==> agar mai leaf ko alag solve kar raha hu to prblm hi nhai 
+       // base condition datasubtree root == null return 0 
+//=================================================================================================================================
+       bool checkbalance = (root->left == NULL && root->right == NULL) || (root->data == datasubtree(root->left) + datasubtree(root->right));
+       // most important jo humlog nahi kar paye wooo null wala condition ko alag se karna jo ki nahi kar rahe the bss or sara sahi tha 
+            if(leftsubtree && rightsubtree && checkbalance ){
+                return true;
+            }
+            
+       
+
+        return false;
+    }
+};
+//================================================== isko bhi pair se optimised karna hai =======================================================================================
