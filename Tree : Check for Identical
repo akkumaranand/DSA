@@ -22,4 +22,24 @@ bool identicalTrees(BinaryTreeNode<int>* root1, BinaryTreeNode<int>* root2) {
     return false;
 }
 
-// ========================================================================================================================================================================
+// =====================================================Same hi hai bss ek change hai ===================================================================================================================
+bool identicalTrees(BinaryTreeNode<int>* root1, BinaryTreeNode<int>* root2) {
+    // Write your code here. 
+    if(root1 ==NULL && root2 == NULL ){
+        return true;
+    }	
+    if(root1 == NULL || root2 == NULL){
+        return false;
+    } 
+
+    bool lefttree =identicalTrees(root1->left , root2->left);
+    bool righttree = identicalTrees(root1->right , root2-> right);
+
+    bool value = root1->data = root2->data ;
+
+    if(value && lefttree && righttree){
+        return true ;
+    } 
+
+    return false;
+}
