@@ -37,3 +37,45 @@ bool isBalancedBT(TreeNode<int>* root){
 }
 
 // =======================================================================Love babar solution =======================================================
+complexity :-
+time:- O(n^2)
+space:- O(n)
+class Solution{
+    public:
+    //Function to check whether a binary tree is balanced or not.
+    int heightoftree(Node * root ){
+        if(root == NULL ){
+            return 0;
+        }
+        
+        int op1 = heightoftree(root->left);
+        int op2 = heightoftree(root->right);
+        
+        int ans = max(op1 , op2)+1;
+        
+        return ans;
+    }
+    bool isBalanced(Node *root)
+    {
+        //  Brute code for check tree is balanced or not 
+        // for that we have to check three condition  
+        // 1. lefttree return true 2.right subtree return true 3. abs(height(left) - height(right)) <= 1
+        
+        if(root == NULL){
+            return true ;
+        }
+        
+        bool leftsubtree = isBalanced(root->left);
+        bool rightsubtree = isBalanced(root->right);
+        
+        bool balancebyheight = abs(heightoftree(root->left) - heightoftree(root->right)) <= 1;
+        
+        
+        if(leftsubtree && rightsubtree && balancebyheight){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+};
