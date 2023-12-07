@@ -1,0 +1,14 @@
+ int sumOfLongRootToLeafPath(Node *root)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+
+        int lefttree = sumOfLongRootToLeafPath(root->left);
+        int righttree = sumOfLongRootToLeafPath(root->right);
+
+        int ans = max(lefttree, righttree) + root->data;
+
+        return ans;
+    }
