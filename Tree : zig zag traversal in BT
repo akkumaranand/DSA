@@ -1,0 +1,45 @@
+//=========================================================== veryimportant haiiii=====================================
+
+vector<int> zigZagTraversal(BinaryTreeNode<int> *root)
+{
+    // Write your code here!
+    vector<int> result;
+    if (root == NULL) {
+        return result;
+    }
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+    bool direction = true;
+    while (!q.empty()) {
+
+        int size = q.size();
+        vector<int> ans(size);
+
+        
+
+        for (int i = 0; i < size; i++) {
+            BinaryTreeNode<int> *frontnode = q.front();
+            q.pop();
+
+            // direction kaise daalna hai opposite or same
+            int index = direction ? i : size - i - 1;
+            ans[index] = frontnode->data;
+
+            if (frontnode->left) {
+                q.push(frontnode->left); // Added a semicolon here
+            }
+            if (frontnode->right) {
+                q.push(frontnode->right);
+            }
+        }
+        // next level ke liye direction change kar dena hai 
+        direction = !direction;
+
+        // each level ka answer jo ki store hai ans me usse result me push karna padega 
+        for (auto it : ans) {
+            result.push_back(it);
+        }
+    }
+
+    return result;
+}
