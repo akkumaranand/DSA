@@ -1,0 +1,52 @@
+// very important question hai maine kudh se solve kiyaa 100% 
+// ==============>>>find the sum to root the the longest path of the leaf node.<<<==================================================
+// NOTE: maximum sum nahi hai leaf node to root node ye yaad rakhna or achaa question hai @@@@@
+
+using namespace std;
+class Solution
+{
+  
+public:
+    pair<int, int> longestpathdata(Node *root)
+    {
+        if (root == NULL)
+        {
+            return {0, 0};
+        }
+
+        pair<int, int> leftSubtree = longestpathdata(root->left);
+        pair<int, int> rightSubtree = longestpathdata(root->right);
+
+        int leftCount = leftSubtree.first;
+        int rightCount = rightSubtree.first;
+        int currentCount = max(leftCount, rightCount) + 1;
+
+        int leftSum = leftSubtree.second;
+        int rightSum = rightSubtree.second;
+
+
+        pair<int, int> ans;
+        if(leftCount > rightCount){
+            int maxx = root->data + leftSubtree.second;
+            ans.second = maxx;
+        }
+        else if(leftCount == rightCount){
+           int maxu = max(leftSubtree.second , rightSubtree.second) + root->data; 
+           ans.second = maxu;
+        }
+        else
+        {
+            int maxxx = root->data + rightSubtree.second;
+            ans.second = maxxx;
+        }
+        ans.first = currentCount;
+      
+
+        return ans;
+    }
+
+    int sumOfLongRootToLeafPath(Node *root)
+    {
+        return longestpathdata(root).second;
+    }
+};
