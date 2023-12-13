@@ -1,4 +1,6 @@
-// very important hai --->> assan hi tha  
+// very important hai --->> assan hi tha 
+// ye jada better hai lekin  map<int , int > se bhi ban jaye to wo dekh lena 
+// ====================================================================================================================
 class Solution
 {
     public:
@@ -45,6 +47,51 @@ class Solution
                 ans.push_back(j.second);
             }
         }
+
+// better than previous one 
+#include<bits/stdc++.h>
+vector<int> bottomView(TreeNode<int> * root){
+    // Write your code here.
+    vector<int > ans;
+    map<int, int> nodes;
+    if(root == NULL){
+        return ans;
+    }
+    //isse bhi bana sakte hai hum level bss que me chahiye 
+    
+
+    queue< pair< TreeNode<int>* , pair<int,int >>>q;
+    q.push(make_pair(root , make_pair(0, 0)));
+
+    while(!q.empty()){
+     
+      pair<TreeNode<int>*, pair<int, int>> temp = q.front();
+      q.pop();
+      int distance = temp.second.first;
+      int level = temp.second.second;
+      TreeNode<int>* firstnode = temp.first;
+
+      // jaise jaise column ayega new wala update hoga 
+     if(nodes.find(distance) == nodes.end())  // data khali hai daal sakte hooo 
+            {
+              nodes[distance] = firstnode->data;
+            }
+      
+      
+
+       if (firstnode->left) {
+            q.push(make_pair(firstnode->left, make_pair(distance - 1, level + 1)));
+        }
+        if (firstnode->right) {
+            q.push(make_pair(firstnode->right, make_pair(distance + 1, level + 1)));
+        }
+
+    }
+     for (auto i : nodes) {
+        ans.push_back(i.second);
+    }
+return ans;
+}
         
         return ans;
     }
