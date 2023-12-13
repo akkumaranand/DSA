@@ -1,0 +1,111 @@
+//what is the erro in the code ?
+//It appears that the issue in your code is related to the way you're updating the nodes map. In the current implementation, you're using both distance and level as keys in the nested map. This means that each level for a given distance will overwrite the previous level, and you end up with only the latest level for each distance.
+// map ka key ko update nahi kar sakta hu 
+instead of map<int , map<int , int>> use only map<int , int > 
+// kaam chaljayegaa qki kahi level chahiyee hi nahi store karna ke liye map 
+
+// wrong solutionn :--- 
+// ====================================================================================================================================================
+    vector <int> bottomView(Node *root) {
+
+    //from left to right in Binary Tree.
+    
+        //Your code here
+        map<int , map<int , int > > nodes;
+        vector<int> ans;
+        if(root== NULL){
+            return ans;
+        }
+        
+        queue<pair< Node * , pair<int , int >>> q;
+        q.push(make_pair(root , make_pair(0 ,0)));
+        while(!q.empty()){
+            pair< Node * , pair<int , int >> temp = q.front();
+            q.pop();
+            int distance = temp.second.first;
+            int level = temp.second.second;
+            Node * firstnode = temp.first;
+            
+             
+    
+                nodes[distance][level] = firstnode->data;
+            
+            
+            
+            
+            if(firstnode->left){
+                q.push(make_pair(firstnode->left , make_pair(distance -1 , level +1)));
+            }
+            if(firstnode->right){
+                q.push(make_pair(firstnode->right , make_pair(distance +1 , level +1)));
+            }
+        }
+        
+        for(auto i :nodes ){
+            for(auto j : i.second){
+                ans.push_back(j.second);
+            }
+        }
+        
+        return ans;
+}
+// =====================================================================================================================================================================
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/ Every is the same but only change in the container only ========================================================================
+#include<bits/stdc++.h>
+vector<int> bottomView(TreeNode<int> * root){
+    // Write your code here.
+    vector<int > ans;
+    map<int, int> nodes;
+    if(root == NULL){
+        return ans;
+    }
+    //isse bhi bana sakte hai hum level bss que me chahiye 
+    
+
+    queue< pair< TreeNode<int>* , pair<int,int >>>q;
+    q.push(make_pair(root , make_pair(0, 0)));
+
+    while(!q.empty()){
+     
+      pair<TreeNode<int>*, pair<int, int>> temp = q.front();
+      q.pop();
+      int distance = temp.second.first;
+      int level = temp.second.second;
+      TreeNode<int>* firstnode = temp.first;
+
+      // jaise jaise column ayega new wala update hoga 
+      nodes[distance] = firstnode->data;
+      
+
+       if (firstnode->left) {
+            q.push(make_pair(firstnode->left, make_pair(distance - 1, level + 1)));
+        }
+        if (firstnode->right) {
+            q.push(make_pair(firstnode->right, make_pair(distance + 1, level + 1)));
+        }
+
+    }
+     for (auto i : nodes) {
+        ans.push_back(i.second);
+    }
+return ans;
+}
+// ===========================================================================================================
