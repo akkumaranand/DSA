@@ -1,0 +1,52 @@
+// very important hai --->> assan hi tha  
+class Solution
+{
+    public:
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    vector<int> topView(Node *root)
+    {
+        //Your code here
+        map<int , map<int , int > > nodes;
+        vector<int> ans;
+        if(root== NULL){
+            return ans;
+        }
+        
+        queue<pair< Node * , pair<int , int >>> q;
+        q.push(make_pair(root , make_pair(0 ,0)));
+        while(!q.empty()){
+            pair< Node * , pair<int , int >> temp = q.front();
+            q.pop();
+            int distance = temp.second.first;
+            int level = temp.second.second;
+            Node * firstnode = temp.first;
+            
+             // yahi part hi bss naya hai ...............
+            if(nodes.find(distance) == nodes.end())  // data khali hai daal sakte hooo 
+            {
+                nodes[distance][level] = firstnode->data;
+            }
+            
+            
+            
+            if(firstnode->left){
+                q.push(make_pair(firstnode->left , make_pair(distance -1 , level +1)));
+            }
+            if(firstnode->right){
+                q.push(make_pair(firstnode->right , make_pair(distance +1 , level +1)));
+            }
+        }
+
+
+       // ye bhi matlab samajne ke liye hi hai 
+        for(auto i :nodes ){
+            for(auto j : i.second){
+                ans.push_back(j.second);
+            }
+        }
+        
+        return ans;
+    }
+
+};
