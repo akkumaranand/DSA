@@ -1,0 +1,37 @@
+//============================================================ MOST IMPORTANT POINT IS COUNT we only run it once so that it only store first element of the level ==================================================================================
+// best solution in my openion 
+vector<int> leftView(Node *root)
+{
+   // Your code here
+   vector<int> ans;
+  
+   queue<Node * >q;
+   
+   if(root == NULL){
+       return ans;
+   }
+   q.push(root);
+   
+   
+   while(!q.empty()){
+      int size = q.size();
+      int count = 0;
+      for(int i = 0 ; i<size ; i++){
+        Node * front = q.front();
+        q.pop();
+        
+        if(count <1){
+        ans.push_back(front->data);
+        count ++;
+        }
+      
+      if(front->left){
+          q.push(front->left);
+      }
+      if(front->right){
+          q.push(front->right);
+      }
+      }
+   }
+   return ans;
+}
