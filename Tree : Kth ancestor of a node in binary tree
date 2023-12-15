@@ -1,0 +1,33 @@
+//============================== method 1 jo ki commmon our bahut easy concept hai sabhi jagah apply kar saktee hooo ================================
+void findtheindex(BinaryTreeNode<int> *root, int targetNodeVal, int k, vector<int> &path, int &ans) {
+    if (root == NULL) {
+        return;
+    }
+
+    path.push_back(root->data);
+
+    // left call
+    findtheindex(root->left, targetNodeVal, k, path, ans);
+
+    // right call
+    findtheindex(root->right, targetNodeVal, k, path, ans);
+
+    int Size = path.size();
+    if (root->data == targetNodeVal ) {
+        if( k < Size){
+           ans = path[Size - 1 - k];
+        }
+        
+    }
+
+    path.pop_back();
+}
+
+int findKthAncestor(BinaryTreeNode<int> *root, int targetNodeVal, int k) {
+    // Write your code here.
+    vector<int> path;
+    int ans = -1;  // Initialize ans to a default value
+    findtheindex(root, targetNodeVal, k, path, ans);
+
+    return ans;
+}
