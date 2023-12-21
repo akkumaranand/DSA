@@ -1,0 +1,35 @@
+// very important hai ek baar jo excluding wala case me dhyan dena qki important hai 
+************************************************************/
+pair<int , int > solve (TreeNode<int> *root){
+     if(root == NULL ){
+         pair<int , int> p = make_pair(0 , 0);
+         return p;
+     }
+
+     // left call 
+     pair<int , int > leftans = solve(root->left);
+
+     // right call 
+
+     pair<int , int > rightans= solve(root->right);
+
+
+     pair <int , int > ans;
+     // including node 
+     ans.first = leftans.second +  rightans.second + root->data;
+     // excluding node.
+     ans.second = max(leftans.first , leftans.second)   + max(rightans.first , rightans.second);
+
+  return ans;
+
+}
+
+int maximumSumOfNodes(TreeNode<int> *root)
+{
+	//    Write your code here
+
+    pair<int , int > result = solve(root);
+    int ans = max(result.first  , result.second);
+    return ans;
+
+}
