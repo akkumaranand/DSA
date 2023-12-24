@@ -1,0 +1,25 @@
+1. maximum sum of the array 
+#include <iostream>
+using namespace std;
+void solve (int arr[] , int &ans, int size){
+    if(size <= 0){
+        return ;
+    }
+
+    if(arr[0] > ans){
+        ans = arr[0];
+        
+    }
+    solve(arr+1 , ans , size -1);
+    
+}
+
+int main(){
+    int arr[] = {2,5,6,7,32,3,32,22};
+    int ans = INT_MIN;
+    int size = 8;
+    solve(arr , ans , size);
+
+     cout<<ans;
+return 0;
+}
