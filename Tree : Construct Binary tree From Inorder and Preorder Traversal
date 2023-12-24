@@ -1,0 +1,42 @@
+// important hai 
+1.===>>>>
+// if (preorderindex >= n || srtinorder > endinorder) {
+//        return NULL;
+ //   }
+//2.
+//=======================>>   TreeNode<int> *root = new TreeNode<int>(element); <<==============================
+// =-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+int findposition(vector<int> inorder, int element) {
+    for (int i = 0; i < inorder.size(); i++) {
+        if (inorder[i] == element) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+TreeNode<int> *Buildtree(vector<int> inorder, vector<int> preorder, int &preorderindex, int srtinorder, int endinorder, int n) {
+    if (preorderindex >= n || srtinorder > endinorder) {
+        return NULL;
+    }
+
+    int element = preorder[preorderindex];
+    TreeNode<int> *root = new TreeNode<int>(element);
+
+    int position = findposition(inorder, element);
+
+    preorderindex++; // Increment the preorderindex for the next recursive call
+    root->left = Buildtree(inorder, preorder, preorderindex, srtinorder, position - 1, n);
+    root->right = Buildtree(inorder, preorder, preorderindex, position + 1, endinorder, n);
+
+    return root;
+}
+
+TreeNode<int> *buildBinaryTree(vector<int> &inorder, vector<int> &preorder) {
+    int preorderindex = 0;
+    int n = inorder.size();
+    return Buildtree(inorder, preorder, preorderindex, 0, n - 1, n);
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
