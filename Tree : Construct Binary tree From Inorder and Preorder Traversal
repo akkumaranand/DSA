@@ -1,4 +1,5 @@
 // important hai 
+// must note that here index should be call by reference &preorderindex
 1.===>>>>
 // if (preorderindex >= n || srtinorder > endinorder) {
 //        return NULL;
