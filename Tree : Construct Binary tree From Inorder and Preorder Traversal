@@ -40,4 +40,41 @@ TreeNode<int> *buildBinaryTree(vector<int> &inorder, vector<int> &preorder) {
 }
 
 
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------Optimal way -----------------------------------------------------------------------------------------------------
+with the help of mapp we optimise time complexity of the function.
+class Solution {
+public:
+    void createmapping(map<int, int>& NodetoIndex, int n, vector<int>& Inorder) {
+        for (int i = 0; i < n; i++) {
+            NodetoIndex[Inorder[i]] = i;
+        }
+    }
+
+    TreeNode* buildbinarytree(vector<int>& preorder, vector<int>& inorder, int& index, int srtinorder, int endinorder, int n, map<int, int>& nodeToindex) {
+        if (index >= n || srtinorder > endinorder) {
+            return NULL;
+        }
+
+        int element = preorder[index];
+        TreeNode* temp = new TreeNode(element);
+        int position = nodeToindex[element];
+
+        index = index + 1;
+        temp->left = buildbinarytree(preorder, inorder, index, srtinorder, position - 1, n, nodeToindex);
+        temp->right = buildbinarytree(preorder, inorder, index, position + 1, endinorder, n, nodeToindex);
+
+        return temp;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int preorderindex = 0;
+        int size = preorder.size();
+        map<int, int> nodeToindex;
+        createmapping(nodeToindex, size, inorder);
+
+        TreeNode* root = buildbinarytree(preorder, inorder, preorderindex, 0, size - 1, size, nodeToindex);
+        return root;
+    }
+};
+
+
