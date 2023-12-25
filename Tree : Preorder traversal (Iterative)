@@ -1,0 +1,39 @@
+//  ========================================== method 1 by changing the tree to linked list and then storing all data in the ans =====================================
+class Solution{
+    public:
+    vector<int> preOrder(Node* root)
+    {
+        // Iterative approach 
+        vector<int>ans;
+        Node * curr = root;
+        while(curr!= NULL){
+            // if left part exist 
+              Node * prev = NULL;
+              Node * pred = NULL;
+            if(curr->left){
+               prev = curr->left;
+               pred = curr->left;
+               while(pred->right){
+                  pred = pred->right ;
+               }
+              pred->right = curr->right;
+              curr->right = prev;
+              curr->left = NULL;
+
+
+            }
+            // if left part not exist
+            
+           curr = curr->right ;
+        
+          
+       
+       }  
+                while(root!= NULL){
+                    ans.push_back(root->data);
+                     root = root->right;
+               }
+       
+       return ans;
+    }
+};
