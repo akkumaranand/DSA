@@ -1,0 +1,70 @@
+// ======================>>>>> Method 1  Iterative approach <<<================================
+important :- Use least no of if because it will check every if condition ===> use else if conditon it will check if condition is false.
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        TreeNode * temp = root;
+        while(temp != NULL){
+            if(temp->val == val){
+                return true;
+            }
+
+            if(temp->val < val){
+                temp = temp->right;
+            }
+
+            if(temp->val > val){
+               temp = temp->left;
+           }
+        }
+        
+        return false;
+    }
+}; 
+
+// ------------------------------->>> more better than previous because in previous more if condition will again check and check take time some time it give run time exceed <<<==========
+bool searchInBST(BinaryTreeNode<int> *root, int x) {
+    // Write your code here.
+     BinaryTreeNode<int> * temp = root;
+     while(temp != NULL){
+       if(temp->data == x){
+           return true;
+       }
+       else if(temp->data < x){
+         temp = temp->right;  
+       }
+       else{
+           temp = temp->left;
+       }
+
+     }
+
+   
+   return false ;
+}
+
+
+//===================================================>>> Recursive approach hai <<<=================================================
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        // base condition should be at first 
+     if(root == NULL){
+          return NULL;
+      }
+      
+      if(root->val == val){
+          return root;
+      }
+     
+
+   
+     if(root->val < val ){
+         return  searchBST( root->right ,  val);
+     }
+     
+     else
+         return  searchBST( root->left , val);
+     
+    }
+};
