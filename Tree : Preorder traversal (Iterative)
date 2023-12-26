@@ -37,3 +37,37 @@ class Solution{
        return ans;
     }
 };
+/// ================================================= Morris method ==============================================================================
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        TreeNode * curr = root;
+        vector<int>ans;
+        // preorder root  left right 
+        while(curr != NULL ){
+            if(curr->left == NULL){
+                ans.push_back(curr->val);
+                curr = curr->right;
+            }
+            else{
+                TreeNode * prev = curr->left;
+                while(prev->right && prev->right != curr){
+                    prev = prev->right;
+                }
+                // creation of thread 
+                if(prev->right == NULL){
+                    prev->right = curr;
+                    ans.push_back(curr->val);
+                    curr = curr->left;
+                }
+                // deletion of thread
+                if(prev->right == curr){
+                    prev->right = NULL;
+                    curr = curr->right;
+                }
+
+            }
+        }
+        return ans;
+    }
+};
