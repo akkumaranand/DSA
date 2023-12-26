@@ -1,0 +1,54 @@
+ ========>>>>> Easy Question hai <<=====================
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* left;
+    Node* right;
+
+    // Constructor
+    Node(int val) {
+        this->data = val;
+        this->left = NULL;
+        this->right = NULL;
+    }
+};
+
+// Function to insert a node into the BST
+Node* insertatBST(Node* &root, int val) {
+    if (root == NULL) {
+        return new Node(val);
+    }
+
+    if (root->data > val) {
+        root->left = insertatBST(root->left, val);
+    } else if (root->data < val) {
+        root->right = insertatBST(root->right, val);
+    }
+
+    return root;
+}
+
+// Function to take input for the BST
+void takeInput(Node*& root) {
+    int val;
+    cout << "Enter the input in the BST (enter -1 to stop):" << endl;
+    
+    cin >> val;
+    while (val != -1) {
+        root = insertatBST(root, val);
+        cin >> val;
+    }
+}
+
+int main() {
+    Node* root = NULL;
+    cout << "Enter the input in the BST" << endl;
+    takeInput(root);
+
+    // Perform operations on the BST as needed
+
+    return 0;
+}
