@@ -1,0 +1,22 @@
+// With the help of inorder traversal we can find min and max val of bst
+
+void Bst(Node *root , vector<int> &ans){
+	 if(root == NULL){
+		 return ;
+	 }
+	
+     Bst(root->left , ans);
+	  
+	  ans.push_back(root->data);
+
+	Bst(root->right , ans);
+ }
+int minValue(Node* root) {
+    // Code here
+     vector<int> ans;
+    Bst(root, ans);
+   if(ans.empty()){
+       return -1;
+   }
+   return ans[0];
+}
