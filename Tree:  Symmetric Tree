@@ -1,0 +1,36 @@
+// my method:- using recursion 
+// ============================================= important hai recursion dekhan or samajhna achaa hai ==================================
+class Solution {
+    
+public:
+  void checksymmetric(TreeNode * prev ,  TreeNode * next , bool &ans){
+        
+        if(prev == NULL && next == NULL){
+            return ;
+        }
+
+        if (prev == NULL || next == NULL || prev->val != next->val) {
+            ans = false;
+            return;
+        }
+
+        
+          checksymmetric(prev->left , next->right , ans);
+          
+          checksymmetric(prev->right, next->left, ans);
+        
+        
+       
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(root == NULL){
+            return true;
+        }
+        TreeNode * left = root;
+        TreeNode * right = root;
+        bool ans = true;
+        checksymmetric(left , right , ans);
+
+        return ans;
+    }
+};
