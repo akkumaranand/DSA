@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void  checkforsameornot(TreeNode * p , TreeNode * q , bool & ans){
+        if(p == NULL && q == NULL){
+            return ;
+        }
+        else if(p == NULL || q == NULL || p->val != q->val){
+            ans = false;
+            return ;
+        }
+
+      
+
+        checkforsameornot(p->left , q->left , ans);
+        checkforsameornot(p->right , q->right  , ans);
+
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        bool ans = true ;
+        if(p == NULL && q == NULL ){
+            return true;
+        }
+        checkforsameornot(p , q , ans);
+
+        return ans;
+    }
+};
