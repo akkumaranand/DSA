@@ -1,0 +1,38 @@
+class Solution {
+public:
+    void findpre(Node *root, Node *&pre, Node *&suc, int key) {
+        if (root == NULL) {
+            return;
+        }
+        if (root->key > key) {
+            suc = root;
+            findpre(root->left, pre, suc, key);
+        }
+        else if (root->key < key) {
+            pre = root;
+            findpre(root->right, pre, suc, key);
+        }
+        
+      else {
+            // Key found, find the maximum node in the left subtree for predecessor
+            if (root->left) {
+                pre = root->left;
+                while (pre->right) {
+                    pre = pre->right;
+                }
+            }
+            // Key found, find the minimum node in the right subtree for successor
+            if (root->right) {
+                suc = root->right;
+                while (suc->left) {
+                    suc = suc->left;
+                }
+            }
+        }
+    }
+
+    void findPreSuc(Node *root, Node *&pre, Node *&suc, int key) {
+      
+        findpre(root, pre, suc, key);
+    }
+};
