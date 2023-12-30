@@ -56,3 +56,37 @@ private:
          return false;
     }
 };
+
+// ==================== Property of BST ========== INORDER TRAVERSAL OF BST GIVE SORTED ORDER =================================
+class Solution {
+
+public:
+    void checkbst(TreeNode * root , vector<int> & ans){
+       if(root == NULL) return ;
+
+       checkbst(root->left , ans);
+      
+       ans.push_back(root->val);
+       checkbst(root->right , ans);
+   }
+    bool isValidBST(TreeNode* root) {
+         // method 2: As we know that inorder traversal of bst is in sorted order;
+        vector<int> ans;
+       
+        checkbst(root , ans);
+        int count = 0;
+        for(int i = 0 ; i<ans.size()-1 ; i++){
+            if(ans[i] >= ans[i+1]){
+               count++;
+            }
+        }
+        for(int i = 0 ; i<ans.size() ; i++){
+            cout<<ans[i]<<"";
+        }
+        if(count == 0){return true ;}
+         return false;
+    }
+
+
+   
+};
