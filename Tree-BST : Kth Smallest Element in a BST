@@ -17,3 +17,73 @@ public:
         return ans[k-1];
     }
 };
+// = ====================== Using morris traveral bahut assan hai ================================================
+class Solution {
+public:
+    void kthsmallesttomorris(TreeNode * root ,vector<int> &ans  ){
+         TreeNode * curr = root;
+         while(curr != NULL){
+             if(curr->left == NULL){
+                 ans.push_back(curr->val);
+                 curr = curr->right;
+             }
+             else{
+                 TreeNode * prev = curr->left ;
+                 while(prev->right != NULL && prev->right != curr){
+                     prev = prev->right;
+                 }
+
+              
+              // construction 
+              if(prev->right == NULL){
+                  prev->right = curr;
+                  curr = curr->left ;
+              }
+              // decontruction 
+              else if(prev->right == curr){
+                  prev->right = NULL;
+                  ans.push_back(curr->val);
+                  curr = curr->right;
+              }
+             }
+
+         }
+
+        
+    }
+   
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int>ans;
+       kthsmallesttomorris(root , ans );
+       return ans[k-1];
+    }
+};
+
+// ============================= now some optimisation ====================================================
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int count = 0;
+        int result = -1;
+        inorderTraversal(root, k, count, result);
+        return result;
+    }
+
+private:
+    void inorderTraversal(TreeNode* root, int k, int& count, int& result) {
+        if (root == nullptr) {
+            return;
+        }
+
+        inorderTraversal(root->left, k, count, result);
+
+        count++;
+        if (count == k) {
+            result = root->val;
+            return;
+        }
+
+        inorderTraversal(root->right, k, count, result);
+    }
+};
+
