@@ -1,0 +1,19 @@
+//======================== METHOD 1: Using INORDER TRAVERSAL ==========================
+class Solution {
+public:
+    void checkbst(TreeNode * root , vector<int> & ans){
+       if(root == NULL) return ;
+
+       checkbst(root->left , ans);
+      
+       ans.push_back(root->val);
+       checkbst(root->right , ans);
+   }
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int> ans;
+       
+        checkbst(root , ans);
+
+        return ans[k-1];
+    }
+};
