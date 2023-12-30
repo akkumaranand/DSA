@@ -1,0 +1,58 @@
+// ===========================>>>>>>>>>>>>>>>>Important question hai must revise <<<<<=====================================================
+WRONG CODE :- HERE we are only checking node left should less and node right should greater but we have check MIN and Max value ::: more detail in copy 
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if (root == nullptr) {
+            return true;
+        }
+
+        if (root->left != nullptr && root->left->val >= root->val) {
+            return false;
+        }
+
+        if (root->right != nullptr && root->right->val <= root->val) {
+            return false;
+        }
+
+        bool leftSubtree = isValidBST(root->left);
+        bool rightSubtree = isValidBST(root->right);
+
+        return leftSubtree && rightSubtree;
+    }
+};
+
+// =========================================>>>> CORRECT CODE <<<===============================================
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(root == NULL){
+            return true;
+        }
+        return isValidBSTHelper(root, LONG_MIN, LONG_MAX);
+    }
+
+private:
+    bool isValidBSTHelper(TreeNode* node, long minVal, long maxVal) {
+        if (node == NULL) {
+            return true;
+        }
+
+        // Check if the current node's value is within the valid range
+        if (node->val <= minVal || node->val >= maxVal) {
+            return false;
+        }
+        
+        // Recursively check the left subtree with updated maxVal
+        bool lefttree = isValidBSTHelper(node->left, minVal, node->val);
+        
+        // and the right subtree with updated minVal
+        bool righttree = isValidBSTHelper(node->right, node->val, maxVal);
+        
+        if(lefttree && righttree){
+              return true;
+         }
+
+         return false;
+    }
+};
