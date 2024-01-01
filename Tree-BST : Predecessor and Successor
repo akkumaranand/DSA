@@ -5,11 +5,11 @@ public:
             return;
         }
         if (root->key > key) {
-            suc = root;
+            suc = root; // important hai 
             findpre(root->left, pre, suc, key);
         }
         else if (root->key < key) {
-            pre = root;
+            pre = root; // important hai 
             findpre(root->right, pre, suc, key);
         }
         
@@ -36,3 +36,55 @@ public:
         findpre(root, pre, suc, key);
     }
 };
+// ==========================================================================================================
+void findpreandsuc(TreeNode * & root , TreeNode * &pre , TreeNode * &suc , int key){
+   if(root == NULL ){ return ;}
+   
+   if(root->data == key){
+      // predecessor
+      // AGar left exist nahi karta ho to wo check karna hoga na 
+      if(root->left != NULL){
+          pre = root->left;
+          while(pre->right != NULL){
+              pre = pre->right ;
+          }
+      }
+      
+      // Successor 
+      if(root->right != NULL){
+          suc = root->right;
+          while(suc->left != NULL){
+              suc = suc->left;
+          }
+      }
+
+     // root->left == NULL hoga to return hoga hi matlab pre = NULL hoga initialise kar chuke hai already 
+   
+   }
+
+   else if(root->data > key){
+     suc = root;
+     findpreandsuc(root->left , pre , suc , key);
+   }
+   else{
+        pre = root;
+       findpreandsuc(root->right , pre , suc , key );
+   }
+
+}
+
+pair<int, int> predecessorSuccessor(TreeNode *root, int key)
+{    
+    TreeNode * pre = NULL;
+    TreeNode * suc = NULL;
+
+    findpreandsuc(root , pre , suc , key);
+   
+    int a = (pre != NULL) ? pre->data : -1;
+    int b = (suc != NULL) ? suc->data : -1;
+  
+    return {a , b};
+   
+
+   
+}
