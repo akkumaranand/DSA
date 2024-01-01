@@ -1,6 +1,7 @@
 // easy hai bahut or important hai 
 
 //=       ============================================= >>>>>  LCS  <<<< ================================================
+// Time complexity O(n) ans space complexity :- O(n)
 class Solution {
 public:
     void LCS(TreeNode * root , TreeNode * p , TreeNode * q , TreeNode * &Ans){
@@ -29,3 +30,5 @@ public:
         return Ans;
     }
 };
+//==================>>>>> Iterative approach <<<========================
+space complexit :- O(1) and time complexity :- O(N)
