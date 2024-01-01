@@ -1,0 +1,31 @@
+// easy hai bahut or important hai 
+
+//=       ============================================= >>>>>  LCS  <<<< ================================================
+class Solution {
+public:
+    void LCS(TreeNode * root , TreeNode * p , TreeNode * q , TreeNode * &Ans){
+        if(root == NULL ){return ;}
+        
+        // left call 
+        if(root->val > p->val && root->val > q->val ){
+            LCS(root->left , p , q , Ans);
+        }
+        // Right call 
+        else if(root->val < p->val && root->val < q->val ){
+            LCS(root->right  , p , q , Ans);
+        }
+        // wahi node hai LCS 
+        else {
+            Ans = root;
+        }
+
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode * Ans = NULL;
+        if(root == NULL){
+            return NULL;
+        }
+        LCS(root , p , q  , Ans);
+        return Ans;
+    }
+};
