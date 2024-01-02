@@ -1,0 +1,34 @@
+// ========================================>>>> very easy hai balance karna bst pahle bst jo diya usse pahle inorder traversal karke array me store kar do phire usse ek naya bst bana do <<<======
+class Solution {
+public:
+    void inordertraversal(TreeNode * root , vector<int> & ans){
+        if(root == NULL){return ;}
+        inordertraversal(root->left , ans);
+        ans.push_back(root->val);
+        inordertraversal(root->right , ans);
+
+    }
+    TreeNode * constructBST(  vector<int> ans , int start , int end){
+        if(start > end){
+            return NULL;
+        }
+        int mid = start + (end - start) / 2;
+        TreeNode * temp = new TreeNode(ans[mid]);
+
+        temp->left = constructBST(ans , start , mid-1);
+        temp->right = constructBST(ans , mid+1 , end);
+        return temp;
+
+    }
+    TreeNode* balanceBST(TreeNode* root) {
+        vector<int>ans;
+
+        inordertraversal(root , ans);
+        int n = ans.size();
+        
+        // construction of binar tree 
+      
+        TreeNode *curr = constructBST( ans , 0 , n-1 );
+        return curr;
+    }
+};
