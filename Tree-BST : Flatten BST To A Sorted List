@@ -1,0 +1,46 @@
+// Easy hai but exam me dhayan dena thoda edge case me phas jata hai 
+// ========================>>>>>>>>>>> IMPORTANT  <<<===============
+void inorder(TreeNode<int>* root, vector<int>& in) {
+
+    if (root == NULL) return ;
+    inorder(root->left, in);
+
+    in.push_back(root->data);
+
+    inorder(root->right, in);
+
+}
+
+ 
+
+TreeNode<int>* flatten(TreeNode<int>* root) {
+
+    if (root == NULL) {
+        return NULL;
+    }
+
+    vector<int> inorderVal;
+
+    // store value of BST 
+    inorder(root , inorderVal);
+   
+   // create linked list
+   TreeNode<int> * tempnew = new TreeNode<int>(inorderVal[0]);
+   TreeNode<int> * curr = tempnew;
+
+   int n = inorderVal.size();
+   for(int i = 1 ; i< n ; i++){
+      
+      TreeNode<int> * temp = new TreeNode<int>(inorderVal[i]);
+      curr->left = NULL;
+      curr->right = temp;
+      curr = curr->right;
+
+   } 
+   
+   // at last curr ko NULL dikhan hoga
+   curr->right = NULL;
+   curr->left = NULL;
+   
+  return tempnew;
+}
