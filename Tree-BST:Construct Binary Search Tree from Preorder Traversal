@@ -26,3 +26,67 @@ public:
         return root;
     }
 };
+//===========================================================================================================
+// More optimise code 
+// way of approach hai lekin mera isse jada optimse hai kya 
+class Solution {
+public:
+    TreeNode * makebstfrompreorder(vector<int>& ans, int min_val, int max_val, int& s){
+        if(s >= ans.size() || ans[s] < min_val || ans[s] > max_val) {
+            return NULL;
+        }
+        //======>>>>>>>>>> case when root->data in the range me hai 
+        TreeNode *root = new TreeNode(ans[s]);
+        s = s + 1;
+
+        root->left = makebstfrompreorder(ans, min_val, root->val, s);
+        root->right = makebstfrompreorder(ans, root->val, max_val, s);
+
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int min_val = INT_MIN;
+        int max_val = INT_MAX;
+        int start = 0;
+
+        TreeNode *root = makebstfrompreorder(preorder, min_val, max_val, start);
+        return root;
+    }
+};
+ 
+// ======================== MY CODE =====================================================
+class Solution {
+public:
+    TreeNode * makebstfrompreorder(vector<int>& ans, int min_val ,int  max_val , int & s){
+      TreeNode * root = NULL;
+      if(s >= ans.size() || ans[s] < min_val || ans[s] > max_val ){
+          return NULL;
+      }
+      // condition nahi bhi dalte to koii prblm nahi hota qki humlog no nahi hone wala codition check kar liya hai
+      if(ans[s]> min_val && ans[s]< max_val){
+           root = new TreeNode(ans[s]);
+           // kabhi return yaha nahi kar sakte ho 
+          // return root;
+      }
+      
+      s = s+1;
+      root->left = makebstfrompreorder(ans , min_val , root->val  , s);
+      root->right  = makebstfrompreorder(ans , root->val , max_val  , s);
+     
+       return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int min_val = INT_MIN;
+        int max_val = INT_MAX;
+        int start  = 0;
+        
+       
+        
+        TreeNode * root = makebstfrompreorder(preorder, min_val , max_val , start );
+       
+        return root;
+    }
+};
+ 
