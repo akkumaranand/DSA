@@ -1,0 +1,28 @@
+// =======>>> Very very important hai <<<<===============================
+// create BST from preorder traversal array 
+class Solution {
+public:
+    TreeNode * makebstfrompreorder(vector<int>& ans, int s, int end){
+        if(s > end){
+            return NULL;
+        }
+        TreeNode * root = new TreeNode(ans[s]);
+        int last = end + 1;  // Initialize last to a value beyond the array bounds
+        for(int i = s + 1; i <= end; i++ ){
+            if(ans[i] > ans[s]){
+                last = i;
+                break;
+            }
+        }
+        root->left = makebstfrompreorder(ans, s + 1, last - 1);
+        root->right = makebstfrompreorder(ans, last, end);
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int start = 0;
+        int end = preorder.size() - 1;
+        TreeNode * root = makebstfrompreorder(preorder, start, end);
+        return root;
+    }
+};
