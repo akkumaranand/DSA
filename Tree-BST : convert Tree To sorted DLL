@@ -1,0 +1,24 @@
+// ================>>>>>>> IMPORTANT HAI <<<======================================
+ void converttolinkedlist(TreeNode<int> * root , TreeNode<int> * & head){
+     if(root == NULL){
+         return ;
+     }
+
+     converttolinkedlist(root->right , head);
+     root->right = head;
+     if(head != NULL){
+         head->left = root;
+     }
+     head = root;
+     converttolinkedlist(root->left , head);
+
+ }
+
+TreeNode<int>* bstToSortedDLL(TreeNode<int> *root)
+{
+	// Write your code here.
+    TreeNode<int> * head = NULL;
+    converttolinkedlist(root , head );
+    return head;
+
+}
