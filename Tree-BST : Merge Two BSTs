@@ -20,3 +20,254 @@ vector<int> mergeBST(TreeNode *root1, TreeNode *root2)
      sort(ans.begin() , ans.end());
     return ans;
 }
+// more optimal approach ==>> optimisation in the space complexity of the function O(h1+ h1)
+#include <vector>
+
+using namespace std;
+
+void converttoTDBB(TreeNode* root, TreeNode*& head) {
+
+    if (root == NULL) {
+
+        return;
+
+    }
+
+    converttoTDBB(root->right, head);
+
+    root->right = head;
+
+    if (head != NULL) {
+
+        head->left = root;
+
+    }
+
+    head = root;
+
+    converttoTDBB(root->left, head);
+
+}
+
+
+
+TreeNode* MergeTWOLL(TreeNode* head1, TreeNode* head2) {
+
+    TreeNode* head = NULL;
+
+    TreeNode* tail = NULL;
+
+
+ 
+
+    while (head1 != NULL && head2 != NULL) {
+
+        if (head1->data < head2->data) {
+
+            if (head == NULL) {
+
+                head = head1;
+
+                tail = head1;
+
+                head1 = head1->right;
+
+            } else {
+
+                tail->right = head1;
+
+                head1->left = tail;
+
+                tail = head1;
+
+                head1 = head1->right;
+
+            }
+
+        } else {
+
+            if (head == NULL) {
+
+                head = head2;
+
+                tail = head2;
+
+                head2 = head2->right;
+
+            } else {
+
+                tail->right = head2;
+
+                head2->left = tail;
+
+                tail = head2;
+
+                head2 = head2->right;
+
+            }
+
+        }
+
+    }
+
+
+ 
+
+    // Handle remaining nodes in head1 or head2
+
+    while (head1 != NULL) {
+
+        tail->right = head1;
+
+        head1->left = tail;
+
+        tail = head1;
+
+        head1 = head1->right;
+
+    }
+
+
+ 
+
+    while (head2 != NULL) {
+
+        tail->right = head2;
+
+        head2->left = tail;
+
+        tail = head2;
+
+        head2 = head2->right;
+
+    }
+
+
+ 
+
+    return head;
+
+}
+
+
+ 
+
+int countNode(TreeNode* head) {
+
+    int count = 0;
+
+    TreeNode* temp = head;
+
+    while (temp != NULL) {
+
+        count++;
+
+        temp = temp->right;
+
+    }
+
+    return count;
+
+}
+
+
+ 
+
+TreeNode* ConvertsortedLLtoBST(TreeNode* &head, int n) {
+
+    if (n <= 0 || head == NULL) {
+
+        return NULL;
+
+    }
+
+
+ 
+
+    TreeNode* leftt = ConvertsortedLLtoBST(head, n / 2);
+
+    TreeNode* root = head;
+
+    root->left = leftt;
+
+
+ 
+
+    head = head->right;
+
+    root->right = ConvertsortedLLtoBST(head, n - n / 2 - 1);
+
+    return root;
+
+}
+
+
+ 
+
+void inorderTraversal(TreeNode* root, vector<int>& result) {
+
+    if (root == NULL) {
+
+        return;
+
+    }
+
+    inorderTraversal(root->left, result);
+
+    result.push_back(root->data);
+
+    inorderTraversal(root->right, result);
+
+}
+
+
+ 
+
+vector<int> mergeBST(TreeNode* root1, TreeNode* root2) {
+
+    TreeNode* head1 = NULL;
+
+    TreeNode* head2 = NULL;
+
+
+ 
+
+    // Step 1: Convert BST into sorted DLL
+
+    converttoTDBB(root1, head1);
+
+    head1->left = NULL;
+
+    converttoTDBB(root2, head2);
+
+    head2->left = NULL;
+
+
+ 
+
+    // Step 2: Merge two sorted linked lists
+
+    TreeNode* start = MergeTWOLL(head1, head2);
+
+
+ 
+
+    // Step 3: Convert merged list to BST
+
+    int count = countNode(start);
+
+    TreeNode* ans = ConvertsortedLLtoBST(start, count);
+
+
+ 
+
+    vector<int> result;
+
+    inorderTraversal(ans, result);
+
+
+ 
+
+    return result;
+
+}
