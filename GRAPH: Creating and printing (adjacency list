@@ -1,0 +1,38 @@
+// =========================>>>> all about STL << ==========================
+
+vector < vector < int >> printAdjacency(int n, int m, vector < vector < int >> & edges) {
+   
+    // vector of array contain m edgess
+    vector<int>ans[n];
+    // storing  nodes connected to that 
+    // 0 -> 1 , 2; 0 ke liye 1 connect hoga and 2 
+    for(int i = 0; i<m ; i++){
+        //0'th  column 
+        int u = edges[i][0];
+        // 1st column 
+        int v = edges[i][1];
+
+        // undirected graph hai 
+        // insertion of node 
+        ans[u].push_back(v);
+        ans[v].push_back(u);  
+    }
+
+    // basical 0th vector me sare node daal diye jo usse connceted hai 
+    // similary all 
+
+    // return karna hai vector<vector<int>> 
+
+     vector<vector<int>>result(n);
+
+    
+    for (int i = 0; i < n; i++) {
+        result[i].push_back(i);
+        for (int j = 0; j < ans[i].size(); j++) {
+            result[i].push_back(ans[i][j]);
+        }
+    }
+
+    return result;
+
+}
