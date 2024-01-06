@@ -1,0 +1,34 @@
+#include <vector>
+#include <unordered_map>
+#include <queue>
+
+using namespace std;
+
+void BFStraversal(vector<vector<int>> &adj, unordered_map<int, bool> &visited, vector<int> &ans) {
+    queue<int> q;
+    int startNode = 0; // Starting from node 0
+    q.push(startNode);
+    visited[startNode] = true;  // Corrected syntax
+
+    while (!q.empty()) {
+        int front = q.front();
+        q.pop();
+
+        ans.push_back(front);
+
+        // Traverse all the neighbor nodes
+        for (auto i : adj[front]) {  // Corrected variable name "fornt" to "front"
+            if (!visited[i]) {
+                q.push(i);
+                visited[i] = true;
+            }
+        }
+    }
+}
+
+vector<int> bfsTraversal(int n, vector<vector<int>> &adj) {
+    unordered_map<int, bool> visited;
+    vector<int> ans;
+    BFStraversal(adj, visited, ans);
+    return ans;
+}
