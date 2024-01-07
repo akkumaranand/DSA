@@ -1,0 +1,73 @@
+// ===========================>>>> USING DFS <<<=======================================
+// most important yaha parent ko link check nahi karteee hai 
+// dfsvisted ka map banatee hai or check karte hai condition
+// if(dfsvisited == true && visited = true)
+// return ussi time cycle milegaa directed graph me 
+// IMPORTANT :- condition hi important hai qki code to ho hi jaa raha 
+// ====================================================================================
+#include <list>
+#include <unordered_map>
+#include <vector>
+#include <utility>
+
+using namespace std;
+
+// Depth-First Search (DFS) function to traverse the graph and detect cycles
+bool DFS(int node, unordered_map<int, list<int>> &list, unordered_map<int, bool> &visited, unordered_map<int, bool> &dfsvisted) {
+    // Mark the current node as visited and part of the current DFS traversal
+    visited[node] = true;
+    dfsvisted[node] = true;
+
+    // Explore neighbors
+    for (auto neighbour : list[node]) {
+        if (!visited[neighbour]) {
+            // Recursive DFS call for unvisited neighbors
+            bool check = DFS(neighbour, list, visited, dfsvisted);
+            if (check) {
+                return true;  // Cycle detected
+            }
+        } else {
+            // Check if the neighbor is part of the current DFS traversal
+            if (dfsvisted[neighbour]) {
+                return true;  // Cycle detected
+            }
+        }
+    }
+
+    // Mark the current node as not part of the current DFS traversal during backtracking
+    dfsvisted[node] = false;
+
+    return false;  // No cycle detected in this DFS traversal
+}
+
+// Function to detect a cycle in a directed graph
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>> &edges) {
+    // Create an adjacency list representation of the directed graph
+    unordered_map<int, list<int>> list;
+    for (int i = 0; i < edges.size(); i++) {
+        int u = edges[i].first;
+        int v = edges[i].second;
+
+        // Directed graph, only u -> v
+        list[u].push_back(v);
+    }
+
+    // Map to keep track of visited nodes during the traversal
+    unordered_map<int, bool> visited;
+
+    // Map to keep track of nodes in the current DFS traversal
+    unordered_map<int, bool> dfsvisted;
+
+    // Iterate through each node in the graph
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            // Perform DFS from the current node
+            bool check = DFS(i, list, visited, dfsvisted);
+            if (check) {
+                return true;  // Cycle detected
+            }
+        }
+    }
+
+    return false;  // No cycle detected in the entire graph
+}
