@@ -1,0 +1,59 @@
+// ================>>>> Method 1 using BFS <<<<================================================
+#include<unordered_map>
+#include<list>
+#include<queue>
+#include<map>
+
+bool BFS(int node, unordered_map<int, list<int>>& list, unordered_map<int, bool>& visited, unordered_map<int, int>& parent) {
+    queue<int> q;
+    q.push(node);
+    visited[node] = true;
+    parent[node] = -1;
+    while (!q.empty()) {
+        int front = q.front();
+        q.pop();
+        // neighbour node ko check karna hai 
+        for (auto neighbour : list[front]) {
+            if (!visited[neighbour]) {
+                q.push(neighbour);
+                visited[neighbour] = true;
+                parent[neighbour] = front;
+            } else {
+                // jab visited hoga aur parent of neighbour front nahi hoga tab cycle present hoga
+                if (parent[front] != neighbour) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+     unordered_map<int, list<int>> list;
+    for(int i = 0 ; i<m ; i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+
+        list[u].push_back(v);
+        list[v].push_back(u);
+    }
+   
+
+    // BFS traversal 
+    unordered_map<int, bool> visited;
+    unordered_map<int, int> parent;
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            bool check = BFS(i, list, visited, parent);
+            if (check) {
+                return "Yes";
+            }
+        }
+    }
+    return "No";
+    
+}
+
+// ===================================== >>> Method 2 using DFS <<=====================================================================================
