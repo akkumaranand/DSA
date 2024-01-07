@@ -1,4 +1,5 @@
 // ================>>>> Method 1 using BFS <<<<================================================
+// very very important hai dono acche se revision kar lena hai ...................
 #include<unordered_map>
 #include<list>
 #include<queue>
@@ -57,3 +58,57 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 }
 
 // ===================================== >>> Method 2 using DFS <<=====================================================================================
+#include<unordered_map>
+#include<list>
+#include<queue>
+#include<map>
+
+bool DFS(int node, int intial , unordered_map<int, list<int>>& list, unordered_map<int, bool>& visited, unordered_map<int, int>& parent) {
+  parent[node] = intial;
+  visited[node] = true;
+
+  // connecting node ko dekhna hai ==> that means neighbour node 
+  for(auto neighbour : list[node]){
+      if(!visited[neighbour]){
+        bool check =  DFS(neighbour , node ,  list , visited , parent);
+         if (check) {
+                return true;
+            }
+      }
+      else{
+          if (parent[node] != neighbour) {
+                return true;
+            }
+      }
+  }
+  return false;
+   
+}
+
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+     unordered_map<int, list<int>> list;
+    for(int i = 0 ; i<m ; i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+
+        list[u].push_back(v);
+        list[v].push_back(u);
+    }
+   
+
+    // BFS traversal 
+    unordered_map<int, bool> visited;
+    unordered_map<int, int> parent;
+    // har ek node ke liye isliye check karte hai qki ho sakta hai graph ka discreate bhi ho saktaa hai 
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            bool check = DFS(i,-1 ,  list, visited, parent);
+            if (check) {
+                return "Yes";
+            }
+        }
+    }
+    return "No";
+    
+}
