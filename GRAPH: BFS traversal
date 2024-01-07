@@ -32,3 +32,50 @@ vector<int> bfsTraversal(int n, vector<vector<int>> &adj) {
     BFStraversal(adj, visited, ans);
     return ans;
 }
+
+
+// ===================>> my solution  <<<<==================================================================
+#include<queue>
+#include<vector>
+class Solution {
+  public:
+  void BFS(vector<int> adj[] , unordered_map<int , bool> &visited , vector<int> & ans ){
+    queue<int>q;
+    int node = 0;
+    q.push(node);
+    while(!q.empty()){
+        int firstnode = q.front();
+        q.pop();
+        visited[firstnode] = true;
+        ans.push_back(firstnode);
+        
+            for(int i = 0 ; i < adj[firstnode].size() ; i++){
+                int neighbour_node = adj[firstnode][i];
+                if(!visited[neighbour_node]){
+                   q.push(neighbour_node);
+                   visited[neighbour_node] = true;
+                }
+                
+            }
+        
+    }
+    
+  }
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+       
+        // given adjacency vector 
+       unordered_map<int , bool> visited;
+       vector<int> ans;
+         for (int i = 0; i < V; i++) {
+            visited[i] = false;
+        }
+
+       
+      
+           BFS(adj , visited , ans );
+     
+       
+       return ans;
+    }
+};
