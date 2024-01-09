@@ -1,0 +1,59 @@
+//============>>>>>>>>>>> Important hai <<<<<================= =====
+Note :- important hai ki agar time limite exceed bol do try kar sakte ahi vector<int> visited(v, 0) to complexity thoda kaam hoga aur kaam kar jayegaa basically 
+)#include <stack>
+#include <unordered_map>
+#include <list>
+#include <vector>
+
+
+void DFS( int node , unordered_map< int , list<int>> &list , vector<int> &visited  , 
+stack<int> &s){
+
+    visited[node] = 1;;
+
+    // neighbouring node visit karna hai 
+    for(auto neighbour : list[node]){
+        if(!visited[neighbour]){
+            DFS(neighbour , list  , visited , s);
+        }
+    }
+
+    s.push(node);
+}
+
+
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e)  {
+ unordered_map< int , list<int>>list;
+ stack<int> s;
+  vector<int> ans ;
+
+ // directed graph 
+ for(int i = 0 ; i< edges.size() ; i++){
+     int u = edges[i][0];
+     int v = edges[i][1];
+
+     // u->v
+     list[u].push_back(v);
+ }
+
+ 
+//  unordered_map<int, bool> visited;
+vector<int>visited(v, 0);
+
+ for(int i = 0 ; i< v ; i++){
+     if(!visited[i]){
+         DFS(i , list , visited , s);
+     }
+ }
+
+
+
+ while(!s.empty()){
+     int top = s.top();
+     ans.push_back(top);
+     s.pop();
+
+ }
+
+ return ans;
+}
