@@ -1,0 +1,74 @@
+// ============>>>>>> very important hai basically algorithn to topological sort wala hi usse hi hota hai <<<<=================================
+#include <list>
+#include <unordered_map>
+#include <vector>
+#include <utility>
+#include <queue>
+
+using namespace std;
+
+// Corrected the function name to "InDegreeOfNode" for consistency.
+void InDegreeOfNode(unordered_map<int, list<int>> &list, vector<int> &indegree) {
+    for (auto nodes : list) {
+        for (auto value : nodes.second) { // Changed 'value' to 'nodes.second' to access the list of neighbors.
+            indegree[value]++;  // Corrected the indexing to 'value' instead of 'count'.
+        }
+    }
+}
+
+// Corrected the function name to "BFSCycleDetection" for consistency.
+void BFSCycleDetection(int node, unordered_map<int, list<int>> &list, vector<int> &indegree, vector<int> &visited, int &count) {
+    queue<int> q;
+    q.push(node);
+    visited[node] = 1;
+
+    while (!q.empty()) {
+        int front = q.front();  // Changed 'top()' to 'front()' to access the front of the queue.
+        q.pop();
+
+        // count increase in every pop
+        count++;
+
+        for (auto neighbour : list[front]) {
+            // when pop happens then every node connected to that will get decrement by 1 in every call
+
+            --indegree[neighbour];
+            if (indegree[neighbour] == 0 && !visited[neighbour]) {
+                q.push(neighbour);
+                visited[neighbour] = 1;
+            }
+        }
+    }
+}
+
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>> &edges) {
+    // Create an adjacency list representation of the directed graph
+    unordered_map<int, list<int>> list;
+    for (int i = 0; i < edges.size(); i++) {
+        int u = edges[i].first;
+        int v = edges[i].second;
+
+        // Directed graph, only u -> v
+        list[u].push_back(v);
+    }
+
+    // indegree vector where we store the indegree of all the node
+    // node start from 1 and goes to n so that we have to take the array of size + 1 because node start from 1 to n so for every node we have to store visited and indegree so it is simple ahi 
+    vector<int> indegree(n + 1, 0);  // Corrected the size of the 'indegree' vector.
+    vector<int> visited(n + 1, 0);  // Corrected the size of the 'visited' vector.
+    InDegreeOfNode(list, indegree);
+    int count = 0;
+
+    // Iterate through each node in the graph
+    for (int i = 1; i <= n; i++) {
+        if (indegree[i] == 0 && !visited[i]) {
+            BFSCycleDetection(i, list, indegree, visited, count);
+        }
+    }
+
+    // If count is equal to the number of nodes, then there is no cycle.
+    if (count == n) {
+        return false;
+    }
+    return true;
+}
