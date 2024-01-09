@@ -1,0 +1,64 @@
+// VERY IMPORTANT HAI SOCH SAHI LIYE BUT ONLY CODE ME THODA SA DEKHNA PAD GAYA EASY HAI 
+// ====================>>>>>>>>> IMPORTANT HAI <<<<<<=====================================
+#include <queue>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+void BFSTopologicalSort(int node, vector<vector<int>> &list, vector<int> &indegree, vector<int> &visited, vector<int> &ans) {
+    queue<int> q;
+    q.push(node);
+    visited[node] = 1;
+
+    while (!q.empty()) {
+        int front = q.front();
+        q.pop();
+        ans.emplace_back(front);
+
+        for (auto neighbour : list[front]) {
+            // jab node pop hua  uska matlab jo jo uska neighbour node tha sab me gategaa na 
+            --indegree[neighbour]; // node ke hatne se jo indegree bhi kam hoga sabka ek basically 
+            if (indegree[neighbour] == 0 && !visited[neighbour]) {
+                q.push(neighbour);
+                visited[neighbour] = 1;
+            }
+        }
+    }
+}
+// It is the best way to count the same value.
+void CalculateIndegree(vector<int> &indegree, vector<vector<int>> &list) {
+    for (const auto &nodes : list) {
+        for (auto node : nodes) {
+            indegree[node]++;
+        }
+    }
+}
+
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e) {
+    vector<vector<int>> list(v);
+    vector<int> ans;
+
+    // directed graph 
+    for (int i = 0; i < edges.size(); i++) {
+        int u = edges[i][0];
+        int v = edges[i][1];
+
+        // u->v
+        list[u].emplace_back(v);
+    }
+
+    vector<int> indegree(v, 0);
+    CalculateIndegree(indegree, list);
+    vector<int> visited(v, 0);
+
+    for (int i = 0; i < v; i++) {
+        // indegree[i] == 0 isliye check kiye taaki agar pahlenode ki hi zero nahi hua usko push nahi kar sakte nahi 
+        // or ye discrete component ko solve karta hai isliye bhi important hai 
+        if (indegree[i] == 0 && !visited[i]) {
+            BFSTopologicalSort(i, list, indegree, visited, ans);
+        }
+    }
+
+    return ans;
+}
