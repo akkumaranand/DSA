@@ -1,0 +1,73 @@
+=====>>>>>   VERY VERY IMPORTANT HAI DONT MISS THIS QUESTION <<< ============
+// IMPORTANT CONCEPT LAGTA HAI ISSME TO MUST REVISE ALSO 
+#include <iostream>
+#include <vector> 
+#include <unordered_map>
+#include <stack>
+#include <climits>
+using namespace std;
+
+void DFS(int start, vector<int> &visited, unordered_map<int, vector<pair<int, int>>> &list, stack<int> &s) {
+    visited[start] = true;
+
+    // Neighbouring node
+    for (auto neighbor : list[start]) {
+        if (!visited[neighbor.first]) {
+            DFS(neighbor.first, visited, list, s);
+        }
+    }
+
+    s.push(start);
+}
+
+vector<int> shortestPathInDAG(int n, int m, vector<vector<int>> &edges) {
+    unordered_map<int, vector<pair<int, int>>> list;
+    for (int i = 0; i < edges.size(); i++) {
+        int u = edges[i][0];
+        int v = edges[i][1];
+        int w = edges[i][2];
+
+        pair<int, int> p = make_pair(v, w);
+
+        list[u].push_back(p);
+    }
+
+    // Initialize visited vector with false
+    vector<int> visited(n, false);
+    stack<int> s;
+
+    // Perform DFS to get topological order
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            DFS(i, visited, list, s);
+        }
+    }
+
+    vector<int> ans(n, INT_MAX);
+    ans[0] = 0;
+
+    while (!s.empty()) {
+        int top = s.top();
+        s.pop();
+
+        if (ans[top] != INT_MAX) {
+            for (auto neighbor : list[top]) {
+                int v = neighbor.first;
+                int weight = neighbor.second;
+
+                if (ans[top] + weight < ans[v]) {
+                    ans[v] = ans[top] + weight;
+                }
+            }
+        }
+    }
+
+    // Convert INT_MAX to -1 for unreachable nodes
+    for (int &dist : ans) {
+        if (dist == INT_MAX) {
+            dist = -1;
+        }
+    }
+
+    return ans;
+}
