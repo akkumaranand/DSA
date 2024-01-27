@@ -1,0 +1,65 @@
+// ========================>>>>>>>>>>>> Run time error complexity O(n^2)  <<<===============================================
+#include <bits/stdc++.h> 
+int solve(int n){
+    if(n == 1 || n== 2){
+        return n;
+    }
+
+    return (solve(n-1) + solve(n-2));
+}
+
+int countDistinctWays(int nStairs) {
+    //  Write your code here.
+    int ans = solve(nStairs);
+    return ans;
+
+}
+
+// ================>> Applying DP int this code <<<<<==================================
+1.Approach 1 :- Recursion + Memoiazation 
+#include <iostream>
+#include <vector>
+#define mod 1000000007  // output return kaise kartee hai thoda dekhnaaa hai 
+using namespace std;
+
+// Recursive function to calculate distinct ways to climb stairs
+int solve(int n, vector<int> &dp) {
+    if (n == 0) return 1;
+    if (n == 1 || n == 2) return n;
+
+    if (dp[n] != -1) {
+        return dp[n];
+    }
+
+    dp[n] = (solve(n - 1, dp) + solve(n - 2, dp)) % mod ;
+    return dp[n];
+}
+
+// Wrapper function for counting distinct ways
+int countDistinctWays(int nStairs) {
+    vector<int> dp(nStairs + 1, -1);
+    return solve(nStairs, dp);
+}
+
+// ========>>>> Space optimisation <<<=====================
+#include <iostream>
+#include <vector>
+#define mod 1000000007
+using namespace std;
+
+int countDistinctWays(int nStairs) {
+    // tabulation method 
+    if(nStairs == 0) return 1;
+    if(nStairs == 1) return 1;
+
+    int prev1 = 1;
+    int prev2 = 2;
+
+    for(int i = 3; i <= nStairs; i++) {
+        int curr = (prev1 + prev2) % mod;
+        prev1 = prev2;
+        prev2 = curr;
+    }
+
+    return prev2;   
+}
