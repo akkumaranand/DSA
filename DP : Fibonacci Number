@@ -1,0 +1,96 @@
+//=============>>>>>>>>> brute force code  <<<<<<=============
+// using recursion 
+class Solution {
+public:
+    int fibbNthnumber(int n ){
+        if(n <= 1){
+            return n;
+        }
+
+        return fibbNthnumber(n-1) + fibbNthnumber(n-2);
+    }
+    int fib(int n) {
+        int ans =  fibbNthnumber(n);
+        return ans;
+    }
+};
+
+// =====================>>> using DP <<<===============  
+optimise this solution :==== 
+approch 1 : recursion and memoization 
+class Solution {
+public:
+    int fibbNthnumber(int n , vector<int>& dp ){
+        if(n <= 1){
+            return n;
+        }
+        
+        if(dp[n] != -1){
+            return dp[n];
+        }
+
+
+        dp[n] = fibbNthnumber(n-1 , dp) + fibbNthnumber(n-2 , dp);
+        return dp[n];
+       
+    }
+    int fib(int n) {
+        vector<int> v(n +1 , -1);
+        int ans =  fibbNthnumber(n , v);
+        return ans;
+    }
+};
+
+// approach 2  ===>> tabulation method 
+
+#include <vector>
+
+class Solution {
+public:
+    int fib(int n) {
+        // Base case
+// important hai because n == 0 test case fail ho jayegaa 
+        if (n == 0) {
+            return 0;
+        }
+
+        // Tabulation 
+        std::vector<int> dp(n + 1);
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[n];
+    }
+};
+
+
+
+//======>>>> space iptimisation  <<========================
+#include <vector>
+
+class Solution {
+public:
+    int fib(int n) {
+        // Base case
+        if(n == 0) return 0;
+
+        int prev1 = 0;
+        int prev2 = 1;
+
+        for(int i = 2 ; i <= n ; i++){
+            int curr = prev1 + prev2;
+            prev1 = prev2;
+            prev2 = curr;
+
+        }
+
+        return prev2;
+    }
+};
+
+
+// important ye hai kii dhayan se karo saabbbb asaan hi hota hai 
