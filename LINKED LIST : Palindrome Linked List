@@ -1,0 +1,39 @@
+// =============== Using recursion ===========================
+class Solution {
+public:
+    void checkpalindrome(ListNode* &start, ListNode* end, bool &ans, int count) {
+        if (end == NULL) {
+            return;
+        }
+
+        checkpalindrome(start, end->next, ans, count);
+
+        if (start->val != end->val && count > 0) {
+            ans = false;
+            if (count == 1) {
+                return;
+            }
+        }
+        count = count - 1;
+        start = start->next;
+        // here we have to take start by call by referece because in function back start is remain start not updating 
+        // in every call start is remain start so we have to take start by call by refernce 
+    }
+
+    bool isPalindrome(ListNode* head) {
+        ListNode* start = head;
+        ListNode* end = head;
+        int count = 0;
+        bool ans = true;
+        while (head != NULL) {
+            count++;
+            head = head->next;
+        }
+
+        count = count / 2;
+
+        checkpalindrome(start, end, ans, count);
+        return ans;
+    }
+};
+//===========================>>>>> approach 2 by storing the element of linked list in the vector <<<=================================
