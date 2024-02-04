@@ -37,3 +37,62 @@ public:
     }
 };
 //===========================>>>>> approach 2 by storing the element of linked list in the vector <<<=================================
+
+
+
+
+// ==================================>>>>> time complexity O(n) and space complexity :-  O(1) <<<<===============================
+
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if (!head || !head->next) {
+            // An empty list or a list with one node is considered a palindrome.
+            return true;
+        }
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        // Use a fast and slow pointer to find the middle of the linked list.
+        while (fast->next != NULL && fast->next->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // Reverse the second half of the linked list.
+        ListNode* secondHalf = reverseList(slow->next);
+
+        // Compare the first and second halves of the linked list.
+        while (secondHalf != NULL) {
+            if (head->val != secondHalf->val) {
+                // Values don't match, not a palindrome.
+                return false;
+            }
+            head = head->next;
+            secondHalf = secondHalf->next;
+        }
+
+        // All values matched, it's a palindrome.
+        return true;
+    }
+
+private:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = NULL;
+        
+        while (head != NULL) {
+            ListNode* nextNode = head->next;
+            head->next = prev;
+            prev = head;
+            head = nextNode;
+           
+
+           
+            cout<<endl;
+        }
+        
+
+        return prev;
+    }
+};
