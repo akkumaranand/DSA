@@ -1,1 +1,59 @@
+//=====================================>> Q1. Delete node in Doubly Linked List  <<=======================================================================================================
 
+class Solution
+{
+public:
+    Node *deleteNode(Node *head_ref, int x)
+    {
+        //Your code here
+        Node *head = head_ref;
+        if (head == NULL)
+        {
+            return NULL;
+        }
+
+        if (x == 1)
+        {
+            if (head->next != NULL)
+            {
+                head_ref = head_ref->next;
+                head_ref->prev = NULL;
+            }
+            else
+            {
+                // If x is 1 and there is only one node, set head_ref to NULL
+                delete head;
+                return NULL;
+            }
+        }
+
+        int count = 1;
+
+        while (head->next != NULL && x != count)
+        {
+            count = count + 1;
+            head = head->next;
+        }
+
+        // head pointer wahi value ko point kar raha hai
+        Node *previous = NULL;
+        Node *nextnode = NULL;
+
+        if (count == x)
+        {
+            // delete karna hai
+            previous = head->prev;
+            nextnode = head->next;
+            if (previous != NULL)
+                previous->next = nextnode;
+
+            // Check if it is not the last node
+            if (nextnode != NULL)
+                nextnode->prev = previous;
+
+            delete head;
+        }
+
+        return head_ref;
+    }
+};
