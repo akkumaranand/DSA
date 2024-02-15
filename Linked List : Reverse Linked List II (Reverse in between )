@@ -1,0 +1,47 @@
+// ========>>>>>>    LEETCODE   <<<< ============
+
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if(left == right){
+            return head;
+        }
+       int count = 1;
+       ListNode * start = head;
+       ListNode * prev = NULL;
+       // linked list left part 
+       while(count  < left && start != NULL ){
+           prev = start;
+           start = start->next;
+           count ++;
+       }
+     
+       // linked list middle part 
+       ListNode * nextNode = NULL;
+       ListNode * previous = NULL;
+       ListNode * current = start;
+       while(count <= right &&  current != NULL){
+            nextNode = current->next;
+            current ->next = previous ;
+            previous = current;
+            current = nextNode;
+            count ++;
+       }
+
+       // linked list right part 
+       //  nextNode right part of the linked list 
+       // combine three linked list 
+
+       if(prev != NULL){
+           prev->next = previous;
+           
+       }else{
+           head = previous;
+       }
+     
+      
+       start->next = current;
+
+      return head;
+    }
+};
