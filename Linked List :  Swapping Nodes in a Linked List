@@ -1,0 +1,56 @@
+class Solution {
+public:
+    ListNode* swapNodes(ListNode* head, int k) {
+        if (head == nullptr || k <= 0) {
+            return head;
+        }
+
+         int size = 0;
+
+         ListNode * start = head;
+        // count size of the linked list
+        while(start !=  NULL){
+            start = start->next;
+            size ++;
+        }
+        
+        // Check if k is out of bounds
+        if (k > size) {
+            return head;
+        }
+
+        start = head;
+        int count = 1;
+        
+        // finding the first index of the linked list 
+        while(count < k  && start != NULL){
+           start = start->next;
+           count ++;
+        }
+        
+        ListNode * firstpart = start ;
+       
+
+        start = head;
+        count = 1;
+        
+        while(start != NULL && count < size - k + 1){
+            start = start->next ;
+            count ++;
+        }
+
+        ListNode * secondpart = start;
+        
+
+       // swap function 
+       int a = firstpart->val;
+       firstpart->val = secondpart->val;
+       secondpart->val = a ;
+
+    
+       
+
+        return head;
+    }
+};
+
