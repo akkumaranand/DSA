@@ -95,4 +95,76 @@ Node *firstNode(Node *head)
 
 }
 
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------Q3) Find the length of the loop ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+int lengthOfLoop(Node *head) {
+    Node * slow = head;
+    Node * fast = head;
+    int count = 1;
+    Node * p1 = NULL;
+
+    while(fast != NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast){
+            p1 = slow;
+            break;
+        }
+    }
+    if(p1 == NULL){
+        return 0;
+    }
+    
+    slow = slow->next;
+    while(slow != fast){
+        slow = slow->next;
+        count++;
+    }
+    
+    return count;
+}
+// -------------------------------------------------------Q4) check the  Palindrome ---------------------------------------------------------------------------------------------------------------------------------------------
+// method of splitting 
+bool isPalindrome(Node *head)
+{
+   Node * slow = head ;
+   Node * fast = head;
+   Node * start = head;
+   Node * previous  = NULL;
+     while(fast != NULL && fast->next != NULL){
+       slow = slow->next;
+       fast = fast->next->next;
+     }
+   
+   Node * temp = slow->next;
+   slow->next  = NULL;
+
+   // yaha par wo galti nahi karna hai ki temp->next != NULL ye condition nahi dalna hai samjhaa bhi bakki sab sahi hai 
+   while(temp != NULL ){
+       Node * nextNode = temp->next;
+       temp->next = previous;
+       previous = temp;
+       temp = nextNode;
+   }
+
+   while(previous != NULL &&  start != NULL){
+
+       if(previous->data != start->data){
+           return false;
+       }
+
+       previous = previous->next;
+       start = start->next;
+
+       
+   }
+   
+  
+   
+ return true ;
+}
+
+// ---------------------------------------------------Q5)                                 ----------------------------------------------------------------------------------------------
+
+
