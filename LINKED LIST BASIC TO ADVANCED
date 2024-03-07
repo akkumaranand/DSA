@@ -1,4 +1,4 @@
-//=====================================>> Q1. Delete node in Doubly Linked List  <<=======================================================================================================
+//=====================================>> Q1). Delete node in Doubly Linked List  <<=======================================================================================================
 
 class Solution
 {
@@ -57,3 +57,42 @@ public:
         return head_ref;
     }
 };
+
+// ---------------------------------------Q2) CYCLE DETECTION POINT ------------------------------------------------------------------------------------------
+
+Node *firstNode(Node *head)
+{
+
+    if(head == NULL || head->next == NULL){
+        return NULL;
+    }
+    Node * slow = head;
+    Node * fast = head;
+    Node * p1 = NULL;
+
+    
+
+    while(fast != NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+
+        // meeting point of the slow and fast 
+        if(slow == fast){
+            p1 = slow;
+            break ;
+        }
+    }
+    if(p1 == NULL){
+        return NULL;
+    }
+    slow = head;
+    while(slow != p1 && slow != NULL && fast != NULL){
+        slow = slow->next;
+        p1 = p1->next;
+    }
+    
+    return p1;
+
+}
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
