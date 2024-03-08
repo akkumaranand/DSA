@@ -266,4 +266,61 @@ public:
       return dummyNode->next;
     }
 };
-// ============================================================================================
+// ============================================================= Q6) SORT THE LINKED LIST IN O(1) SPACE COMPLEXITY ================================
+Node * Mergetwolinkedlist(Node * & list1  , Node * & list2){
+    // dummy node concept hai 
+    Node * dummyNode = new Node(-1);
+    Node * temp = dummyNode;
+    Node * t1 = list1;
+    Node * t2 = list2;
+
+    // merge two equal node 
+    while(t1 != NULL && t2 != NULL){
+        if(t1->data < t2->data ){
+            temp->next = t1;
+            temp = t1;
+            t1 = t1->next;
+        }else{
+            temp->next = t2;
+            temp = t2;
+            t2 = t2->next;
+        }
+    }
+    
+    if(t2){
+        temp->next = t2;
+    }else{
+        temp->next = t1;
+    }
+
+    return dummyNode->next;
+}
+Node* sortList(Node* head){
+   // merge sort apply karna hai basically in linked list
+   if(head == NULL || head->next == NULL){
+       return head;
+   }
+
+   Node * start = head;
+   
+   // middle element me 
+   Node * slow = head;
+   Node * fast = head ->next;
+
+   while(fast != NULL && fast->next != NULL){
+       slow = slow->next;
+       fast = fast->next->next;
+   } 
+
+   Node * L2 = slow->next;
+   slow->next = NULL;
+
+   Node * left =  sortList(start);
+   Node * right = sortList(L2);
+
+
+   return Mergetwolinkedlist(left , right);
+
+}
+
+// ==========================================================================================================================================================================
