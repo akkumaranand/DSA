@@ -165,6 +165,42 @@ bool isPalindrome(Node *head)
  return true ;
 }
 
-// ---------------------------------------------------Q5)                                 ----------------------------------------------------------------------------------------------
+// ---------------------------------------------------Q5)Segregate Even And Odd Nodes In a Linked List   ----------------------------------------------------------------------------------------------
+// brute force code 
+Node* segregateEvenOdd(Node* head)
+{
+    // Write your code here
+    vector<int> even;
+    vector<int> odd;
+    Node * start = head;
+  
+    while(start != NULL){
+        if(start->data % 2 == 0){
+            even.push_back(start->data);
+        }else{
+            odd.push_back(start->data);
+        }
+       start = start->next;
+    }
 
+    Node * evenNode = new Node(even[0]);
+    Node * startevenNode = evenNode;
+    for(int i = 1 ;i < even.size() ; i++){
+        Node * temp = new Node(even[i]);
+        evenNode->next = temp;
+        evenNode = temp;
+    }
 
+    Node * oddNode = new Node(odd[0]);
+    Node * startoddNode = oddNode;
+    for(int i = 1 ;i< odd.size() ; i++){
+        Node * temp = new Node(odd[i]);
+        oddNode->next = temp;
+        oddNode = temp;
+    }
+
+    evenNode->next = startoddNode;
+    
+    return startevenNode;
+}
+// ==--------------------------------------------------------
