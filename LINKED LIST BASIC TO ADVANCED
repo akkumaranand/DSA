@@ -367,3 +367,25 @@ Node* sortList(Node *head){
 
    return dummytzero->next ;
 }
+
+// ========================================================== Q8) Intersection of Two Linked Lists ============ ** Easy question tha bss visited ka ek unordered map le lo bass ** =======================
+//=====>> **** method 1 ****
+#include <unordered_map>
+Node* findIntersection(Node *firstHead, Node *secondHead) {
+    unordered_map<Node*, bool> visited;
+    Node *start = firstHead;
+
+    while (start != NULL) {
+        visited[start] = true;
+        start = start->next;
+    }
+
+    Node *starttwo = secondHead;
+
+    while (starttwo != NULL && !visited[starttwo]) {
+        starttwo = starttwo->next;
+    }
+
+    return starttwo;
+}
+// ===>> **** method 2 *****
