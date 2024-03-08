@@ -266,7 +266,7 @@ public:
       return dummyNode->next;
     }
 };
-// ============================================================= Q6) SORT THE LINKED LIST IN O(1) SPACE COMPLEXITY ================================
+// ============================================================= Q7) SORT THE LINKED LIST IN O(1) SPACE COMPLEXITY ================================
 Node * Mergetwolinkedlist(Node * & list1  , Node * & list2){
     // dummy node concept hai 
     Node * dummyNode = new Node(-1);
@@ -323,4 +323,47 @@ Node* sortList(Node* head){
 
 }
 
-// ==========================================================================================================================================================================
+// ==================================================================Q7 )Sort linked list of 0s 1s 2s ****** VERY IMPORTANT HAI************  ========================================================================================================
+// ========>>>>> GOOD QUESTION UNDERSTANDIN OF POINTER AND DUMMYNODE CONCEPT HERE <<==========================
+
+Node* sortList(Node *head){
+
+    if(head == NULL){
+        return NULL;
+    }
+
+    //  initialize
+    Node * dummytzero = new Node(-1);
+    Node * zero = dummytzero;
+    Node * dummyone = new Node(-1);
+    Node * one = dummyone;
+    Node * dummytwo = new Node(-1);
+    Node * two = dummytwo;
+   
+    Node * temp = head;
+    while(temp != NULL){
+        if(temp->data == 0){
+           zero->next = temp;
+           zero = temp;
+           temp = temp->next;
+        }
+        else if(temp->data == 1){
+           one->next = temp;
+           one = temp;
+           temp = temp->next;
+        }
+        else{
+            two->next = temp;
+            two = temp;
+            temp = temp->next;
+        }
+    }
+    // connecting all three linked list L0 , L1 , L2
+    zero->next = dummyone->next;
+    one->next = dummytwo->next;
+    two->next = NULL;
+
+
+
+   return dummytzero->next ;
+}
