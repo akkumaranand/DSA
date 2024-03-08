@@ -203,4 +203,67 @@ Node* segregateEvenOdd(Node* head)
     
     return startevenNode;
 }
-// ==--------------------------------------------------------
+//======= optimal code ======
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        
+        if(head == NULL || head->next == NULL || head->next->next == NULL){
+            return head;
+        }
+
+        ListNode * oddNode = head;
+        ListNode * newoddNode = head;
+        ListNode * evenNode = head->next;
+        ListNode * startevenNode = head->next;
+
+        while(evenNode != NULL && evenNode->next != NULL ){
+            oddNode->next = oddNode->next->next;
+            oddNode = oddNode->next;
+
+            evenNode->next = evenNode->next->next;
+            evenNode = evenNode->next;
+        }
+
+        oddNode->next = startevenNode;
+      
+      return newoddNode;
+    }
+};
+// ==-------------------------------------------------------- Q6 ) Merge two sorted linked list ===================================================================
+// optimal code =====
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+       // concept of the dummy Node 
+       // initialise the node 
+       ListNode * dummyNode = new ListNode(-1);
+       ListNode * temp = dummyNode;
+       ListNode * t1 = list1;
+       ListNode * t2 = list2;
+
+       // merge with equall node 
+       while(t1 != NULL && t2 != NULL){
+           if(t1->val < t2->val){
+               temp->next = t1;
+               temp = t1;
+               t1 = t1->next;
+           }
+           else{
+               temp->next = t2;
+               temp = t2;
+               t2 = t2->next;
+           }
+       }
+
+      // link the rest of the code 
+      if(t1){
+          temp->next = t1;
+       }else{
+           temp->next = t2;
+       }
+
+      return dummyNode->next;
+    }
+};
+// ============================================================================================
