@@ -389,3 +389,75 @@ Node* findIntersection(Node *firstHead, Node *secondHead) {
     return starttwo;
 }
 // ===>> **** method 2 *****
+
+
+
+
+
+
+
+
+
+
+
+// ==================================================================== Q9)  Delete all occurrences of a given key in a doubly linked list ========================================================================= 
+// MY alogorithm hai bss with some help of chatgpt ========
+Node* deleteAllOccurrences(Node* head, int k) {
+    if (head == nullptr) {
+        return nullptr;
+    }
+
+    Node* dummyNode = new Node(-1);
+    dummyNode->next = head;
+    head->prev = dummyNode;
+
+    Node* temp = dummyNode;
+    Node* start = head;
+
+    while (start != nullptr) {
+        if (start->data == k) {
+            temp->next = start->next;
+
+            if (start->next != nullptr) {
+                start->next->prev = temp;
+            }
+
+            Node* toDelete = start;
+            start = start->next;
+
+            delete toDelete;
+        } else {
+            temp = start;
+            start = start->next;
+        }
+    }
+
+    Node* newHead = dummyNode->next;
+    if (newHead != nullptr) {
+        newHead->prev = nullptr;
+    }
+
+    delete dummyNode;
+
+    return newHead;
+}
+
+
+// ======== method 2 ========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=======================================================================================================================================================================================================
