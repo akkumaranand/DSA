@@ -1,0 +1,74 @@
+Q1) ================================================2540. Minimum Common Value =========================================================
+// method 1 using recursion give Time limit exceed 
+class Solution {
+public:
+    void number(int start, int end, int element, vector<int> &nums2, int &ans) {
+        if (start > end) {
+            return;
+        }
+
+        int middle = start + (end - start) / 2;
+
+        if (nums2[middle] == element) {
+            ans = element;
+            return;  // Break the recursion once a common element is found
+        }
+
+        // left call 
+        number(start, middle - 1, element, nums2, ans);
+
+        // right call 
+        number(middle + 1, end, element, nums2, ans);
+    }
+
+    int getCommon(vector<int>& nums1, vector<int>& nums2) {
+        int ans = -1;
+        for (int i = 0; i < nums1.size(); i++) {
+            int start = 0;
+            int end = nums2.size() - 1;
+            number(start, end, nums1[i], nums2, ans);
+            
+            if (ans != -1) {
+                return ans;
+            }
+        }
+
+        return -1;
+    }
+};
+
+// ====  Little more optimised ============= Using iterative approach =========================
+class Solution {
+public:
+    void number(int start, int end, int element, vector<int> &nums2, int &ans) {
+        while (start <= end) {
+            int middle = start + (end - start) / 2;
+
+            if (nums2[middle] == element) {
+                ans = element;
+                return;  // Break the loop once a common element is found
+            }
+
+            if (nums2[middle] < element) {
+                start = middle + 1; // Search in the right half
+            } else {
+                end = middle - 1;   // Search in the left half
+            }
+        }
+    }
+
+    int getCommon(vector<int>& nums1, vector<int>& nums2) {
+        int ans = -1;
+        for (int i = 0; i < nums1.size(); i++) {
+            int start = 0;
+            int end = nums2.size() - 1;
+            number(start, end, nums1[i], nums2, ans);
+
+            if (ans != -1) {
+                return ans;
+            }
+        }
+
+        return -1;
+    }
+};
