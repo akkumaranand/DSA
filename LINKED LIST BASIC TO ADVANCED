@@ -460,4 +460,51 @@ Node* deleteAllOccurrences(Node* head, int k) {
 
 
 
-//=======================================================================================================================================================================================================
+//=================================================================================Q10) Add one to a number represented as Linked List ======================================================================================================================
+// =====>>> Brute force code <<=========
+Node* addOne(Node* head) {
+    // step 1 : reverse the linked list
+    Node * start = head;
+    Node * previous = NULL;
+    while(start!= NULL){
+       Node * nextNode = start->next;
+       start->next = previous;
+       previous = start;
+       start = nextNode;
+    }
+    
+    int carry = 1;
+    Node * temp = previous;
+    while(temp != NULL){
+        temp->data = temp->data + carry;
+        if(temp->data < 10){
+            carry = 0;
+            break;
+        }else{
+            temp->data = 0;
+            carry = 1;
+        }
+        temp = temp->next;
+    }
+    
+    // Now reverse the linked list again 
+    Node * revstart = previous;
+    Node * prevrev = NULL;
+    while(revstart != NULL){
+        Node * nextNode = revstart->next;
+        revstart->next = prevrev;
+        prevrev = revstart;
+        revstart = nextNode;
+    }
+
+    if(carry){
+        Node * newHead = new Node(1);
+        newHead->next = prevrev;
+        return newHead;
+    }
+    
+    return prevrev ;
+}
+
+//=====>>> optimal code <<<=============
+
