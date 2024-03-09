@@ -508,3 +508,39 @@ Node* addOne(Node* head) {
 
 //=====>>> optimal code <<<=============
 
+// reverse tracking of linked list is only possible with the help of the Recursion 
+
+void addOneToLinkedList(Node * & start , int & carry ){
+    if(start == NULL){
+        return ;
+    }
+    
+    addOneToLinkedList(start->next , carry);
+
+    start->data = start->data + carry;
+    if(start->data < 10){
+       carry = 0;
+    
+    }else{
+        carry = 1;
+        start->data = 0;
+    }
+
+}
+
+
+Node* addOne(Node* head) {
+    int carry = 1;
+    Node * start = head;
+    addOneToLinkedList(start , carry);
+    if(carry){
+        Node * NewHead = new Node(1);
+        NewHead->next = start;
+        return NewHead;
+    }
+    
+    return start;
+}
+
+// ==========================================================================================================================================================================================================================================================
+
