@@ -542,5 +542,75 @@ Node* addOne(Node* head) {
     return start;
 }
 
-// ==========================================================================================================================================================================================================================================================
+// =======================================================================Q11) Add two linked list ===================================================================================================================================================================================
+// we can reduced no of line of code we will do it later 
+Node *addTwoNumbers(Node *num1, Node *num2)
+{
+  Node * start1 = num1;
+  Node * start2 = num2;
+  int carry = 0;
+  Node * dummyNode = new Node(-1);
+  Node * temp = dummyNode;
+  while(start1 != NULL && start2 != NULL){
+     int value = start1->data + start2->data + carry;
+     if(value < 10){
+         carry = 0;
+         Node * newNode = new Node(value);
+         temp->next = newNode;
+         temp = newNode;
+     }else{
+        int element = value % 10;
+        carry = value / 10;
+        Node * newNode = new Node(element);
+        temp->next = newNode;
+        temp = newNode;
+     }
+     start1 = start1->next;
+     start2 = start2->next;
+  }
+
+   if(start1  == NULL && start2 == NULL && carry){
+    Node * newNode = new Node(carry);
+    temp->next = newNode;
+    temp = newNode;
+   }
+
+   while(start1 != NULL){
+       int value = start1->data + carry;
+       if(value < 10){
+           carry = 0 ;
+           Node * newNode = new Node(value);
+           temp->next = newNode;
+           temp = newNode;
+       }else{
+          carry = 1;
+          value = value % 10;
+          Node * newNode = new Node(value);
+          temp->next = newNode;
+          temp = newNode;
+       }
+       start1 = start1->next;
+   }
+   
+   while(start2 != NULL){
+       int value = start2->data + carry;
+       if(value < 10){
+           carry = 0 ;
+           Node * newNode = new Node(value);
+           temp->next = newNode;
+           temp = newNode;
+       }else{
+          carry = 1;
+          value = value % 10;
+          Node * newNode = new Node(value);
+          temp->next = newNode;
+          temp = newNode;
+       }
+       start2 = start2->next;
+   }
+   
+  
+
+  return dummyNode->next;
+}
 
