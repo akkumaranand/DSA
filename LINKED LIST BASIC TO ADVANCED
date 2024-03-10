@@ -543,7 +543,7 @@ Node* addOne(Node* head) {
 }
 
 // =======================================================================Q11) Add two linked list ===================================================================================================================================================================================
-// we can reduced no of line of code we will do it later 
+// Not a good approach we have to generalised this code =====>>>> 
 Node *addTwoNumbers(Node *num1, Node *num2)
 {
   Node * start1 = num1;
@@ -613,4 +613,33 @@ Node *addTwoNumbers(Node *num1, Node *num2)
 
   return dummyNode->next;
 }
+// generalised code and optimal solution of taht problem 
+lass Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *start1 = l1;
+        ListNode *start2 = l2;
+        int carry = 0;
+        ListNode *dummyNode = new ListNode(-1);
+        ListNode *temp = dummyNode;
 
+        while (start1 != NULL || start2 != NULL || carry) {
+            int value = (start1 ? start1->val : 0) + (start2 ? start2->val : 0) + carry;
+
+            carry = value / 10;
+            value %= 10;
+
+            ListNode *newNode = new ListNode(value);
+            temp->next = newNode;
+            temp = newNode;
+
+            if (start1) start1 = start1->next;
+            if (start2) start2 = start2->next;
+        }
+
+        return dummyNode->next;
+    }
+};
+
+
+// ================================================================================================================================================================================================================
