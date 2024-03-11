@@ -642,4 +642,36 @@ public:
 };
 
 
-// ================================================================================================================================================================================================================
+// ===============================================================Q12) Find pairs with given sum in doubly linked list =================================================================================================================================================
+//===>>>  important hai  <<<=====
+vector<pair<int, int>> findPairs(Node* head, int k)
+{
+    // simple hi to hai bhai 
+    Node * start  = head;
+    Node * end = head;
+    vector<pair<int, int>> ans;
+    while(end->next != NULL){
+        end = end->next;
+    }
+    
+    while(start->data  < end->data){
+       int sum = start->data + end->data;
+       if(sum == k){
+         pair <int , int> p1 =  make_pair(start->data , end->data );
+         ans.push_back(p1);
+         start = start->next;
+       }
+       if(sum < k){
+           start = start->next;
+       }else{
+           // only when both condtion if not satisfy not always decrement 
+           end = end->prev;
+       }
+
+       // =============================================
+       //    end = end->prev;
+       //    end = end->prev; isme kya hai ki har baar decrement ho raha hai but start sirf condition me increment ho rha hai 
+    }
+ 
+   return ans;
+} 
