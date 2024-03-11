@@ -675,3 +675,44 @@ vector<pair<int, int>> findPairs(Node* head, int k)
  
    return ans;
 } 
+// ===================================================== Q12)  Remove duplicates from a sorted Doubly Linked List ==============================================================================
+// very easy question hai #include <unordered_map>
+Node * removeDuplicates(Node *head)
+{
+    // Write your code here
+    Node * start = head;
+    Node * dummyNode = new Node(-1);
+    Node * temp = dummyNode;
+    temp->next = start;
+
+    unordered_map<int, int> count;
+
+
+    while(start != NULL){
+       count[start->data]++;
+       start = start->next;
+    }
+
+    start = head;
+    while(start != NULL){
+        if(count[start->data] > 1){
+            temp->next = start->next;
+            Node * todelete = start;
+            if (start->next != NULL) {
+                start->next->prev = temp;
+            }
+            start = start->next;
+            count[todelete->data]--;
+            delete todelete;
+
+        }else{
+          temp = start;
+          start = start->next;
+        }   
+    }
+
+    return dummyNode->next;
+
+}
+
+// ====================================================================================================================================================================================
