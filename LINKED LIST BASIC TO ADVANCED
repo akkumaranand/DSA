@@ -715,4 +715,40 @@ Node * removeDuplicates(Node *head)
 
 }
 
-// ====================================================================================================================================================================================
+// ================================================================ *******************Q13) Remove Zero Sum Consecutive Nodes from Linked List  *******************************===================================================================================================================
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+      ListNode * dummyNode = new ListNode(0); // because yaha sumn hi baat hai 
+      ListNode * dummy = dummyNode;
+      dummy->next = head;
+      // unordered_map link store karne ke liye yaha se hame delete karna hai 
+      unordered_map<int , ListNode * > visited;
+      visited[0] = dummy;
+
+      while(head != NULL){
+        int sum = head->val + sum;
+          // agar map me value  mil jaye // bitch wala element delete karna hai pahle se jaha sum phir se ayya 
+          if(visited.find(sum) != visited.end()){
+           ListNode * prev = visited[sum];
+            ListNode * start = prev;
+            // ek ko agge badayenge dusra ko rakhege 
+            // isse ye pata chalega kaun kaun delete hoga jo bitch me that or unordered map se hatega takki repeat nah ho 
+            int axillary_sum = sum;
+            while(prev != head){
+                prev = prev->next; // agla se delete karna wo nahi hoga that means jo extra add karke wo bana hai wo delete hoga na 
+                axillary_sum = axillary_sum + prev->val;
+                if(prev != head) visited.erase(axillary_sum);
+            }
+             start->next = head->next;   // connection bitch wala hata ke 
+           }// unordered map me daalna hoga that value with sum 
+           else{
+              visited[sum] = head;
+          }
+
+          head = head->next;
+      }
+
+      return dummyNode->next; 
+    }
+};
