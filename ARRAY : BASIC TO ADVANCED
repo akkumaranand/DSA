@@ -1,0 +1,36 @@
+// =================================================================Q1) Rotate Array =============================================================================================================
+// method 1 ;
+space complexity : O(n) and time complexity O(n)
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+      int n = nums.size();
+      // special condition ko bhi solve karna hoga 
+      k= k % n; // important part hai  
+      vector<int>stored(k);
+      // Right sift karna hai 
+      int j = 0;
+      for(int i = n - k ; i<n  ; i++){
+        stored[j] = nums[i];
+        j++;
+      }
+     // crete duplicate vector 
+     vector<int>duplicate(nums);
+     int i = 0;
+     while(i < (n-k)){
+       nums[i+k] =  duplicate[i] ;
+       i++;
+     }
+
+     // copy of k element of start
+     for(int i = 0 ; i<stored.size() ; i++){
+        nums[i] = stored[i];
+     }
+    }
+
+};
+
+
+
+
+//============================================================================================================================================================================================================
