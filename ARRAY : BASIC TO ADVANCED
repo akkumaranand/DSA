@@ -84,6 +84,7 @@ public:
 };
 
 //  ======================>>>> Most optimal code <<<=======================
+clear nahi hai ====== >>> karna hai latter jab time mille 
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
