@@ -29,8 +29,40 @@ public:
     }
 
 };
+=========>>>>>  method 2  <<<===========================
+// with space optimisation
+// space compplexity O(1)
+// time complexity :- O(n)
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+      int n = nums.size();
+      // special condition ko bhi solve karna hoga 
+      k= k % n; // important part hai  
+      vector<int>stored(k);
+      // Right sift karna hai 
+      int j = 0;
+      for(int i = n - k ; i<n  ; i++){
+        stored[j] = nums[i];
+        j++;
+      }
+     
+     // nums me hi change kar lennge 
+     int i = n-k-1;
+     int s = n-1;
+     while(i >=0){
+         nums[s] = nums[i];
+        i--;
+        s--;
+     }
+     
 
+     // copy of k element of start
+     for(int i = 0 ; i<stored.size() ; i++){
+        nums[i] = stored[i];
+     }
+    }
 
-
+};
 
 //============================================================================================================================================================================================================
