@@ -30,6 +30,23 @@ public:
     }
 
 };
+// ======>>> better than previous <<=================================
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+
+      vector<int> temp(nums.size());
+
+      for(int i = 0; i<nums.size() ; i++){
+          temp[(i+k)%nums.size()] = nums[i];   // importnat hai cycle me add karne ke liye hai   temp % (n)==>>> cycle karne ke liyeee
+            
+     }
+
+     ///copy temp into num vector
+       nums = temp;// to avoid overwrite
+
+    }
+};
 =========>>>>>  method 2  <<<===========================
 // with space optimisation
 // space compplexity O(k)
@@ -64,6 +81,32 @@ public:
      }
     }
 
+};
+
+//  ======================>>>> Most optimal code <<<=======================
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k % n;
+
+        if (k == 0) return; // No rotation needed
+
+        int count = 0; // Count the number of elements we have moved
+        int start = 0; // Start index of the current cycle
+
+        while (count < n) {
+            int current = start;
+            int prev = nums[start];
+            do {
+                int next = (current + k) % n;
+                swap(nums[next], prev);
+                current = next;
+                count++;
+            } while (current != start);
+            start++; // Move to the next cycle
+        }
+    }
 };
 
 //============================================================================================================================================================================================================
