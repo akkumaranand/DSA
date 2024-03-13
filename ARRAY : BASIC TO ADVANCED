@@ -148,4 +148,91 @@ vector<int> moveZeros(int n, vector<int> a) {
     return a;    
 
 };
-// =====================================================================================================================================================================================
+// =============================>>>> Q3) Merge 2 Sorted Array  <<<<<===================================================================================================================================================================
+// pahle merge with the help of two pointer 
+// temp vector jisme duplicate ko nahi dalna and then return ans;
+#include <vector>
+
+using namespace std;
+
+vector<int> sortedArray(vector<int> a, vector<int> b) {
+    int i = 0;
+    int j = 0;
+    vector<int> c;
+
+    while (i < a.size() && j < b.size()) {
+        if (a[i] <= b[j]) {
+            c.push_back(a[i]);
+            i++;
+        } else if (a[i] > b[j]) {
+            c.push_back(b[j]);
+            j++;
+        } 
+    }
+    // duplicate ayenge hi aane do last me usko handle karge bss or koiii dikkat nahi hai
+    // Add remaining elements from a and b if any
+    while (i < a.size()) {
+        c.push_back(a[i]);
+        i++;
+    }
+    while (j < b.size()) {
+        c.push_back(b[j]);
+        j++;
+    }
+    
+    // Removing duplicates
+    vector<int> result;
+    for (int i = 0; i < c.size(); i++) {
+        if (i == 0 || c[i] != c[i - 1]) { // checking if current element is different from previous one
+            result.push_back(c[i]);
+        }
+    }
+
+
+
+    return result;
+}
+//======>>>>> short code , but  not optimised =====>>>>
+#include <vector>
+
+using namespace std;
+
+vector<int> sortedArray(vector<int> a, vector<int> b) {
+    int i = 0;
+    int j = 0;
+    vector<int> c;
+
+// ======================================================= More important how to do that =================================
+    while (i < a.size() || j < b.size()) {                                                                             // =
+        if (i < a.size() && (j == b.size() || a[i] < b[j])) {                                                          // =
+            c.push_back(a[i]);
+            i++;                                                                                                       // =
+        } else if (j < b.size() && (i == a.size() || b[j] < a[i])) {
+            c.push_back(b[j]);                                                                                         // =
+            j++;
+        } else {                                                                                                       // =
+            c.push_back(a[i]);                  
+            i++;
+            j++;                                                                                                       // =
+        }
+    }
+                                                                                                                       //=
+// ========================================================================================================================
+
+    // Removing duplicates from c
+    if (!c.empty()) {
+        vector<int> result;
+        result.push_back(c[0]);
+        for (int k = 1; k < c.size(); ++k) {
+            if (c[k] != c[k - 1]) {
+                result.push_back(c[k]);
+            }
+        }
+        c = result;
+    }
+
+    return c;
+}
+
+
+//========================================================================================================================================================================================================
