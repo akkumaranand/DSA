@@ -235,4 +235,42 @@ vector<int> sortedArray(vector<int> a, vector<int> b) {
 }
 
 
-//========================================================================================================================================================================================================
+//==============================================Q4)Missing Number==========================================================================================================================================================
+==>>> brute firce code 
+#include<unordered_map>
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+      // find the largest element in the nums
+      unordered_map<int, int> visited;
+      int largest = INT_MIN;
+      for(int i = 0 ; i < nums.size() ; i++) if(nums[i] > largest) largest = nums[i] ;
+      for(int i = 0 ; i <= largest ; i++) visited[i] = 1;
+      for(int i = 0 ; i< nums.size(); i++) visited[nums[i]] = 0;
+
+      for(auto s : visited){
+        if(s.second  == 1){
+            return s.first;
+        }
+      }
+     return largest+1;
+    }
+};
+
+// =====>>>>> method 2 <<<<<============
+// better or optimal code
+#include<unordered_map>
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        int sum = (n*(n+1))/2;
+        int currSum = 0;
+        for(int i=0;i<n;i++)
+            currSum += nums[i];
+        return sum-currSum;
+    }
+};
+
+
+//=======================================================================================================================================================================================
