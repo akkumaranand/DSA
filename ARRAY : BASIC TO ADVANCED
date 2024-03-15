@@ -311,6 +311,25 @@ int getSingleElement(vector<int> &arr){
 
 	return -1;
 }
+ // ========================>>>>>>>  OPTIMAL CODE <<<<<<=================
+  XOR of two same numbers is always 0 i.e. a ^ a = 0. ←Property 1.
+  XOR of a number with 0 will result in the number itself i.e. 0 ^ a = a.  ←Property 2
+  //====>>> space complexity :- O(1)
+  //====>>> time complexity  :- O(n)
+
+
+  class Solution {
+  public:
+    int singleNumber(vector<int>& nums) {
+        // method 2 
+        int xorr = 0;
+        for(int i = 0 ; i < nums.size() ; i++){
+            xorr = xorr ^ nums[i];
+        }
+        return xorr;
+    }
+};
+
 
 
 //=============================================== Q6) Product of Array Except Self =================================================================================================================================
