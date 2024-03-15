@@ -274,7 +274,25 @@ public:
 
 
 //================================================Q5)Find The Single Element =======================================================================================================================================
-// brute code space complexity :- O(n) and time complexity :- O(n)
+// ==========>>>>>brute code   time complexity : O(N2)  space complexity : #include <bits/stdc++.h>
+using namespace std;
+
+int getSingleElement(vector<int> &arr) {
+    // Size of the array:
+    int n = arr.size();
+    for (int i = 0; i < n; i++) {
+        int num = arr[i]; // selected element
+        int cnt = 0;
+
+        //find the occurrence using linear search:
+        for (int j = 0; j < n; j++)   if (arr[j] == num) cnt++;
+        if (cnt == 1) return num;
+    }
+    return -1;
+}
+
+
+//  code space complexity :- O(n) and time complexity :- O(n)   ====================================
 #include<vector>
 #include<unordered_map>
 
@@ -293,3 +311,103 @@ int getSingleElement(vector<int> &arr){
 
 	return -1;
 }
+
+
+//=============================================== Q6) Product of Array Except Self =================================================================================================================================
+//   ======== >>>brute force code <<<========
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int>ans(n,1);
+        int j = 0;
+        for (int j = 0; j < n; ++j)
+        {
+            int index = (j +1 ) % n;
+            int sum = 1 ;
+            int count = 0;
+            while(count < n-1){
+             sum = sum * nums[index];
+             index = (index + 1) %n;
+             count++;
+            }
+            ans[j] = sum;
+            
+        }
+        return ans;
+    }
+};
+// =========>> More better  <<===================================================
+   ==>> average time complexity  :- O(n) but worse time complexity :- O(n*n)
+   ==>> space complexity :- O(n)
+   class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        
+        vector<int> ans;
+
+        int product = 1;
+        for (int i : nums) {
+            product *= i;
+        }
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] != 0) {
+                ans.push_back(product / nums[i]);
+            } else {
+                int act_product = 1;
+                for (int j = 0; j < nums.size(); j++) {
+                    if (j != i) {
+                        act_product *= nums[j];
+                    }
+                }
+                ans.push_back(act_product);
+            }
+        }
+        return ans;
+    }
+};
+
+// =====>>>> further optimised this code  <<<<<=================
+time complexity :- O(n) and space complexity :- O(n) worse and average time 
+=====>>> method of left and right array prodect and handling edges case <<<<<==========
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+    
+        vector<int> left(n,1);
+        vector<int> right(n,1);
+
+        // left product of the array element 
+        // int se hi jo jayega only to problem nahi hoga previous se multiply karna hai only 
+        int leftProduct = 1;
+        for(int i = 0 ; i < nums.size() ; i++){
+            left[i] = leftProduct * nums[i];
+            leftProduct = left[i];
+        }
+        // right product of array element
+        int rightproduct = 1;
+        for(int i = n-1 ; i>= 0 ; i --){
+            right[i] = rightproduct * nums[i];
+            rightproduct = right[i];
+        }
+        
+        // Now multiplication of both the array 
+        for(int i = 0 ; i < nums.size() ; i++){
+            if(i == 0){
+                nums[0] = right[1];
+            }
+            else if(i == n-1){
+                nums[n-1] = left[n-2];
+            }else{
+                nums[i] = left[i-1] * right[i+1];
+            }
+        }
+     return nums;
+    }
+};
+//=======>>>>>> most optimal code  <<===============  
+// =====>>>  with the help of DP  <<<=======
+
+
+// ===========================================================                                   =================================================================================================================
