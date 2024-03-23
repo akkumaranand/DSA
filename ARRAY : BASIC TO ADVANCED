@@ -462,7 +462,8 @@ int longestSubarrayWithSumK(vector<int> a, long long k) {
     while(right < n){
         sum = sum + a[right];
 
-        while(sum > k && left <= right ) // Ensure left <= right when adjusting window size
+        // while(sum > k && left <= right ) // Ensure left <= right when adjusting window size  ====>>> sochna  hai kya ho sakta hai 
+        while(sum > k  ) // Ensure left <= right when adjusting window size ===>>>> isse bhi ho jaa rha hai to prblm nahi hai 
         {
             sum = sum - a[left];
             left++;
