@@ -429,4 +429,51 @@ public:
 // =====>>>  with the help of DP  <<<=======
 
 
-// ===========================================================                                   =================================================================================================================
+// =========================================================== Q7.  Longest Subarray With Sum K  =================================================================================================================
+//=====>>> brute force code  << ===============
+#include <vector>
+using namespace std;
+
+int longestSubarrayWithSumK(vector<int> a, long long k) {
+    int largest = 1; // Initialize to 1 to handle the case when the entire array sums up to k
+    for (int i = 0; i < a.size(); i++) {
+        int sum = 0;
+        for (int y = i; y < a.size(); y++) {
+            sum += a[y];
+            if (sum == k) {
+                largest = max(largest, y - i + 1);
+            }
+        }
+    }
+    return largest;
+}
+// ===============>>> Optimal code  <<<<==================
+#include <vector>
+#include <algorithm> // for max
+
+using namespace std;
+
+int longestSubarrayWithSumK(vector<int> a, long long k) {
+    long long sum = 0;
+    int right = 0 ; 
+    int left = 0;
+    int n = a.size();
+    int length = 0;
+    while(right < n){
+        sum = sum + a[right];
+
+        while(sum > k && left <= right ) // Ensure left <= right when adjusting window size
+        {
+            sum = sum - a[left];
+            left++;
+        }
+        if(sum == k ){
+            length = max(length , (right -  left + 1));
+        }
+
+        right ++;
+    }
+    return length;
+}
+
+// ====>>>> better approach <<======== 
