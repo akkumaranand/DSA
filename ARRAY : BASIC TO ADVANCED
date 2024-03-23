@@ -478,3 +478,102 @@ int longestSubarrayWithSumK(vector<int> a, long long k) {
 }
 
 // ====>>>> better approach <<======== 
+
+
+
+
+
+
+
+
+
+
+// =======================================================================  Q8)  Two Sum  ===========================================================================
+//======>>>>> brute force code  <<<<<========
+// complexity :---- O(n2)
+string read(int n, vector<int> book, int target)
+{
+    // brute force code 
+    string  s = "NO";
+    for(int i = 0 ; i < book.size() ; i++){
+        int sum = 0 ; 
+        for(int j = i+1 ;  j < book.size() ; j++ ){
+            if((book[i] + book[j]) == target){
+                s = "YES";
+            }
+        }
+    }
+
+   return s;
+}
+
+// ===========>>> better <<<=============
+// O(n) ==> Time complexity 
+#include <unordered_map>
+string read(int n, vector<int> book, int target)
+{
+   unordered_map <int , int > sum;
+   for(int i = 0 ; i < book.size() ; i++){
+        int value = book[i];
+        sum[value]  = i;
+   }
+   // now abb differe map me dekhna hai available hai to thik hai nahi to return false
+
+   for(int j = 0 ; j < book.size() ; j++){
+       int desiredvalue = target - book[j];
+       if(sum.find(desiredvalue) != sum.end()){
+              return  "YES";
+       }
+   }
+
+   return "NO";
+}
+
+                                                 //=====>>>>> Leetcode <<<<<<<====   
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+       unordered_map <int , int > sum;
+        
+
+       for(int j = 0 ; j < nums.size() ; j++){
+       int desiredvalue = target - nums[j];
+       if(sum.find(desiredvalue) != sum.end() && sum[desiredvalue] != j){
+              return  {sum[desiredvalue] , j};
+          }
+          sum[nums[j]] = j;   // Alag alag loop me kar rahe the sath me bhi to kar hi sakte hai simple hai 
+       }
+       return {};  
+    }
+};
+======>>> DRAWBACKS <<<=====
+Time Complexity: O(N), where N = size of the array.
+Reason: The loop runs N times in the worst case and searching in a hashmap takes O(1) generally. So the time complexity is O(N).
+
+Note: In the worst case(which rarely happens), the unordered_map takes O(N) to find an element. In that case, the time complexity will be O(N2). If we use map instead of unordered_map, the time complexity will be O(N* logN) as the map data structure takes logN time to find an element.
+
+Space Complexity: O(N) as we use the map data structure.
+
+// =====>>> OPTIMISED CODE <<<=======  
+//=====>>>>> Two pointer approach  <<<<<======
+#include <unordered_map>
+string read(int n, vector<int> book, int target)
+{
+   // OPTIMISED CODE with space complexity O(1)
+  
+   sort(book.begin() , book.end());
+   int start = 0 ;
+   int end = n-1;
+   int sum = 0;
+   while(start < end){
+      sum = book[start] + book[end];
+      if(sum == target){
+          return "YES";
+      }
+      if(sum > target) end--;
+      if(sum < target) start++;
+   }
+   return "NO";
+}
+
+// ================================================================================================================================================================================================================
