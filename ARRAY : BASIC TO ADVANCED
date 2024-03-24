@@ -638,5 +638,38 @@ void sortArray(vector<int>& arr, int n)
     }
 }
 
-// =============================================================================================================================================================================================
+// =================================================================Q12)  Majority Element ============================================================================================================================
+//=====>>>> brute force approach  <<<<=====
+    We will run a loop that will select the elements of the array one by one.
+    Now, for each element, we will run another loop and count its occurrence in the given array.
+    If any element occurs more than the floor of (N/2), we will simply return it.
+    complexity :- Time complexity :- O(N2) and space complexity :- O(1)
 
+// ======>>>> better approach <<<=============
+space complexity :- O(n) and time complexity :- O(n)
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int n = nums.size();
+      unordered_map<int ,int> count;
+      for(int i = 0 ; i < nums.size() ; i++){
+        count[nums[i]]++;
+      }
+      for(int i = 0  ; i < nums.size() ; i++){
+        if(count[nums[i]] > n/2 ) return nums[i];
+      }
+
+      return -1;
+    }
+};
+
+// =====>>> further better approach  <<<======
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+      sort(nums.begin() , nums.end());
+      return nums[nums.size()/2];
+    }
+};
+
+// =================>> Optimal approach <<<===== 
