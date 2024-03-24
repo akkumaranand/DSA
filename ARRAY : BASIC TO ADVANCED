@@ -577,7 +577,14 @@ string read(int n, vector<int> book, int target)
 }
 
 // ===========================================================================Q9  Sort An Array of 0s, 1s and 2s  =====================================================================================================================================
-// =====>> OPTIMAL APPROACH ============
+//====>>> BRUTE FORCE APPROACH  <<====
+Algorithm / Intuition
+Sorting ( even if it is not the expected solution here but it can be considered as one of the approaches). Since the array contains only 3 integers, 0, 1, and 2. Simply sorting the array would arrange the elements in increasing order.
+COMPLEXITY :-
+Time Complexity: O(N*logN)
+Space Complexity: O(1)
+
+// =====>> BETTER APPROACH ============
 #include <bits/stdc++.h> 
 //TIME COMPLEXITY :- O(n)
 void sortArray(vector<int>& arr, int n)
@@ -607,3 +614,29 @@ void sortArray(vector<int>& arr, int n)
        j--;
     }
 }
+
+// =========>> OPTIMAL APPRROACH <<<==================
+void sortArray(vector<int>& arr, int n)
+{
+    int low = 0;
+    int high = n-1;
+    int mid = 0;
+    // keep in your mind Dutch national algorithm 
+    while(mid <= high){
+        if(arr[mid] == 0){
+            swap(arr[mid] , arr[low]);
+            mid++;
+            low++;
+        }
+        else if(arr[mid] == 1){
+            mid++;
+        }
+        else{  // case when arr[mid] == 2
+            swap(arr[mid] , arr[high]);
+            high--;
+        }
+    }
+}
+
+// =============================================================================================================================================================================================
+
