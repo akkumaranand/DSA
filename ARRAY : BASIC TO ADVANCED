@@ -912,4 +912,50 @@ vector<int> nextGreaterPermutation(vector<int> &A) {
 
 }
 
-// ===================================== Q17)
+// ===================================== Q17) Leaders in an Array problem <<<<================================
+==>>>brute force approach  <<<======
+#include <vector>
+using namespace std;
+
+vector<int> superiorElements(const vector<int>& a) {
+   int n = a.size();
+   vector<int> ans;
+ 
+   for(int i = 0 ; i < n ; i++){
+       bool leader = true; // Reset leader for each element
+       for(int j = i + 1 ; j < n ; j ++){
+         if(a[j] >= a[i]){
+            leader = false;
+            break;
+         }
+      }
+      if(leader){
+       ans.push_back(a[i]);
+    }
+   }
+   reverse(ans.begin() , ans.end());
+   return ans;
+}
+// ======>>> Optimal approach <<<<<=============
+#include <vector>
+using namespace std;
+
+vector<int> superiorElements(const vector<int>& a) {
+   int n = a.size();
+   vector<int>ans;
+   int superior = a[n-1];
+   ans.push_back(superior);
+   
+   int index = n-2;
+   while(index >= 0){
+       int element = a[index];
+       if(element > superior){
+           superior = element;
+           ans.push_back(superior);
+       }
+       index--;
+   }
+   return ans;
+}
+
+// ======================Q18)  
