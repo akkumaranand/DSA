@@ -291,7 +291,6 @@ int getSingleElement(vector<int> &arr) {
     return -1;
 }
 
-
 //  code space complexity :- O(n) and time complexity :- O(n)   ====================================
 #include<vector>
 #include<unordered_map>
@@ -773,7 +772,7 @@ int bestTimeToBuyAndSellStock(vector<int>&prices) {
     }
    return max_profit ;
 }
-//============>> better approach <<<==================
+//============>> Optimal  approach <<<==================
 // Using double pointer <<<===
 class Solution {
 public:
@@ -794,4 +793,89 @@ public:
     }
 };
 
-// =====
+// =====>> optimal approach <<<====
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int maxProfit(vector<int> &arr) {
+    int maxPro = 0;
+    int n = arr.size();
+    int minPrice = INT_MAX;
+
+    for (int i = 0; i < arr.size(); i++) {
+        minPrice = min(minPrice, arr[i]);
+        maxPro = max(maxPro, arr[i] - minPrice);
+    }
+    
+    return maxPro;
+}
+
+ 
+//=============================================================>>>>>> Q15 Rearrange the array in alternating positive and negative items  <<<=====================
+//===>>> better approach <<<====
+complexity :- space: O(n) and time complexity :- O(n)
+vector<int> alternateNumbers(vector<int>&a) {
+    // Write your code here.
+    int n = a.size();
+    vector<int>postive;
+    vector<int>negative;
+
+    for(int i = 0 ; i < n ; i++){
+        if(a[i]<0){
+            negative.push_back(a[i]);
+        }else{
+            postive.push_back(a[i]);
+        }
+    }
+
+    // update the value of the a 
+    int postive_index = 0;
+    int negative_index = 0;
+    for(int i = 0;  i < n ; i++){
+        a[i] = postive[postive_index];
+        postive_index++;
+        i++;
+        a[i]= negative[negative_index];
+        negative_index++;
+
+    }
+    return a;
+}
+// =================>> optimal approach <<====================
+// ======>>>> optimal approach <<<<<======
+vector<int> nextGreaterPermutation(vector<int> &A) {
+    
+
+    // step 1 : find the break point in the array 
+    int index = -1;
+    int n = A.size();
+   
+    for(int i = n - 2; i >= 0; i--) { 
+        if(A[i] < A[i+1]) {
+            index = i;
+            break;
+        }
+    }
+
+    // step 2:  array is  the last element then we have to reverse 
+      if(index == -1){
+        reverse(A.begin() , A.end());
+    }else{
+       
+    // step 3 find the element greater than break point element but the smallest one  and swap with the index element 
+    
+    for(int i = n-1 ; i > index ; i--){
+          if(A[index] < A[i]){
+              swap(A[index] , A[i]);
+              break;
+          }
+    }
+     
+     // step 4 : reverse the remaing element 
+     reverse(A.begin() + index + 1 , A.end());
+    }
+     return A;
+
+}
+
