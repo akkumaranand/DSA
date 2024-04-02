@@ -958,4 +958,43 @@ vector<int> superiorElements(const vector<int>& a) {
    return ans;
 }
 
-// ======================Q18)  
+// ======================Q18)  Set Matrix Zeros <<<<<===================================================================================================================================
+// =====>>>>> Better approach <<<<=======
+space complexity :- O(n*m + z) here z for zero's to store zero
+time complexity :- O(n*m + z)  here we have to iterate to zero's also so that 
+#include <bits/stdc++.h> 
+
+vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
+   vector<vector<int>>ans(matrix);
+   vector<pair<int  , int>> value;
+   int x = matrix[0].size();
+   int y = matrix.size();
+
+   // store the cordinates of of zero's in tha value 
+   for(int i = 0 ; i < y ; i++){
+      for(int  j = 0 ; j < x ; j++){
+         if(matrix[i][j] == 0){
+            pair<int , int> p = make_pair(i , j);
+            value.push_back(p);
+         }
+      }
+   }
+   // we have store the every cordinates of zero's in the value we have to make i and j zero's 
+   for(int i = 0 ; i < value.size() ; i++){
+      int p = value[i].first;
+      int q = value[i].second;
+
+      // zero's karne ki baari hai  here i th ko zero kiye hia 
+      for(int k = 0  ; k < x ; k++){
+         ans[p][k] = 0;
+      }
+
+      // here for jth
+      for(int s = 0 ; s < y ; s++){
+          ans[s][q] = 0;
+      }
+   }
+  
+   return ans;
+}
+
