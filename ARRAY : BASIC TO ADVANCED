@@ -959,6 +959,36 @@ vector<int> superiorElements(const vector<int>& a) {
 }
 
 // ======================Q18)  Set Matrix Zeros <<<<<===================================================================================================================================
+// ====>>>>>> brute force code <<<<<=========
+
+
+class Solution {
+public:
+    vector<vector<int>> solve1(vector<vector<int>>& ans, int& i, int& j, int n, int m) {
+        for (int x = 0; x < n; x++) {
+            ans[x][j] = 0;
+        }
+        for (int y = 0; y < m; y++) {
+            ans[i][y] = 0;
+        }
+        return ans;
+    }
+    
+    void setZeroes(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        vector<vector<int>> ans = matrix; // Copy the matrix
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (matrix[i][j] == 0) {
+                    ans = solve1(ans, i, j, n, m);
+                }
+            }
+        }
+        matrix = ans;
+    }
+}; 
+
 // =====>>>>> Better approach <<<<=======
 space complexity :- O(n*m + z) here z for zero's to store zero
 time complexity :- O(n*m + z)  here we have to iterate to zero's also so that 
