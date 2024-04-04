@@ -1185,4 +1185,53 @@ vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
 
   return matrix;
 }
-//=======================================================================================================================================================================================================
+//====================================================Q19)  Rotate Image ==================================================================================================================================================
+//=====>>>> brute force approach <<<====
+space complexity :- O(x*y) and time complexity :- O(x*y)
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        // better approach but not optimal 
+        vector<vector<int>>ans(matrix);
+        int y = matrix.size();
+        int x = matrix[0].size();
+
+        for(int i = y-1 ; i >= 0 ; i--){
+            for(int j = 0 ; j < x ; j++){
+                ans[j][(y-1)-i] = matrix[i][j];
+            }
+        }
+
+        matrix = ans;
+    }
+};
+
+// ===============>>>  Optimal approach <<<<<=====
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+      // optimal approach 
+      // two step for rotating a matrix    1. first we get transponse of that matrix a
+      //                                   2. Reverse every rows of that matrix 
+      
+      // we have to swap lower of upper trinagle in matrix to get transponse of the matrix
+
+      int x = matrix[0].size();
+      int y = matrix.size();
+      for( int i = 0 ; i < y-1 ; i++ ){
+        for(int j = i+1 ; j < x ; j++){
+            swap(matrix[i][j] , matrix[j][i]);
+        }
+      }
+
+      // we have obtain transponse of the matrix we have reverse every rows of the matrix
+      for(int i = 0 ; i < y ; i++ ){
+        for(int j =  0 ; j < x/2 ; j++){
+            swap(matrix[i][j] , matrix[i][x-1-j]);
+        }
+      }
+
+    }
+};
+
+//========================================================20)
