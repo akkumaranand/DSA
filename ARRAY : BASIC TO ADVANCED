@@ -959,8 +959,9 @@ vector<int> superiorElements(const vector<int>& a) {
 }
 
 // ======================Q18)  Set Matrix Zeros <<<<<===================================================================================================================================
-// ====>>>>>> brute force code <<<<<=========
-
+// ====>>>>>> brutest force approach <<<<<=========
+complexity :- O(n*m*(n+m))
+space complexity :- O(n*m)
 
 class Solution {
 public:
@@ -988,6 +989,48 @@ public:
         matrix = ans;
     }
 }; 
+ ====>>>>>> brut force approach <<<<<=========
+space complexity :- O(1)
+time complexity :- O(n*m*(n+m))
+#include <bits/stdc++.h> 
+vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
+   // brute force appraoch 
+   //    complexitu O(n3)  ==>> -1 approach
+   
+   int x = matrix[0].size();
+   int y = matrix.size();
+
+   for(int  i = 0 ; i < y ; i++){
+	   for(int  j = 0 ; j < x ; j++){
+		   if(matrix[i][j] == 0){
+			   // making row element -1;
+			   for(int s = 0 ; s < x ; s++){
+				   if(matrix[i][s] != 0){
+                      matrix[i][s] = -1;
+				   }
+			   }
+		    	//    making column element -1
+			   for(int p = 0 ; p < y ; p++){
+				   if(matrix[p][j] != 0){
+                       matrix[p][j] = -1;
+				   }
+
+			   }
+		   }
+	   }
+   }
+
+   // after completion we will change the -1 with 0 iterating trought the matrix
+     for(int  i = 0 ; i < y ; i++){
+	   for(int  j = 0 ; j < x ; j++){
+		if(matrix[i][j] == -1){
+			matrix[i][j] = 0;
+		}
+	   }
+    }
+
+	return matrix;
+}
 
 // =====>>>>> Better approach <<<<=======
 space complexity :- O(n*m + z) here z for zero's to store zero
@@ -1028,3 +1071,118 @@ vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
    return ans;
 }
 
+// ==========>> Better the previous approahc <<<================
+time complexity :- O(3(n*m)) ===>>> O(n*m)
+space complexity :- O(n+m)
+#include <bits/stdc++.h> 
+vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
+   // Better approach 
+    int x = matrix.size();
+    int y = matrix[0].size();
+    vector<int> row( y , 0) ;
+    vector<int> column(x,0);
+  
+   for(int i = 0 ; i < x ; i++){
+	   for(int  j = 0 ; j < y ; j++){
+		   if(matrix[i][j] == 0){
+          row[j] = 1;
+          column[i] = 1;
+		   }
+	   }
+   }
+
+   
+   // marking the row and column to make it zero 
+   
+   // column updating 
+   for(int j = 0 ; j  < row.size() ; j++){
+      if(row[j] == 1){
+         for(int  i = 0 ; i < x ; i++  ){
+            matrix[i][j] = 0;
+         }
+      }
+   }
+   
+   // row updating 
+      for(int i = 0 ; i  < column.size() ; i++){
+      if(column[i] == 1){
+         for(int  j = 0 ; j < y ; j++  ){
+            matrix[i][j] = 0;
+         }
+      }
+   }
+=====================================================================
+ for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (row[i] || col[j]) {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+column upadating and row updatin kar rahe hai na direct ek hi baar me bhi kar sakte the no prblm 
+=========================================================
+ 
+  return matrix;
+   
+}
+
+// ====================>>> Most optimal approach <<<<========================
+Time complexity :- O(2*(n*m)) ; and space complexity :- O(1) optimal approach 
+// very very important to know the condition 
+#include <bits/stdc++.h> 
+vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
+	int x = matrix.size();
+	int y = matrix[0].size();
+	// Write your code here.
+	// ===>>>> Optimal approach <<<====
+	// as previous we supposed to assume row and colum array but here we have to suppose column[0] ans row[0] 
+
+	int col = 1; // for extra in column 
+	// mark  column[0] and row[0] according to zero 
+	for(int i = 0 ; i < x ; i++ ){
+		for(int  j = 0 ; j < y ; j++){
+			// mark column[0] and row[0]
+
+		    if(matrix[i][j] == 0){
+				if(j == 0){
+					col =0;
+				}else{
+					matrix[i][0]= 0;
+					matrix[0][j] = 0;
+				}
+			}
+		}
+	}
+
+
+	// it is pat of assing value of row and column array 
+	// according to priority we have to make zero 
+	// first small matrix 
+	for(int i = 1 ; i < x ; i++){
+		for(int j = 1 ; j < y ; j++){
+			if(matrix[i][0] == 0 || matrix[0][j] == 0){
+				matrix[i][j]= 0;
+			}
+		}
+	}
+
+
+    // row 
+    if(matrix[0][0] == 0){
+		for(int i = 0 ; i < y ; i++){
+            matrix[0][i] = 0;
+		}
+	}
+  
+
+
+	if(col == 0){
+		for(int i = 0 ; i < x ; i++){
+			matrix[i][0] = 0;
+		}
+	}
+	
+
+  return matrix;
+}
+//=======================================================================================================================================================================================================
