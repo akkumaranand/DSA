@@ -1234,4 +1234,48 @@ public:
     }
 };
 
-//========================================================20)
+//========================================================20) Spiral matrix <<<<=================================================================================================
+complexity : time :- O(n2) and space :- O(1)
+vector<int> spiralMatrix(vector<vector<int>>& MATRIX) {
+    int x = MATRIX[0].size();
+    int y = MATRIX.size();
+    int top = 0 ; 
+    int bottom = y - 1;
+    int left = 0;
+    int right = x - 1;
+    vector<int> ans;
+   
+    while (left <= right && top <= bottom) {
+        // left to right 
+        
+        for (int i = left; i <= right; i++) {
+            ans.push_back(MATRIX[top][i]);
+        }
+        top++;
+        // top to bottom 
+        for (int i = top; i <= bottom; i++) {
+            ans.push_back(MATRIX[i][right]);
+        }
+        right--;
+        // right to left 
+        if(top <= bottom ){
+        for (int i = right; i >= left; i--) {
+            ans.push_back(MATRIX[bottom][i]);
+        } 
+        bottom--;
+        }
+
+        // bottom to top
+        if(left <= right){
+            for (int i = bottom; i >= top; i--) {
+                ans.push_back(MATRIX[i][left]);
+            }
+         left++;
+        }
+       
+    }
+
+    return ans;
+}
+
+// ============================== Q21) ========================================================================================================================
