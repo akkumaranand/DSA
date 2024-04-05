@@ -1293,8 +1293,9 @@ int findAllSubarraysWithGivenSum(vector<int>& arr, int k) {
    }
    return  count;
 }
-// =======>> using double pointer approach <<<<========
-// ======>> optimal approach <<<====== >>>my own method <<<
+// =======>> using double pointer approach <<<<========  //=====>>>> not fully correct solution <<<<<<==========
+// ======>> optimal approach <<<====== >>>my own method <<< 
+// ==> This code fails in the leetcode in the test case but pass in the coding ninja 
 // compexity :- O(n2) and space complexity :- O(1)
 int findAllSubarraysWithGivenSum(vector<int>& arr, int k) {
    int count = 0 ;
