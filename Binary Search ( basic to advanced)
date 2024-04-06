@@ -19,4 +19,30 @@ public:
         return -1;
     }
 };
-//=====================================================================================================================================================
+//=====>>> Recursive approach <<<<=====
+int binarysearch(int start , int end , vector<int> nums , int target ){
+    int mid = start + (end-start)/2;
+     if(start > end ){
+         return -1;
+     }
+
+      if(nums[mid] == target){
+          return mid;
+      }else if(nums[mid] < target){
+         return  binarysearch(mid +1 , end ,nums , target);
+      }else{
+         return  binarysearch(start , mid -1 , nums , target);
+      }
+
+      return -1;
+}
+
+int search(vector<int> &nums, int target) {
+    // binary search 
+    int n = nums.size();
+    int start = 0;
+    int end = n-1;
+    int ans =  binarysearch(start , end , nums , target);
+    return ans;
+}
+//=========================================Q2) Implement Lower Bound   ============================================================================================================
