@@ -46,3 +46,78 @@ int search(vector<int> &nums, int target) {
     return ans;
 }
 //=========================================Q2) Implement Lower Bound   ============================================================================================================
+// ==========>> brute force approach <<<<===========
+int lowerBound(vector<int> arr, int n, int x) {
+	// array approach se bana hai
+	// index return karna just greater then x agar pura array me nahi hi then return n 
+
+	int ans = n;
+	for(int i = 0 ; i < n ; i++){
+          if(arr[i] >= x){
+			  ans =i;
+			  break;
+		  }
+	}
+   return ans;
+}
+
+//=====>>>> Binary search <<<<=========
+int lowerBound(vector<int> arr, int n, int x) {
+	// array approach se bana hai
+	// index return karna just greater then x agar pura array me nahi hi then return n 
+    
+	int start = 0;
+	int end = n-1;
+	int ans = n;
+	while(start <= end){
+		int mid = start + (end - start)/2;
+       
+	    if(arr[mid] >= x){
+            ans = mid;
+			end = mid -1;
+		}else{
+             start = mid +1;
+		}
+	}
+	return ans;
+}
+// ==================================================>>> Q3) Implement Upper Bound <<<============
+int upperBound(vector<int> &arr, int x, int n){
+	// Write your code here.
+	int start = 0;
+	int end = n-1;
+	int ans = n;
+	while(start <= end){
+		int mid = start + (end - start)/2;
+
+		if(arr[mid] > x){         // greater 
+           ans = mid;
+		   end = mid -1;
+		}else{                // smaller
+            start = mid +1;
+		}
+	}
+	return ans;
+}
+// ==============================================>>> Q4)Search Insert Position  <<<========================
+// important one must revise it atleast ones
+int searchInsert(vector<int>& arr, int m)
+{
+	// Write your code here.
+	
+	int n = arr.size();
+	int start = 0 ;
+	int end = n-1;
+	int ans = n;
+	while(start <= end ){
+		int mid = start + (end - start )/2;
+		 if(arr[mid] >= m){
+            ans = mid;
+			end = mid -1; // value ko minimise hi kar raha hai to sahi hai 
+			
+		}else{
+             start = mid +1;
+		}
+	}
+	return ans;
+}
