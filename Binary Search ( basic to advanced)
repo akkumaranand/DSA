@@ -121,3 +121,157 @@ int searchInsert(vector<int>& arr, int m)
 	}
 	return ans;
 }
+// ===================================>>>>>> Q5) Ceil The Floor <<<<<================================================
+pair<int, int> getFloorAndCeil(vector<int> &a, int n, int x) {
+    // Variables to store the floor and ceiling
+    int flor = -1;
+    int ceiling = -1;
+    
+    // Binary search for the ceiling
+    int start = 0;
+    int end = n - 1;
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        if (a[mid] >= x) {
+            // If current element is greater than or equal to x, update ceiling and move left
+            ceiling = a[mid];
+            end = mid - 1;
+        } else {
+            // If current element is less than x, move right
+            start = mid + 1;
+        }
+    }
+
+    // Reset start and end for the second binary search
+    start = 0;
+    end = n - 1;
+    
+    // Binary search for the floor
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (a[mid] <= x) {
+            // If current element is less than or equal to x, update floor and move right
+            flor = a[mid];
+            start = mid + 1;
+        } else {
+            // If current element is greater than x, move left
+            end = mid - 1;
+        }
+    }
+
+    // Return the pair of floor and ceiling
+    return make_pair(flor, ceiling);
+}
+
+// =======>>>> while loop in both <<<==========
+pair<int, int> getFloorAndCeil(vector<int> &a, int n, int x) {
+    // Variables to store the floor and ceiling
+    int flor = -1;
+    int ceiling = -1;
+
+    // Binary search for the ceiling and floor simultaneously
+    int start = 0;
+    int end = n - 1;
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        if (a[mid] == x) {
+            // If current element is equal to x, it is both ceiling and floor
+            ceiling = a[mid];
+            flor = a[mid];
+            break; // No need to continue searching
+        } else if (a[mid] < x) {
+            // If current element is less than x, update floor and move right
+            flor = a[mid];
+            start = mid + 1;
+        } else {
+            // If current element is greater than x, update ceiling and move left
+            ceiling = a[mid];
+            end = mid - 1;
+        }
+    }
+
+    // Return the pair of floor and ceiling
+    return make_pair(flor, ceiling);
+}
+// ============================================ Q6)  First and Last Position of an Element In Sorted Array  for both duplicate and normal <<==================================
+pair<int, int> firstAndLastPosition(vector<int>& arr, int n, int k)
+{
+  // here we have to return (lb , up-1)
+  // before we have to return we have to check 
+  //   1.) firt we have to check arr[lb] != k then we have to return -1
+  //    2) if lb == n that means also not present in the array then we have to return -1
+
+  int start = 0 ;
+  int end = n-1;
+  int lb = n;
+  int up = n;
+  while(start <= end){
+     int mid = start + (end - start )/2;
+
+     if(arr[mid] >= k){
+        lb = mid;
+        end = mid -1;
+     }else{
+        start = mid + 1;
+     }
+  }
+   // we have check all the condition which violet lb int the first and last occurance 
+   if(lb == n || arr[lb] != k){
+     return {-1 , -1};
+   }  // // find the upper bound 
+   else{
+     int low = 0;
+     int high = n-1;
+     while(low <= high){
+      int mid = low + (high - low)/2;
+      
+      if(arr[mid] > k){
+         up = mid;
+         high = mid -1;
+      }else{
+         low = mid + 1;
+      }
+     }
+
+     return {lb , up-1};
+   }
+   
+}
+
+// ======================>>>> Q7) Search in Rotated Sorted Array I  <<<<=========================================
+int search(vector<int>& arr, int n, int k)
+{   
+    // very easy hai 
+    // firt we have to identify the sorted part left/right 
+    // then chek that element exist in the left sorted part or not if not then start = mid +1 if yes end = mid -1
+
+    int start = 0 ;
+    int end = n-1;
+    while(start <= end){
+        int mid = start + (end - start)/2;
+       
+       // if mid element hi equal hoga then it is mid is that index 
+        if(arr[mid] == k)return mid;
+
+        // left part sort or not 
+        if(arr[start] < arr[mid]){
+            // check is it presen in left or not 
+            if(arr[start] <= k && arr[mid] >= k){
+                end = mid-1;
+            }else{
+                start = mid +1;
+            }
+        }else{  // check right part sort or not 
+           if(arr[mid] <= k && arr[end] >= k){
+               start = mid +1;
+           }else{
+               end = mid -1;
+           }
+        }
+    }
+     return -1;
+}
+
+// ==============================>>>>Q8
