@@ -1334,4 +1334,28 @@ int findAllSubarraysWithGivenSum(vector<int>& arr, int k) {
    return  count;
 }
 
-// ====================================================================================================================================================================== 
+// ================================================= Q22)  Largest Positive Integer That Exists With Its Negative <<<<<===================================================================================================================== 
+// ===>> brute force approach <<<<=====
+class Solution {
+public:
+    int findMaxK(vector<int>& nums) {
+        int max = -1;
+        for(int i = 0 ; i < nums.size() ; i++){
+            int first = nums[i];
+            for(int j  = i + 1 ;  j < nums.size() ; j++){
+                if(first + nums[j] == 0){
+                    if(first <0){
+                        first= - first;
+                    } 
+                    if(max < first ){
+                        max = first;
+                    }
+                }
+            }
+        }
+        return max;
+    }
+};
+
+
+
