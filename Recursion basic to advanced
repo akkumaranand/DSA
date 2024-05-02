@@ -1,0 +1,68 @@
+// ===============>>>>>> Q1)Find X raised to power N  <<================================
+double myPow(double x, int n) {
+    if(n == 0){
+        return 1;
+    }
+    if( n > 0 ){
+        return  x * myPow(x , n-1);
+    }else{
+        return 1/x*myPow(x , n+1);
+    }
+}
+
+//====>>>> optimal code for leetcode <<<<===
+class Solution {
+public:
+    double myPow(double x, int n) {
+       // since mangnitude of -ve range of integer is greater than +ve so when we make it negative then it will occur TLE
+       long long nn = n;
+       if(nn < 0){
+        nn =  -1 * nn;
+       }
+       double ans = 1.0;
+       while(nn){
+        if(nn % 2 == 1){
+            ans = ans * x;
+            nn = nn -1;
+        }else{
+            x = x * x;
+            nn = nn/2;
+        }
+       }
+       if(n < 0){
+          return 1/ans;
+       }
+       return ans;
+    }
+};
+
+// ==================>>>> Q2) Count Good Numbers <<<<============================
+// =============>>> imortant question hai <<==============
+class Solution {
+public:
+    long long findpow(long long x, long long n) {
+        long long result = 1;
+        while (n > 0) {
+            if (n % 2 == 1) {
+                result = (result * x) % 1000000007; // Modulo to avoid overflow
+            }
+            x = (x * x) % 1000000007; // Modulo to avoid overflow
+            n /= 2;
+        }
+        return result;
+    }
+    
+    int countGoodNumbers(long long n) {
+        long long pp = n / 2;
+        long long ep = n - pp;
+        
+        long long x = findpow(4, pp);
+        long long y = findpow(5, ep);
+        
+        return (x * y) % 1000000007; // Modulo to avoid overflow
+    }
+};
+// Note :- When question is telling you that you have to return in modulous then you should apply as much as you can so that overflow should not be there 
+// ================================>>>> 
+
+
