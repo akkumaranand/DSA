@@ -122,5 +122,35 @@ void reverseStack(stack<int> &stack) {
 
 }
 
-===============
+====================>>>>> Q4)  Sort Stack <<<<==============================================
+#include <stack>
+using namespace std;
+
+void insertElement(stack<int> &s, int top) {
+    if (s.empty() || top > s.top()) {
+        s.push(top);
+        return;
+    }
+
+    int temp = s.top();
+    s.pop();
+    insertElement(s, top);
+    s.push(temp);
+}
+
+stack<int> sortStack(stack<int> &s) {
+    if (s.empty()) {
+        return s;
+    }
+
+    int top = s.top();
+    s.pop();
+    sortStack(s);
+    insertElement(s, top);
+
+    return s;
+}
+
+
+// ==============================================
 
