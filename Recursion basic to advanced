@@ -63,6 +63,64 @@ public:
     }
 };
 // Note :- When question is telling you that you have to return in modulous then you should apply as much as you can so that overflow should not be there 
-// ================================>>>> 
+// ================================>>>> Q3) Reverse Stack Using Recursion <<<<==================================== 
+#include<bits/stdc++.h>
+using namespace std;
+ 
+void reversta(stack<int> &stack , vector<int>& re){
+  if(stack.empty()){
+        return ;
+    }
 
+    int top  = stack.top();
+    re.push_back(top);
+    stack.pop();
+   reversta(stack , re);
+}
+void reverseStack(stack<int> &stack) {
+  vector<int>re;
+   reversta(stack , re);
+    for(int i = 0 ; i < re.size() ; i++){
+        stack.push(re[i]);
+    }
+ 
+}
+// ==============>>> Recursive approach <<<======================
+void insertAtbottom(stack<int> &stack , int ans){
+
+if(stack.empty()){
+    stack.push(ans);
+    return ;
+}
+
+   int top = stack.top();
+   stack.pop();
+
+   insertAtbottom(stack , ans);
+   stack.push(top);
+}
+
+
+
+void reverseStack(stack<int> &stack) {
+    // Write your code here
+
+  if(stack.empty()){
+
+     return ;
+  }
+
+  int ans = stack.top();
+  stack.pop();
+  
+  reverseStack(stack);
+
+  // Insert at the bottom 
+  insertAtbottom(stack ,ans);
+
+ 
+
+}
+
+===============
 
