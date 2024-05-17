@@ -83,21 +83,26 @@ You are given a string num, representing a large integer. Return the largest-val
 
 A substring is a contiguous sequence of characters within a string
 // ======>>>optimal approach <<<<===
+O(N) complexity both hai 
 class Solution {
 public:
     string largestOddNumber(string num) {
-        if(num.empty()) return "";
-        string largest = "";
-        
-        for(int i = num.size()-1 ; i >= 0  ; i--){
-            int value = num[i] - '0';
+       if(num.empty()) return "";
 
-            if(value % 2 == 1){
-                largest = num.substr(0 , i+1);
-                break;
-            }
+        // we have to return largest subtring which is odd means we have to see from end of the string 
+        // check if it is even piche jana hai check karna if odd break karna hai return that greatest substing 
+
+       string largest = "";
+       for(int i = num.size() - 1; i >= 0 ; i--){
+        // to check we have to convert sting to integer 
+        int value = num[i] - '0';
+        if(num[i] % 2 == 1){
+            largest = num.substr(0 , i+1);   // substirng from position to length 
+            break ;   // important haii
         }
-
-        return largest;
+       }
+       return largest;
     }
 };
+
+//
