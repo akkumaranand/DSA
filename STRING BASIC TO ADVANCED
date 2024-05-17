@@ -4,6 +4,8 @@ Time Complexity:
 O(n)
 Space Complexity:
 O(n)
+
+
 class Solution {
 public:
     string removeOuterParentheses(string s) {
@@ -33,7 +35,31 @@ public:
        return ans;
     }
 };
-=====>>>> short code <<====
+
+// =========>>> Using stack <<<=========
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+       stack<char>st;
+       string ans = "";
+       for(char c : s){
+         if( c == '('){
+            if(!st.empty()){
+                ans += c;
+            }
+            st.push(c);
+         }else{
+            st.pop();
+            if(!st.empty()){
+               ans += c;
+            }
+         }
+       }
+       return ans;
+    }
+};
+
+=====>>>> Optimal approach <<====
 class Solution {
 public:
     string removeOuterParentheses(string s) {
@@ -52,4 +78,4 @@ public:
     }
 };
 
-///
+///  ===================== Q2) 
