@@ -1,0 +1,55 @@
+============>>>  Q1)Remove Outermost Parentheses  <<<================
+brute or good approach 
+Time Complexity: 
+O(n)
+Space Complexity:
+O(n)
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+       stack<char>st;
+       string ans = "";
+       int count = 0;
+       for(int i = 0 ; i < s.size() ; i++){
+         if(st.empty()){
+             if(s[i] == '('){
+                st.push(s[i]);
+                count ++;
+             }
+         }else{
+             if(s[i] == '('){
+                st.push(s[i]);
+                ans.push_back(s[i]);
+                count ++;
+             }else{
+                if(count > 1){
+                  ans.push_back(s[i]);
+                }
+                st.pop();
+                count --;
+             }
+         }
+       } 
+       return ans;
+    }
+};
+=====>>>> short code <<====
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+        string ans = "";
+        int depth = 0;
+        for (char c : s) {
+            if (c == '(') {
+                if (depth > 0) ans += c;
+                depth++;
+            } else {
+                depth--;
+                if (depth > 0) ans += c;
+            }
+        }
+        return ans;
+    }
+};
+
+///
