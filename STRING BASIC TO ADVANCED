@@ -105,4 +105,131 @@ public:
     }
 };
 
-//
+//  ========================>>>Q3) somorphic Strings   <<<======================
+//======>>> very easy quesiton hai 
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char , char> visited;
+        unordered_map<char , char> visitedcon2;
+        for(int i = 0 ; i < s.size() ; i++){
+            // conditon 1 we are checking s to t map correct or not 
+            if(!visited[s[i]]){ // only we are checking conditon 1 we have to check condition 2 also 
+                visited[s[i]] = t[i];
+            }else{ // agar visited hai then check wo element sahi se map hai kii nahi 
+                if(visited[s[i]] != t[i]){
+                    return false;
+                }
+               
+            }
+
+            // condtion 2 we are checking t to s map correct or not 
+            if(!visitedcon2[t[i]]){ // only we are checking conditon 1 we have to check condition 2 also 
+                visitedcon2[t[i]] = s[i];
+            }else{ // agar visited hai then check wo element sahi se map hai kii nahi 
+                if(visitedcon2[t[i]] != s[i]){
+                    return false;
+                }
+               
+            }
+
+        }
+        return true;
+    }
+};  
+// ======================================================= Q4) Rotate String <<<=======================
+// worst code =====>>>> in future we will modified it 
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+         int n = s.size();
+      // finding the index of first element of goal
+      if(s.size() != goal.size()) return false;
+      int index = -1; 
+      for(int i= 0  ;  i < s.size() ; i++){
+           if(s[i] == goal[0] && s[(i+1) %n] == goal[1] && s[(i+2) %n] == goal[2] && s[(i+3)%n] == goal[3]){
+             index = i;
+             break ; // break is important hai 
+           }
+      }  
+      
+      if(index == -1) return false; // daale dena achaa rahta hai 
+
+      // taking two pointer approahc 
+     
+      int x = index % n;
+      int y = 0; 
+      while(y < goal.size()){
+    
+        if(s[x % n ]  != goal[y]){
+            return false;
+        }
+
+        x++;
+        y++;
+      }
+      return true;
+    }
+};
+// ================= >>> Better approach <<<<================
+#include <string>
+using namespace std;
+Time Complexity: 
+O(n2)
+Space Complexity: 
+O(n)
+
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        if (s.size() != goal.size()) return false;
+
+        // Concatenate the string with itself
+        string temp = s + s;
+
+        int j = 0;
+        int i = 0;
+
+        // Iterate over the concatenated string
+        while (i < temp.size()) {
+            if (goal[j] != temp[i]) {
+                // If characters don't match, reset j and move to the next character in temp
+                j = 0;
+                i++;
+            } else {
+                // If characters match, start comparing subsequent characters
+                int original_i = i;
+                while (j < goal.size() && temp[i] == goal[j]) {
+                    i++;
+                    j++;
+                }
+                if (j == goal.size()) {
+                    // If the entire goal is found, return true
+                    return true;
+                } else {
+                    // Reset i to the position after the first match and reset j
+                    i = original_i + 1;
+                    j = 0;
+                }
+            }
+        }
+        // If the entire goal is not found, return false
+        return false;
+    }
+};
+// Better approach  ==>> USing STL
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        // Check if both strings have the same length
+        if (s.size() != goal.size()) return false;
+
+        // Concatenate the string with itself
+        string temp = s + s;
+
+        // Check if goal is a substring of the concatenated string
+        return temp.find(goal) != string::npos;
+    }
+};
+
+
