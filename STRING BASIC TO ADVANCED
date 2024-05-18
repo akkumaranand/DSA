@@ -232,4 +232,98 @@ public:
     }
 };
 
+// ==============>>>>> Q5) Check if two strings are anagram of each other   <<<<===========================
+complexity :- time compleixty O(n)
+              space complexity O(2n)
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        // method 1 by checking the count of each element in s and t if both are same then return true else false
+        unordered_map<char, int> scnt;
+        unordered_map<char, int> tcnt;
+        if (s.size() != t.size()) return false;
+
+        for (int i = 0; i < s.size(); i++) {
+            scnt[s[i]]++;
+            tcnt[t[i]]++;
+        }
+
+        // check count of each character is same or not   =====>>>> this part check same character count in scnt and tcnt  // ====>>> very important hai 
+        for (auto & pair : scnt) {
+            if (tcnt[pair.first] != pair.second) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
+
+// ==============>>> Better approach <<<<=================================
+Time Complexity: 
+O(nlogn)
+Space Complexity: 
+O(1)
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+      // This method we should have came when we are solving this type of questions 
+      if(s.size() != t.size()) return false;
+      sort(s.begin() , s.end());
+      sort(t.begin() , t.end());
+      
+      // Now we have to only check both string is same or not 
+      for(int i = 0 ; i < s.size() ; i++){
+          if(s[i] != t[i]){
+            return false;
+            break;
+          } 
+      }
+
+      return true;
+    }
+};
+
+// ===========>>>> best approach <<=============================
+#include <unordered_map>
+#include <string>
+using namespace std;
+time complexity :- O(n)
+and space complexity :- O(1)
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.size() != t.size()) return false;
+        int n = s.size();
+        int frequency[5000] = {0};
+        for(int i = 0 ; i < s.size() ; i++){
+            frequency[s[i] - 'A']++;
+        }
+
+        for(int i = 0  ; i < t.size() ; i++){
+            frequency[t[i] -'A']--;
+        }
+
+        for(int i = 0  ; i < 5000; i++){
+            if(frequency[i] != 0){
+                return false;
+                break ;
+            }
+        }
+
+
+        return true;
+    }
+}; 
+
+
 
