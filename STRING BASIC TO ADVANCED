@@ -393,4 +393,104 @@ string sortCharactersByFrequency(string s) {
 
     return result;
 }
-// ===============================================
+// ======================================== Q7) Reverse Every Word in A String <<=================================
+// time complexity of the function is O(n + k * m).
+// space complexity of the function is O(n + k + m).
+class Solution {
+public:
+    string reverseWords(string s) {
+        vector<string>store;
+        string temp = "";
+        for(int i = 0 ; i < s.size() ; i++){
+            if(s[i] == ' ' && !temp.empty() ){
+               store.push_back(temp);
+               temp = "";
+            }else{
+                if(s[i] != ' '){
+                   temp.push_back(s[i]);
+                }
+                
+            }
+        }
+
+        // handle the case  of last word 
+        if(!temp.empty()){
+            store.push_back(temp);
+        }
+
+        string ans = "";
+        // Now we have to push to string in reverse way so that return answer
+        for(int i = store.size()-1 ; i >= 0 ; i--){
+            ans = ans + store[i];
+            if(i != 0){
+               ans.push_back(' ');
+            }
+            
+        }
+
+        return ans;
+    }
+};
+
+// ==============>>>> Better approach <<<<===============
+ the time and space complexity of the reverseWords function are O(n),
+class Solution {
+public:
+    string reverseWords(string s) {
+       string ans = "";
+    string temp = "";
+    for (int i = 0; i < s.length(); i++)
+    {
+        char ch = s[i];
+        if (ch == ' ') 
+        {
+            if (temp != "")
+            {
+                ans = temp + " " + ans;
+            }
+            temp = "";
+        }
+        else
+        {
+            temp += ch;
+        }
+    }
+    if (temp != "")
+    {
+        ans = temp + " " + ans;
+    }
+    if (ans.length() > 0 && ans[ans.length() - 1] == ' ')
+    {
+        ans = ans.substr(0, ans.length() - 1);
+    }
+    return ans;
+    }
+};
+// ============>>>> my optimal approach <<<====================
+#include <string>
+
+using namespace std;
+
+string reverseOrderWords(string str) {
+    // Write your code here
+    string ans = "";
+    string temp = "";
+    for(int i = 0 ; i < str.size() ; i++) {
+       if(str[i] == ' ' && !temp.empty()) {
+             ans = temp + " " + ans;
+             temp = "";  // Assign empty string instead of ' '
+       } else {
+           if(str[i] != ' ') {
+                temp = temp + str[i];
+           }
+       }
+    }
+    
+    // Handle the case of the last word
+    if(!temp.empty()) {
+        ans = temp + ' ' + ans; // Add ' ' before ans
+    }
+    
+    return ans; 
+}
+// ===================================>>>>
