@@ -493,4 +493,172 @@ string reverseOrderWords(string str) {
     
     return ans; 
 }
-// ===================================>>>>
+// ===================================>>>> Q8 ) Sum of Beauty of all substring <<==================================================
+===>>>> brute force solution  (gives tle )
+=====>>> Time complexity :- O(n3);
+====>>> Space complexity :- O(n2)
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+class Solution {
+public:
+    int findmaxicount(string str) {
+        unordered_map<char, int> count;
+        for(int i = 0 ; i < str.size() ; i++){
+            count[str[i]]++;
+        }
+        int maxii = 0;
+        for(auto it : count){
+            if(it.second > maxii){
+                maxii = it.second;
+            }
+        }
+        return maxii;
+    }
+
+    int findminicount(string str) {
+        unordered_map<char, int> count;
+        for(int i = 0 ; i < str.size() ; i++){
+            count[str[i]]++;
+        }
+        int mini = INT_MAX;
+        for(auto it : count){
+            if(it.second < mini){
+                mini = it.second;
+            }
+        }
+        return mini;
+    }
+
+    int beautySum(string s) {
+        int maxx = findmaxicount(s);
+        int minni = findminicount(s);
+        int ideal = maxx - minni;
+        vector<string> store;
+
+        
+        for(int i = 0 ; i < s.size() ; i++){
+            string temp = "";
+            for(int j = i ; j < s.size() ; j++){
+                temp = temp + s[j];
+                store.push_back(temp);
+            }
+        }
+        
+
+        int cnt = 0;
+        for(auto value : store){
+            int temh =   findmaxicount(value);
+            int teml =   findminicount(value);
+            if(temh - teml > 0 ){
+                cnt = cnt + temh - teml;
+            }
+        } 
+        return cnt ;
+    }  
+};
+
+// =============>>>> Better approach <<<====================
+// No need to read 
+time complexity :- O(n2)
+space complexity :- O(n +k)
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+class Solution {
+public:
+    int beautySum(string s) {
+        int n = s.size();
+        int beauty = 0;
+
+        // Count the occurrences of each character in the string
+        unordered_map<char, int> counts;
+        for (char c : s) {
+            counts[c]++;
+        }
+
+        // Iterate over all substrings
+        for (int i = 0; i < n; i++) {
+            unordered_map<char, int> substring_counts;
+
+            // Process each substring starting at index i
+            for (int j = i; j < n; j++) {
+                char c = s[j];
+                substring_counts[c]++;
+                
+                // Calculate the beauty value for the current substring
+                int max_count = INT_MIN, min_count = INT_MAX;
+                for (auto& it : substring_counts) {
+                    max_count = max(max_count, it.second);
+                    min_count = min(min_count, it.second);
+                }
+                beauty += (max_count - min_count);
+            }
+        }
+
+        return beauty;
+    }
+};
+
+
+//=============>>>> optimal appraoach <<<<<===================
+// very important when you are dealing with question of alphabet ===>>> for count the alphabet always use array of size 26 if given lowercase and if given both then take it 52 so that one loop give the O(1) 
+// time complexity very important question hai <<<<============================
+// time complexity :- O(n2) 
+// space complexity :- O(n)
+// #include <string>
+#include <unordered_map>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+class Solution {
+public:
+    int beautySum(string s) {
+        int n = s.size();
+        int ans = 0;
+       
+        for(int i = 0 ; i < n ; i++){
+            int freq[26] = {0};
+            for(int  j = i ; j < n ; j++){
+             freq[s[j] - 'a']++;
+             int max_value = getmax( freq);
+             int min_value = getmin(freq);
+             int beauty = max_value - min_value;
+             ans = ans + beauty;   
+             
+            }
+        }
+        return ans;
+    }
+
+    int getmin(int  freq[]){
+        int mini = INT_MAX;
+
+        for(int i = 0 ; i < 26 ; i++){
+            if(mini > freq[i] && freq[i] != 0){
+                mini = freq[i];
+            }
+        }
+        return mini;
+    }
+
+    int getmax(int  freq[]){
+        int maximum = INT_MIN;
+        for(int i = 0 ; i < 26 ; i++){
+            if(maximum < freq[i] && freq[i] != 0){
+                maximum = freq[i];
+            }
+        }
+        return maximum;
+    }
+};
