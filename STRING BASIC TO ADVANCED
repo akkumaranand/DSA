@@ -662,3 +662,50 @@ public:
         return maximum;
     }
 };
+
+// ===================================>>>> Q9 ) Count number of substrings <<==================================================
+Given a string of lowercase alphabets, count all possible substrings (not necessarily distinct) that have exactly k distinct characters. 
+// ans for exactly k distinct == atleast k substring - atleast k+ 1 substring 
+class Solution {
+public:
+    long long int substrCount(string s, int k) {
+       long long n = s.size();
+       long long ans = substringwithAtleastPDistinct(s , n , k) - substringwithAtleastPDistinct(s , n , k+1);
+       return ans;
+    }
+    
+    // count of substring with atleast k distinct character 
+    long long substringwithAtleastPDistinct(string s, int n, int k) {
+       int i , j ;
+       int c[26];
+       int f = 0;
+       for(int i = 0 ; i < 26 ; i++){
+           c[i] = 0;
+       }
+       i = 0 ; 
+       j = 0 ; 
+       int count = 0;
+       for(int i = 0 ;  i < n ; i++){
+           while(j < n && f < k){
+               c[s[j] - 97]++;
+               if(c[s[j] - 97] == 1){
+                   f++;
+               }
+               j++;
+           }
+           // here j now one more step forward so we have to add a 1 to count 
+           // count simple ==>> no of substring with k or greater than k distinct character 
+           if( f >= k){
+               count += n - j + 1;
+           }
+           
+           c[s[i] - 97]--;
+           if(c[s[i] - 97] == 0){
+               f--;
+           }
+           
+       }
+       return count;
+    }
+};
+
