@@ -46,6 +46,93 @@ class Solution {
     }
 };
 
-// ==================>>> Q3)
+// ==================>>> Q3) SWAP TWO NUMBER WITHOUT THIRD VARIABLE <<===========================
+#include <iostream>
+using namespace std;
 
+int main(){
+    int a , b;
+    cout<<"Enter tha value of a and b "<<endl;
+    cin>>a>>b;
+    a = a^b;
+    b = a ^ b;
+    a = a ^ b;
+    cout<<a<<b;
+
+return 0;
+}
+
+// ==================>>> Q4) Check if the i-th bit is set or not <<<=========================================
+// brute force approach ====>>> by converting decimal to binary and then check ith index from last if 1 then set or 0 unset
+// ===>>> Optimal approach <<<===
+// space and time complexity == O(1)
+// ====>>> left shift approach  <<<=====
+class Solution
+{
+    public:
+    // Function to check if Kth bit is set or not.
+    bool checkKthBit(int n, int k)
+    {   
+        // bit manipulation using left shift operator 
+        int temp = 1 ;
+        temp = temp<<k;
+        if((n & temp)  != 0){
+            return true;
+        }
+        return false;
+    }
+};
+
+// ======>>> Right shift approach <<<<========
+class Solution
+{
+    public:
+    // Function to check if Kth bit is set or not.
+    bool checkKthBit(int n, int k)
+    {   
+       // bit manipulation by right shift approch
+       n = n >> k;
+       if((n & 1) != 1 ){
+           return false;
+       }
+       return true;
+    }
+};
+
+// =============================>>>>>> Q5) Bit Manipulation  <<<================
+1. Get ith bit
+
+2. Set ith bit
+
+3. Clear ith bit
+
+class Solution {
+  public:
+    void bitManipulation(int num, int i) {
+    int temp = num;
+    // 1) Get ith bit  ===>> right shift approach
+    if(((temp >> i-1) & 1) != 0){
+        cout<<1;
+    }else{
+        cout<<0;
+    }
+    temp = num;
+    // set the bit with the help  of or gate
+    temp =  (temp | (1<<i-1));
+    cout<<" "<<temp;
+    
+    temp = num;
+    
+    // clear set bit  using And gate 
+    int numm = 1;
+    numm = numm<<i-1;
+    numm = ~numm;
+    temp = (temp & numm);
+    cout<<" "<<temp;
+    
+    }
+
+};
+
+//=========================>>> 
 
