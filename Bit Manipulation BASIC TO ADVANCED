@@ -134,5 +134,148 @@ class Solution {
 
 };
 
-//=========================>>> 
+//=========================>>> Q6) Check if a number is power of 2 or not <<============
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+     long long num = n;
+      if((num & (num-1)) == 0 && num!= 0){
+        return true;
+      }
+      return false; 
+    }
+};
 
+// ======================>>>> Q7) Count the number of set bits <<<<=======================
+class Solution{
+    public:
+    // n: input to count the number of set bits
+    //Function to return sum of count of set bits in the integers from 1 to n.
+    int countSetBits(int n)
+    {
+        int count = 0;
+        for(int i = 1 ; i <= n ; i++){
+            int num = i;
+            while(num > 1){
+                if((num&1) == 1){
+                    count = count + 1;
+                }
+                num = num/2;
+            }
+            if(num == 1){
+                count = count + 1;
+            }
+        }
+        return count;
+    }
+};
+// =============>>> other approach <<<=========
+class Solution {
+public:
+    // Function to return the count of set bits in the integers from 1 to n.
+    int countSetBits(int n) {
+        int count = 0;
+        for (int i = 1; i <= n; i++) {
+            int num = i; 
+            while (num > 1) {
+                count += num & 1; 
+                num >>= 1;        
+            }
+            if(num == 1){
+                count += 1;
+            }
+        }
+        return count;
+    }
+};
+
+//=====>>>>  optimal approach <<<========== Using N & N-1
+class Solution{
+    public:
+    // n: input to count the number of set bits
+    //Function to return sum of count of set bits in the integers from 1 to n.
+    int countSetBits(int n)
+    {   int count = 0;
+        for(int i = 1; i <= n ; i++){
+            int num = i;
+            while(num != 0){
+                num = (num & (num -1));
+                count += 1;
+            }
+        }
+        return count;
+    }
+    
+};
+==>>>> complexity is nlogn in worst case, thats why tle is coming since nlogn can support max n as 10^6 and here 10^8 is given
+===>>> setBits function runs for 32 times at max, looping from 1 to n, which is 10^8 at max,32*10^8 in the worst case scenario,which exceeds 10^9. so that is the reason i guess.
+
+// =======>>>> optimal approach <<<=================
+// ===>>>>  homework hai Due rahegaa future me karna hai simply
+class Solution {
+public:
+    // Function to return sum of count of set bits in the integers from 1 to n.
+    int countSetBits(int n) {
+        if (n == 0)
+            return 0;
+
+        // Find the largest power of 2 less than or equal to n
+        int x = largestPowerOf2(n);
+        
+        // Count bits up to 2^x - 1
+        int bitsUpTo2x = x * (1 << (x - 1));
+        
+        // Count the bits from 2^x to n
+        int msbFrom2xToN = n - (1 << x) + 1;
+        
+        // Count the remaining bits recursively
+        int rest = n - (1 << x);
+        
+        return bitsUpTo2x + msbFrom2xToN + countSetBits(rest);
+    }
+    
+private:
+    int largestPowerOf2(int n) {
+        int x = 0;
+        while ((1 << x) <= n) {
+            x++;
+        }
+        return x - 1;
+    }
+};
+
+// ====================>>>>> Q8) Set/Unset the rightmost unset bit <<==================
+class Solution {
+  public:
+    int toggleBits(int n , int l , int r) {
+        // code here
+    }
+};
+
+
+// =========================>>>> 9) Count number of bits to be flipped to convert A to B  <<========================================================
+class Solution {
+public:
+    int minBitFlips(int start, int goal) {
+    // if we zor start  with goal then we get no of set bit as we required bit to convert start with goal 
+    long long num = start ^ goal;
+
+    // Now find the no of set bit in the num 
+    // there are two approach 
+    int count = 0 ; 
+    // approach 1 
+    // while(num != 0){
+    //     num = num & (num -1);
+    //     count = count + 1;
+    // }
+
+    // approach 2 
+    while(num > 0){
+        if((num & 1) == 1) count = count + 1;
+        num = num/2;
+    }
+    return count;
+    }
+};
+
+// ====================>>> 10)Divide two integers without using multiplication, division and mod operator <<<=======================
