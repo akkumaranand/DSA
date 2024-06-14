@@ -1,0 +1,184 @@
+ =====================>> Q1) Maximum Points You Can Obtain from Cards <<=============================================
+//=====>> pattern 1 ==>> constant window lenght 
+complexity :- Time Complexity: O(k)
+Space Complexity: O(1)
+
+class Solution {
+public:
+    int maxScore(vector<int>& cardPoints, int k) {
+        int n = cardPoints.size();
+        int lsum = 0;
+        int rsum = 0;
+        int maxsum = 0;
+        int r = k-1;
+        int l = 0;
+        int rindex = n-1; 
+        for(int i = 0 ; i < k ; i++){
+            lsum = lsum + cardPoints[i];
+        }
+        maxsum = max(maxsum , lsum );
+        while(r >= 0){
+             lsum = lsum - cardPoints[r];
+             r--;
+             rsum = rsum + cardPoints[rindex];
+             rindex--;
+             int sumt = lsum + rsum;
+             maxsum = max(sumt ,  maxsum);
+        }
+        return maxsum;
+    }
+};
+
+// ===============================>>>> Q2) Longest Substring Without Repeating Characters <====================
+// approach wahi hai sliding window only we have store the postion so that we can move left pointer in a good way 
+// 1)move the left until the repetation character will meet store or update the size of the size of the maxlen ===>>> if it meet then move left pointer start index + 1 of that character so repetation will not occur 
+// 2)another concept that is we have to only update the left pointer if the position of that character should be greater than left (old poistion of character)   
+    if(l <= count[s[r]]){
+                l = count[s[r]] + 1;
+            }
+
+
+// soluton ==>>>class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char, int> count;
+        int l = 0;
+        int r = 0;
+        int n = s.size();
+        int maxlen = 0;
+        for(int i = 0 ; i < n ; i++){
+            count[s[i]] = -1;
+        }
+        
+        while (r < n) {
+           // check whether repetationn or not if then we have to move l that is window
+          if(count[s[r]] != -1){ // appearing 2nd time 
+            if(l <= count[s[r]]){
+                l = count[s[r]] + 1;
+            }
+          }
+
+           count[s[r]] = r; // jo index hai wahi dal dena hai 
+           maxlen = max(r-l+1 , maxlen);
+           r++;
+        }
+        
+        return maxlen;
+    }
+};
+// further we can optimise the space complexity in every string because character is total ==>>> 256
+#include <bits/stdc++.h>
+
+using namespace std;
+class Solution {
+  public:
+    int lengthofLongestSubstring(string s) {
+      vector < int > mpp(256, -1);
+
+      int left = 0, right = 0;
+      int n = s.size();
+      int len = 0;
+      while (right < n) {
+        if (mpp[s[right]] != -1)
+          left = max(mpp[s[right]] + 1, left);
+
+        mpp[s[right]] = right;
+
+        len = max(len, right - left + 1);
+        right++;
+      }
+      return len;
+    }
+};
+
+// space optimisation of the code ===>>>> 
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> mpp(256 , -1);
+        int left = 0 ;
+        int right = 0;
+        int n = s.size();
+        int maxlen = 0 ;
+        while(right < n){
+            // check repetation 
+            if(mpp[s[right]] != -1){
+                left = max(mpp[s[right]] +1 , left);
+            }
+
+            // store the index 
+            mpp[s[right]] =right;
+            maxlen = max(right -left +1 , maxlen);
+            right ++;
+        }
+        return maxlen;
+    }
+};
+
+
+// =========================>>>> Q3) Max Consecutive Ones III && Find the longest consecutive subarray that contain atmost k zero  <<<=======================================
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        // pattern to same hi type ka hai 
+        int left = 0 ;
+        int right = 0 ;
+        int n = nums.size();
+        int maxlen = 0;
+        int count = 0;
+        while(right < n){
+            // count the zero first no need to do anything 
+            if(nums[right] == 0){
+                count ++;
+            }
+            
+            // while conditon isliye hoga qki jab tak count k se kam hoga nahi to agge 
+            while(count > k){
+                // most important conditon hai ki zero ayega tabh hi count ko decrease karege 
+                if(nums[left] == 0){
+                    count --;
+                }
+                left++;
+            }
+            
+            maxlen = max(right - left + 1 , maxlen);
+            right ++;
+
+        }
+        return maxlen;
+    }
+};
+Time complexity :- O(N + N) ==>> O(2N)
+// ===>> optimal approach ==>>> this apply in the question where we have to find max length of the subarray 
+Time complexiy :- O(N)
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        // pattern to same hi type ka hai 
+        int left = 0 ;
+        int right = 0 ;
+        int n = nums.size();
+        int maxlen = 0;
+        int count = 0;
+        while(right < n){
+            // count the zero first no need to do anything 
+            if(nums[right] == 0){
+                count ++;
+            }
+            
+            // while conditon isliye hoga qki jab tak count k se kam hoga nahi to agge 
+            if(count > k){  // Here we have fixed the size of the window because we got the size and we dont want to decrease size of that window only shif that window
+                // most important conditon hai ki zero ayega tabh hi count ko decrease karege 
+                if(nums[left] == 0){
+                    count --;
+                }
+                left++;
+            }
+            
+            maxlen = max(right - left + 1 , maxlen);
+            right ++;
+
+        }
+        return maxlen;
+    }
+};
