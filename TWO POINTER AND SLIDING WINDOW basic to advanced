@@ -174,11 +174,280 @@ public:
                 }
                 left++;
             }
-            
+           // baat same hi hai 
+           // if(count <= k){
+            //   maxlen = max(right - left + 1 , maxlen);
+            //}
             maxlen = max(right - left + 1 , maxlen);
             right ++;
 
         }
         return maxlen;
     }
+};
+// =====================>>>>> Q4) Fruit Into Baskets && find the maxlength of subarray with atmost two type of number <<========================================
+// Most important point To note :-
+                 ========>>>>> This demonstrates that the size of a std::set does not increase when attempting to insert a duplicate element.
+=====>>>> brute force approach 
+         time complexity :- O(N*N)  ===>>> since st max 3 element store so iteration is also ===>> O(log3) that is constant time complexity ===>> Overall complexity ==>> O(N* N)
+         space complexity :- O(3)
+         int findMaxFruits(vector<int> &arr, int n) {
+    int maxlen = 0;
+
+    for(int i = 0 ; i < n ; i++){
+        set<int>st;
+        for(int j = i ; j < n ; j++){
+            st.insert(arr[j]);
+            if(st.size() > 2){
+                break;
+            }
+            int len = j -i + 1;
+            maxlen = max(len , maxlen);
+        }
+    }
+    return maxlen;
+}
+
+// ==========>>>> Better approach  <<<<===== Using double pointer and sliding window <<=====
+
+int findMaxFruits(vector<int> &arr, int n) {
+  //===>>> sliding window approach <<===
+  // ======>> very easy concept hai must know revise if neccessay <<====
+  int left = 0 ; 
+  int right = 0 ;
+  int maxlen = 0 ;
+  map<int , int> mpp;
+  while(right < n){
+    mpp[arr[right]]++;
+
+    while(mpp.size() > 2){
+        mpp[arr[left]]--; // first notice that first you have to decrement when size is greater than 2 
+                          // if uska frequency 0 ho jaye then usko remove bhi karna hai simple hai 
+        if(mpp[arr[left]] == 0){
+            mpp.erase(arr[left]);
+        }
+        left++;
+    }
+    
+    int len = right - left + 1;
+    maxlen = max(len , maxlen);
+    right++;
+  }
+  return maxlen;
+}
+
+// =================>>>> Optimal approach <<<<=======================
+int findMaxFruits(vector<int> &arr, int n) {
+  //===>>> sliding window approach <<===
+  // ======>> very easy concept hai must know revise if neccessay <<====
+  int left = 0 ; 
+  int right = 0 ;
+  int maxlen = 0 ;
+  map<int , int> mpp;
+  while(right < n){
+    mpp[arr[right]]++;
+
+    if(mpp.size() > 2){
+        mpp[arr[left]]--; // first notice that first you have to decrement when size is greater than 2 
+                          // if uska frequency 0 ho jaye then usko remove bhi karna hai simple hai 
+        if(mpp[arr[left]] == 0){
+            mpp.erase(arr[left]);
+        }
+        left++;
+    }
+    
+    int len = right - left + 1;
+    maxlen = max(len , maxlen);
+    right++;
+  }
+  return maxlen;
+}
+
+// ========================================== Q5) longest repeating character replacement  <<<=================================================
+//=====>>>> brute force approach <<<<========
+Time Complexity :- O(N*N)
+int longestRepeatingSubstring(string &str, int k) {
+    // Write your code here.
+    // brute force approach 
+    int maxlen = 0;
+    int n = str.size();
+    
+    for(int i = 0 ; i < n ; i++){
+        map< char , int >mpp;
+        int maxfre = 0;
+        for(int j = i ; j < n ; j++){
+           mpp[str[j]]++;   // to store the vaue of the count ;
+           maxfre = max(maxfre , mpp[str[j]]);
+
+           // no of uppercase we can change 
+           int no_change = (j - i + 1) - maxfre;
+
+           if(no_change <=k){
+               int len = j - i + 1;
+               maxlen = max(len , maxlen);
+           }else{
+               break;
+           }
+        }
+    }
+    return maxlen;
+}
+
+===>>> Better approach <<============
+
+int longestRepeatingSubstring(string &str, int k) {
+    int maxlen = 0;
+    int n = str.size();
+    
+    for (int i = 0; i < n; i++) {
+        vector<int> count(26, 0); // Array to store the count of each character  ======>>>>> Very important hai jisse timecomplexity reduce ho jayegaa easy 
+        int maxfre = 0;
+        
+        for (int j = i; j < n; j++) {
+            count[str[j] - 'A']++; // Increment the count of the character
+            maxfre = max(maxfre, count[str[j] - 'A']);
+
+            // Number of characters to change to make the substring valid
+            int no_change = (j - i + 1) - maxfre;
+
+            if (no_change <= k) {
+                int len = j - i + 1;
+                maxlen = max(len, maxlen);
+            } else {
+                break;
+            }
+        }
+    }
+    return maxlen;
+}
+// =======>>>>>  very imortant point to study  <<<<<=====================
+// When every question is about character then always take ===>> 256 if nothing mention to store ===>>> if mention only capital then take the size 26 
+
+// ===================>>>> better  appraoch <<<=======================
+time complexity :- O(2N)
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        // sliding window approach 
+        int left = 0;
+        int right = 0;
+        int maxlen = 0;
+        int n = s.size();
+        int maxfreq = 0;
+        map<char , int > mpp;
+        while(right < n){
+             mpp[s[right]]++;
+              maxfreq = max( maxfreq , mpp[s[right]]);
+             int  no_chara = (right - left + 1) - maxfreq;
+              while(no_chara > k){
+                mpp[s[left]]--;
+                if(mpp[s[left]] == 0){
+                  mpp.erase(mpp[left]);
+                }
+                left ++;
+                no_chara = (right - left + 1) - maxfreq;
+              }
+
+             
+             if(no_chara <= k){
+                int len = right - left + 1;
+                maxlen = max(len , maxlen);
+             }
+            right ++;
+        }
+        return maxlen ;
+    }
+};
+
+//============>>>> Optimal approach <<=================================
+// jada better method hai mera nice accha se kar rahe ho mast ho raha hai majja araha hia ===>> isko complete karne ke baar bit manipulation and sliding window and 2 pointer ka ek short notes bana lena hai 
+Time complexty :- O(N) 
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        // sliding window approach 
+        int left = 0;
+        int right = 0;
+        int maxlen = 0;
+        int n = s.size();
+        int maxfreq = 0;
+        map<char , int > mpp;
+        while(right < n){
+             mpp[s[right]]++;
+              maxfreq = max( maxfreq , mpp[s[right]]);
+             int  no_chara = (right - left + 1) - maxfreq;
+              if(no_chara > k){
+                mpp[s[left]]--;
+                if(mpp[s[left]] == 0){
+                  mpp.erase(mpp[left]);
+                }
+                left ++;
+                no_chara = (right - left + 1) - maxfreq;
+              }
+
+             
+             if(no_chara <= k){
+                int len = right - left + 1;
+                maxlen = max(len , maxlen);
+             }
+            right ++;
+        }
+        return maxlen ;
+    }
+};
+
+// ======================================>>>>>  Q6)Binary subarray with sum   <<<<<<==================================================================
+// =======>> brute force approach <<<=====
+class Solution {
+public:
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+       // brute force approach 
+       int n = nums.size();
+       int count = 0;
+       for(int i = 0 ; i < n ; i++){
+            int sum = 0;
+        for(int j = i ; j < n ; j++){
+            sum = sum + nums[j];
+
+            if(sum == goal){
+              count ++;
+            }else if(sum > goal){
+               break ;
+            }
+         }
+       }
+       return count;
+    }
+};
+======>>>> Optimal approach <<<======================
+Time complexity :- O(4n)
+space complexity:- O(1)
+class Solution {
+
+public:
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+      // sliding window method ==>> two pointer approach 
+       int ans = countsubarraylessorequal(nums , goal) -  countsubarraylessorequal(nums , goal -1);
+       return ans;
+    }
+    
+    int countsubarraylessorequal(vector<int> nums , int goal){
+        if(goal < 0) return 0;
+        int left =0;
+        int right = 0;
+        int count = 0;
+        int sum = 0;
+        int n = nums.size();
+        while(right < n){
+            sum = sum + nums[right];
+            while(sum > goal){
+                sum = sum - nums[left];
+                left++;
+            }
+            count = count + (right - left +1);
+            right ++;
+        }
+        return count;
+    }
+
 };
