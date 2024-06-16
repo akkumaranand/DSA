@@ -516,4 +516,62 @@ public:
     }
 };
 
-// =====================================================================================================
+// ======================================= Q8)Number of substring containing all three characters <<==================================================
+// =====>>>  brute force approach <<===
+// complexity := time ==>> O(N2)
+//               space ==>> O(1)
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+       // brute force approach 
+       int no_substrings = 0;
+       int n = s.size();
+      
+       for(int i = 0 ; i < n ; i++){
+           int countA = 0;
+           int countB = 0;
+           int countC = 0;
+           for(int j = i ; j < n ; j++){
+               if(s[j] == 'a') countA++;
+               if(s[j] == 'b') countB++;
+               if(s[j] == 'c') countC++;
+
+               if(countA > 0 && countB > 0 && countC > 0){
+                  no_substrings = no_substrings + 1 ;
+               }
+           }
+       }
+       return no_substrings;
+    }
+};
+
+// ===============>>> Optimal Approach <<<=============
+ // ye jo point hai no of substring = >>>
+       // no_substring = no_substring + n - right ; // agar wo mil gala to usko chor ke jitna bhi character honge sath me to usse banege hi zero indexing hai ek kudh ka bhi add ho jaye 
+       // batch gaya ki shrink kaise kare to check karo left kya uske according shrink karo and count-- karo==>>> simple hai 
+// Ye sab dimag me hona hi chahiye achha question hai
+
+// ====================>>>> Important approach hai <<<===================
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+       // Using sliding window and two pointer approach 
+       int right = 0, countA = 0, countB = 0, countC = 0, left = 0, n = s.size();
+       int no_substring = 0;
+       while(right < n){
+          if(s[right] == 'a') countA++;
+          if(s[right] == 'b') countB++;
+          if(s[right] == 'c') countC++;
+
+         while(countA > 0 && countB > 0 && countC > 0){
+            no_substring = no_substring + (n - right);
+            if(s[left] == 'a') countA--;
+            if(s[left] == 'b') countB--;
+            if(s[left] == 'c') countC--;
+            left++;
+         }
+          right++;
+       }
+      return no_substring;
+    }
+};
