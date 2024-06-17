@@ -834,3 +834,53 @@ time complexity :- O(n*n)
 space complexity :- O(256)
 
 // ========>>> Optimal approach <<<=================
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int sindex = -1; 
+        int minlen = INT_MAX;
+        int left = 0;
+        int right = 0;
+        int m = t.size();
+        int n = s.size();
+        map<char , int>mpp;
+        for(int i = 0  ; i < m ; i++){
+            mpp[t[i]]++;
+        }
+
+        // Main part of the code 
+        int count = 0 ;
+        while(right < n){
+           if(mpp[s[right]] > 0){
+            count ++;
+           }
+           mpp[s[right]]--;
+
+           while(count == m){
+             if(right - left +1 < minlen){
+                minlen = right - left +1;
+                sindex = left;
+             }else{
+                mpp[s[left]]++;
+                if (mpp[s[left]] > 0) {
+                    count--;
+                }
+               left++;
+             }
+             
+           }
+
+            right ++;
+        }
+        // Return empty string if no valid window found
+        if(sindex == -1) {
+            return "";
+        }
+        
+        // Return the substring from s with minimum window
+        return s.substr(sindex, minlen);
+    }
+};
+
+// ===========================>>>>> Q12) Minimum Window Subsequence  <<=============================
+// ======>>>> Due when you study the recursion then solve this quesiton <<<===================
