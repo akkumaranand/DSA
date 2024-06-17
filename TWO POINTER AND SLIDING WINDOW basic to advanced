@@ -544,6 +544,31 @@ public:
        return no_substrings;
     }
 };
+// slightly better approach 
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+       // brute force approach 
+       int no_substring = 0;
+       int n = s.size();
+      
+       for(int i = 0 ; i < n ; i++){
+           int countA = 0;
+           int countB = 0;
+           int countC = 0;
+           for(int j = i ; j < n ; j++){
+               if(s[j] == 'a') countA++;
+               if(s[j] == 'b') countB++;
+               if(s[j] == 'c') countC++;
+
+               if(countA > 0 && countB > 0 && countC > 0){
+                  no_substring =  no_substring + (n-j);
+                  break;
+               }
+           }
+       }
+       return no_substring;
+    }
 
 // ===============>>> Optimal Approach <<<=============
  // ye jo point hai no of substring = >>>
@@ -575,3 +600,237 @@ public:
       return no_substring;
     }
 };
+
+// ==================>>> Q9) Longest Substring with At Most K Distinct Characters <<<=======================================
+// ====>>> brute force approach <<<======
+// ====>>> Time complexity :- O(n*n)
+     ==>>> Space complexity :- O(3)
+class Solution{
+  public:
+    int longestKSubstr(string s, int k) {
+    // your code here
+    // brute force approach 
+    int n = s.size();
+    int maxlen = 0;
+    for(int i = 0  ; i < n ; i++){
+        set<char>st;
+        for(int j = i ; j < n ; j++){
+            st.insert(s[j]);
+            
+            if(st.size() == k){
+                int len = j - i + 1;
+                maxlen = max(len , maxlen);
+            }
+            if(st.size() > k){
+                break;
+            }
+        }
+    }
+    if(maxlen == 0) return -1;
+    return maxlen;
+    }
+};
+
+
+//  =============>>>> Optimal approach <<<===================
+// ======>>> 100 % i have made this question by first attempt . its nice question <<<===========
+// ======>>> Very important Question <<<=============== ||||| Must keep in mind so that in future if this type of question ask answer it as possible as you can !!!!
+// ====>>> Complexity : Time complexity :- O(N)
+                        Space complexity :- O(logk) // O(k) =>>(unordered_map) check
+class Solution{
+  public:
+    int longestKSubstr(string s, int k) {
+     // here we can't use the set because when we shrink the window then there is problem of removing element from the left
+     // we use map to store count and count ==>> frequency
+      map<char , int > mpp; //  Here we can use unorderd_map also 
+      int left = 0;
+      int right = 0;
+      int n= s.size();
+      int maxlen = 0;
+      while(right < n){
+          mpp[s[right]]++;
+          
+          if(mpp.size() > k){
+              mpp[s[left]]--;
+              if(mpp[s[left]] == 0){
+                  mpp.erase(s[left]);
+              }
+              left++;
+          }
+          
+          if(mpp.size() == k){
+              maxlen = max(maxlen , right - left + 1);
+          }
+          right ++;
+      }
+      if(maxlen == 0) return -1;
+      return maxlen;
+    }
+    
+    
+};
+
+// ===============>>>> MOST OPTIMAL APPROACH <<<=================
+
+// ============>>> space optimisation can further done <<===========
+// ======>>>  For the interview purpose to explain <<<=======
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    int longestKSubstr(string s, int k) {
+        vector<int> charCount(26, 0);  // Use a vector of size 26 for character frequencies ==>> for small character
+        int left = 0, right = 0;
+        int n = s.size();
+        int uniqueCount = 0;  // Track the number of unique characters
+        int maxlen = -1;  // Initialize maxlen to -1
+
+        while (right < n) {
+            if (charCount[s[right] - 'a'] == 0) {
+                uniqueCount++;  // Increment unique count if this character is new to the window
+            }
+            charCount[s[right] - 'a']++;  // Increment the count of the current character
+
+            // Check if we have more than k unique characters
+            while (uniqueCount > k) {
+                charCount[s[left] - 'a']--;  // Decrement the count of the character at the left
+                if (charCount[s[left] - 'a'] == 0) {
+                    uniqueCount--;  // Decrement unique count if this character is removed from the window
+                }
+                left++;  // Shrink the window from the left
+            }
+
+            // If the number of unique characters is exactly k, update maxlen
+            if (uniqueCount == k) {
+                maxlen = max(maxlen, right - left + 1);
+            }
+            
+            right++;  // Expand the window by moving the right pointer
+        }
+
+        return maxlen;
+    }
+};
+
+
+// ==============================>>> Q10) Subarray with k different integers <<<=========================================
+// =====>>> brute force approach <<=====
+//  Time Complexity: O(n^2 \log n)
+// Space Complexity: O(k)
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        int n = nums.size();
+        int count = 0;
+          // to store different character 
+        for(int i = 0 ; i < n ; i++){
+            set<int> st; 
+            for(int j = i ; j < n ; j++){
+                st.insert(nums[j]);
+
+                if(st.size() == k){
+                   count = count+1;
+                }
+                if(st.size() > k){
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+};
+
+
+
+
+
+
+// ======>>> approach bilkul sahi tha  excute bhi sahi kiya finally bss kuch code minor mistake but maine khud se banaya hai welll done anand <<<==================
+...HARD QUESTION ......
+=====>>>>Optimal approach <<<<======
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+      if (nums.empty() || k <= 0) return 0;
+        // count hi return karna hai 
+        // countofsubarry hi bhi hai to shortmethod hai (count<= k) and (count<=k-1) return kar do answer
+        int ans = subarraywithlessofequal(nums , k) - subarraywithlessofequal(nums , k-1);
+        return ans;
+    }
+    int  subarraywithlessofequal(vector<int> &nums , int k){
+        if(k <= 0 ) return 0; // must add this point in every quetions like this
+        int left = 0; 
+        int right = 0;
+        int n = nums.size();
+        int no_count = 0;
+        unordered_map< int , int> mpp;
+        while(right < n){
+            mpp[nums[right]]++;
+
+            while(mpp.size() > k){
+              mpp[nums[left]]--;
+              if(mpp[nums[left]] == 0){
+                mpp.erase(nums[left]);
+              }
+              left++;
+            }
+            
+            no_count = no_count + (right - left + 1);
+
+            right ++;
+        }
+       return no_count; 
+    }
+};
+// ==============================>>>> Q11) Minimum Window Substring <<=============================================
+//=====>>>  Brute force approach <<=====
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int minlen = INT_MAX;
+        int sindex = -1;
+        int m = t.size();
+        int n = s.size();
+        
+        for(int i = 0 ; i < n ; i++ ){
+            int mpp[256] = {0}; // Using array for character count
+            int cnt = 0;
+            
+            // Counting characters in string t
+            for(int k = 0 ; k < m ; k++ ) {
+                mpp[t[k]]++;
+            }
+            
+            for(int j = i ; j < n  ; j++) {
+                if(mpp[s[j]] > 0) {
+                    cnt++;
+                    mpp[s[j]]--;
+                } 
+                
+                // If all characters of t are found
+                if(cnt == m) {
+                    if(j - i + 1 < minlen) {
+                        minlen = j - i + 1;
+                        sindex = i;
+                        break; // Found the minimum window, break inner loop
+                    }
+                }
+            }
+        }
+        
+        // Return empty string if no valid window found
+        if(sindex == -1) {
+            return "";
+        }
+        
+        // Return the substring from s with minimum window
+        return s.substr(sindex, minlen);
+    }
+};
+time complexity :- O(n*n)
+space complexity :- O(256)
+
+// ========>>> Optimal approach <<<=================
