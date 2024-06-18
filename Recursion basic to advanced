@@ -9,6 +9,43 @@ double myPow(double x, int n) {
         return 1/x*myPow(x , n+1);
     }
 }
+// ====>>> NERVER DO THIS MISTAKE  <<<=========
+// class Solution {
+public:
+    double myPow(double x, int n) {
+        bool sign = false;
+        long long m = n;
+        if(m < 0) sign = true;
+        m = abs(n);
+        double  ans = findmypow( x , m);
+        if(sign == true){
+            return 1/ans;
+        }else{
+           return ans;
+        }
+  
+    }
+     double findmypow(double x , long long n){
+        if(n == 0) return 1;
+         double half =  findmypow(x , n/2);
+        if((n & 1) == 0){  /// must know the operator precedence very important when you write sometime   =====>>>> if(n & 1 == 0) is total wrong <<<
+                                ======>>>> DO NOT DO THIS MISTAKE <<<<==========
+           return  half * half;
+        }
+        return x *half* half;
+    }
+};
+// comeplexity ==>> 2^n
+======>>>> for same task assign value and calculate one time 
+half = findmypow(x , n/2) use every wehere 
+ double findmypow(double x , long long n){
+        if(n == 0) return 1;
+        
+        if((n & 1) == 0){
+           return   findmypow(x , n/2) * findmypow(x , n/2);
+        }
+        return x *findmypow(x , n/2)*findmypow(x , n/2);
+    }
 
 //====>>>> optimal code for leetcode <<<<===
 class Solution {
@@ -152,5 +189,194 @@ stack<int> sortStack(stack<int> &s) {
 }
 
 
-// ==============================================
+// ======================================== Q5) Reverse a string using recursion <<<<==============================
+class Solution {
+public:
+    void ReversestringRecur(vector<char> & s , int start, int end){
+        if(start > end){
+            return ;
+        }
+        swap(s[start] ,s[end] );
+        ReversestringRecur(s , start + 1 , end -1);
+    }
+    void reverseString(vector<char>& s) {
+      // Using recursion 
+      int start = 0 ;
+      int n = s.size();
+      int end = n-1;
+      ReversestringRecur(s , start, end);
+    }
+};
 
+// =======================================>> Q6) Print all subsequences/Power Set  <<<<==================================
+// ==============>>>>>> Using method of Bit manuplation <<<==================
+
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int n = nums.size();
+        int subsets = 1 << n;  // Total number of subsets is 2^n
+        vector<vector<int>> ans;
+        
+        for (int i = 0; i < subsets; i++) {
+            vector<int> temp;
+            for (int j = 0; j < n; j++) {
+                if (i & (1 << j)) {  // Check if the j-th bit in i is set
+                    temp.push_back(nums[j]);
+                }
+            }
+            ans.push_back(temp);
+        }
+        
+        return ans;
+    }
+};
+
+// ==================>>> Method 2  ==>> Using recursion <<====================
+// ===============>>>> Khud se banaya hai <<==================
+
+100% ===>>> code khud se banay but approach to dekha hi hai 
+Time Complexity:  O(2^n⋅n)
+Space Complexity:  O(2^n⋅n) ===>>> since vector size 2^n subset contain that's all
+class Solution {
+public:
+    void subsequence(vector<int>&nums , int index , int n  , vector<vector<int>> & ans ,vector<int> &temp){
+        if(index >= n){
+           ans.push_back(temp);
+           return ;
+        }
+        
+        temp.push_back(nums[index]);
+        subsequence(nums , index + 1 , n , ans , temp);
+        temp.pop_back();
+        subsequence(nums , index + 1 , n , ans , temp);
+       
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+       int start = 0;
+       vector<vector<int>>ans;
+       vector<int>temp;
+       int  n = nums.size();
+       subsequence(nums , start , n , ans , temp);
+       return ans;
+    }
+};
+
+
+// =========================>>> Q7) Count all subsequences with sum K <<===================================================
+	void countsumsubseq(int index , vector<int>& temp , int arr[] , int sum , int value ,int & count , int &n){
+	    if(index >= n){
+	        if(value == sum){
+	            count = count + 1;
+	        }
+	        return ;
+	    }
+	    
+	    temp.push_back(arr[index]);
+	    countsumsubseq(index + 1 , temp , arr , sum , value+ arr[index] , count , n);
+	    temp.pop_back();
+	    countsumsubseq(index + 1  , temp , arr , sum , value , count , n);
+	}
+	int perfectSum(int arr[], int n, int sum)
+	{
+        int count = 0;
+        
+        int index = 0;
+        int value = 0;
+        vector<int>temp;
+        countsumsubseq(index , temp , arr , sum , value , count , n );
+        return count;
+	}
+
+// ========>>>> here there is no need of vector<int>temp<<<==================
+class Solution{
+
+	public:
+	void countsumsubseq(int index , vector<int>& temp , int arr[] , int sum , int value ,int & count , int &n){
+	    if(index >= n){
+	        if(value == sum){
+	            count = count + 1;
+	        }
+	        return ;
+	    }
+	     // Include the current element
+	    countsumsubseq(index + 1 , temp , arr , sum , value+ arr[index] , count , n);
+
+         // Exclude the current element
+	    countsumsubseq(index + 1  , temp , arr , sum , value , count , n);
+	}
+	int perfectSum(int arr[], int n, int sum)
+	{
+        int count = 0;
+        
+        int index = 0;
+        int value = 0;
+        
+        countsumsubseq(index , temp , arr , sum , value , count , n );
+        return count;
+	}
+	  
+};
+==============>>>>> <<<<<=================
+class Solution{
+
+	public:
+
+void countsumsubseq(int index, int arr[], int n, int sum, int value, int &count) {
+    if (index == n) {
+        if (value == sum) {
+            count++;
+        }
+        return;
+    }
+    
+    // Include the current element
+    value = value+ arr[index];
+    countsumsubseq(index + 1, arr, n, sum, value, count);
+     value = value- arr[index];
+    // Exclude the current element
+    countsumsubseq(index + 1, arr, n, sum, value, count);
+}
+
+int perfectSum(int arr[], int n, int sum) {
+    int count = 0;
+    countsumsubseq(0, arr, n, sum, 0, count);
+    return count;
+}
+	  
+};
+///=======>>> further optimise by dp<<<==================
+
+// ========================>> Q8)Check if there exists a subsequence with sum K <<===============================
+// =====>>>>very important to revise in a good way <<==================
+#include <vector>
+
+void issubsequence(int index, int n, int k, vector<int> &a, bool &ans, int value) {
+   
+    if (value == k ){
+       ans = true;
+        return;
+    }
+    if ( value > k || index >= n) {
+        ans = false ;
+        return;
+    }
+
+    if (ans) return;
+
+    // Include the current element in the subset
+    issubsequence(index + 1, n, k, a, ans, value + a[index]);
+
+    if (ans) return;
+
+    // Exclude the current element from the subset
+    issubsequence(index + 1, n, k, a, ans, value);
+}
+
+bool isSubsetPresent(int n, int k, vector<int> &a) {
+    bool ans = false;
+    int value = 0;
+    int index = 0;
+    issubsequence(index, n, k, a, ans, value);
+    return ans;
+}
