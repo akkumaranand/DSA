@@ -351,32 +351,75 @@ int perfectSum(int arr[], int n, int sum) {
 // =====>>>>very important to revise in a good way <<==================
 #include <vector>
 
-void issubsequence(int index, int n, int k, vector<int> &a, bool &ans, int value) {
-   
-    if (value == k ){
-       ans = true;
-        return;
+bool issubsequence(int index, int n, int k, vector<int> &a, int value) {
+    if(index <= n){
+        if(value == k){
+            return true;
+        }
     }
-    if ( value > k || index >= n) {
-        ans = false ;
-        return;
+    if(value >k || index == n){
+        return false;
     }
 
-    if (ans) return;
+   value = value + a[index];
+   if(issubsequence(index + 1 , n , k , a ,value)) {
+       return true;
+   }
+   value = value - a[index];
+   if(issubsequence(index + 1 , n , k , a , value)){
+       return true;
+   }
 
-    // Include the current element in the subset
-    issubsequence(index + 1, n, k, a, ans, value + a[index]);
-
-    if (ans) return;
-
-    // Exclude the current element from the subset
-    issubsequence(index + 1, n, k, a, ans, value);
+   return false;
+  
 }
 
 bool isSubsetPresent(int n, int k, vector<int> &a) {
-    bool ans = false;
+    
     int value = 0;
     int index = 0;
-    issubsequence(index, n, k, a, ans, value);
-    return ans;
+    return issubsequence(index, n, k, a, value);
 }
+
+
+// ==========================>>>> Q9)Learn All Patterns of Subsequences (Theory) <<==============================================
+// I have solved this question by my approach 99% test case passed only 1 % fail 
+// =====================>>>> Majja agaya <<<=====================
+class Solution {
+     
+  public:
+     void countsubseq(int index  , string s , set<string> &st  , string temp){
+         if(index >= s.size()){
+             st.insert(temp);
+             return ;
+          }
+          
+          // add karo temp me
+          temp.push_back(s[index]);
+          countsubseq(index + 1 , s , st , temp );
+          // remove
+          temp.pop_back();
+          countsubseq(index+1 , s , st , temp);
+          
+     }
+    
+    string betterString(string str1, string str2) {
+       int counts1 = 0;
+       int counts2 = 0;
+       string temp  ;
+       set<string> st1;
+       set<string> st2;
+       int index = 0;
+       countsubseq(index , str1 , st1  , temp);
+       countsubseq(index , str2 , st2  , temp);
+       counts1 = st1.size();
+       counts2 = st2.size();
+       if(counts1 >=  counts2){
+           return str1;
+       }
+       
+       return str2;
+    }
+};
+
+//======>>> further optimised <<==========
