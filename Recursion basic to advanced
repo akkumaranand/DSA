@@ -422,4 +422,90 @@ class Solution {
     }
 };
 
-//======>>> further optimised <<==========
+// =================================>>>> Q10) Combination Sum << =======================================================
+
+class Solution {
+public:
+    void findcombinationsum(int idx , int target , vector<int> &temp  , vector<int> & candidates , vector<vector<int>> & ans ){
+         int n = candidates.size();
+         // Base case: if target is zero, add the current combination to the answer
+         if(target == 0){
+         ans.push_back(temp);
+         return ;
+         }
+
+
+        // If index is out of bounds or target is negative, return
+         if(idx >= n || target <0 ){
+            return ;
+         }
+           
+        
+        // pick up 
+        temp.push_back(candidates[idx]);
+        // call jayege next me
+        target = target - candidates[idx];
+        findcombinationsum(idx  , target , temp , candidates , ans);   // here index is not incresed because we have to select a element more than one times so that 
+
+        // don't pick 
+        temp.pop_back();
+        target = target + candidates[idx];  // jab pick wala call huwa hoga decreased ho gaayaa hoge then we have to increased
+        findcombinationsum(idx + 1  , target , temp , candidates , ans);  
+
+
+     ============================================================================================================
+     = // Pick the current element
+     =   temp.push_back(candidates[idx]);
+     =  findCombinationSum(idx, target - candidates[idx], temp, candidates, ans);
+
+     =   // Do not pick the current element
+     =  temp.pop_back();
+     =  findCombinationSum(idx + 1, target, temp, candidates, ans);
+
+     ==============================================================================================================
+
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>>ans;
+        vector<int>temp;
+        int index = 0;
+        findcombinationsum(index , target , temp , candidates , ans );
+        return ans;
+    }
+};
+
+
+// ============================>>>> Combination Sum-II <<=========================================================
+// ===============>>>> BRUTE Force appraoch <<<<<<<<<<<=========================
+// =========>>> Similar to previous problems <<====================
+class Solution {
+public:
+    void findUniqueComSum(int idx, int target, vector<int>& candidates, vector<int>& temp, set<vector<int>>& ans) {
+        if (target == 0) {
+            ans.insert(temp);
+            return;
+        }
+        if (idx >= candidates.size() || target < 0) {
+            return;
+        }
+
+        // Include the current element
+        temp.push_back(candidates[idx]);
+        findUniqueComSum(idx + 1, target - candidates[idx], candidates, temp, ans);
+        
+        // Backtrack and exclude the current element
+        temp.pop_back();
+        findUniqueComSum(idx + 1, target, candidates, temp, ans);
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<int> temp;
+        set<vector<int>> ans;
+        sort(candidates.begin(), candidates.end());
+        //  Sort to handle duplicates
+        findUniqueComSum(0, target, candidates, temp, ans);
+        
+        // Convert set to vector
+        return vector<vector<int>>(ans.begin(), ans.end());
+    }
+};
