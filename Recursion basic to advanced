@@ -476,8 +476,10 @@ public:
 
 
 // ============================>>>> Combination Sum-II <<=========================================================
-// ===============>>>> BRUTE Force appraoch <<<<<<<<<<<=========================
+// ===============>>>> BRUTE Force appraoch <<<<<<<<<<<========================
 // =========>>> Similar to previous problems <<====================
+// brute force approach 
+time complexity :- (2^n* k * logn)
 class Solution {
 public:
     void findUniqueComSum(int idx, int target, vector<int>& candidates, vector<int>& temp, set<vector<int>>& ans) {
@@ -505,7 +507,48 @@ public:
         //  Sort to handle duplicates
         findUniqueComSum(0, target, candidates, temp, ans);
         
-        // Convert set to vector
+        // Convert set to vector   /// IMportant part must note in copy while you revising the concept 
         return vector<vector<int>>(ans.begin(), ans.end());
+    }
+};
+
+// =================>>> Optimal approach <<===============================
+// Dry run this code for 5 time to understand better way very very important hai question 
+class Solution {
+public:
+    void findcombinationsum2(int idx, int &target, vector<int>& candidates, vector<int>& temp, vector<vector<int>>& ans) {
+        if(target == 0){
+            ans.push_back(temp);
+            return ;
+        }
+
+        if(idx >= candidates.size() || target <0){
+            return ;
+        }
+
+        for(int i = idx ; i < candidates.size() ; i++){
+              // case - 1
+            if( i > idx && candidates[i] == candidates[i-1]) continue;
+
+
+            
+            if(candidates[i] > target) break ;
+            
+            temp.push_back(candidates[i]);
+            target = target - candidates[i];
+            findcombinationsum2(i + 1 , target  , candidates , temp , ans);
+            temp.pop_back();
+            target  = target + candidates[i];
+            
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+       vector<vector<int>>ans;
+       vector<int>temp;
+       int index = 0;
+       sort(candidates.begin() , candidates.end());
+       findcombinationsum2(index , target , candidates , temp , ans );
+       return ans;
     }
 };
