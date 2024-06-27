@@ -1,0 +1,164 @@
+============================>>>>>> DP BASIC TO ADVANCED <=================================================================
+=====================>>>> Q1)	0/1 Knapsack (DP - 19) <<<======================
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+// =====================>>> Memoization method <<<============
+class Solution
+{
+public:
+    int findmaxprofit(int wt[], int val[], int W, int n, vector<vector<int>> &dp) {
+        if (n == 0 || W == 0) {
+            return 0;
+        }
+
+        if (dp[n][W] != -1) {
+            return dp[n][W];
+        }
+
+        // Choice diagram code
+        if (wt[n-1] <= W) {
+            dp[n][W] = max(val[n-1] + findmaxprofit(wt, val, W - wt[n-1], n - 1, dp),
+                           findmaxprofit(wt, val, W, n - 1, dp));
+        } else {
+            dp[n][W] = findmaxprofit(wt, val, W, n - 1, dp);
+        }
+
+        return dp[n][W];
+    }
+
+    // Function to return the max value that can be put in a knapsack of capacity W
+    int knapSack(int W, int wt[], int val[], int n)
+    {
+        vector<vector<int>> dp(n + 1, vector<int>(W + 1, -1));
+        return findmaxprofit(wt, val, W, n, dp);
+    }
+};
+
+// ===============================>>> Q2) Subset Sum Problem <<<===============================
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int issubsetsumcheck(int idx, vector<int> &arr, int sum, int value, vector<vector<int>> &dp) {
+        int n = arr.size();
+        
+        if (value == sum) {
+            return 1;
+        }
+        
+        if (idx >= n || value > sum) {
+            return 0;
+        }
+
+        if (dp[idx][value] != -1) {
+            return dp[idx][value];
+        }
+        
+        // Include the current element
+        int include = issubsetsumcheck(idx + 1, arr, sum, value + arr[idx], dp);
+        
+        // Exclude the current element
+        int exclude = issubsetsumcheck(idx + 1, arr, sum, value, dp);
+
+        dp[idx][value] = include || exclude;
+
+        return dp[idx][value];
+    }
+
+    bool isSubsetSum(vector<int> arr, int sum) {
+        int n = arr.size();
+        vector<vector<int>> dp(n + 1, vector<int>(sum + 1, -1));
+        return issubsetsumcheck(0, arr, sum, 0, dp);
+    }
+};
+
+// ======>>>>>  Memoization <<<=============
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool issubsetsumcheck(vector<int>& arr , int sum , int n , vector<vector<int>> &dp) {
+        // agar element hi nahi hai sum kuch bhi sum ka subset nahi milega
+        if(n == 0 && sum != 0){
+            return false;
+        }
+        // hamesa true hi hoga hamesa sum == 0 hamesa subset mil jayegaa 
+        if(sum == 0){
+            return true;
+        }
+        
+        if(dp[n][sum] != -1){
+            return dp[n][sum];
+        }
+        
+        if(arr[n-1] <= sum ){
+            dp[n][sum] = issubsetsumcheck(arr, sum - arr[n-1] , n-1 , dp) || issubsetsumcheck(arr, sum , n-1 , dp);
+        }
+        else if(arr[n-1]> sum){
+            dp[n][sum] = issubsetsumcheck(arr, sum , n-1 , dp);
+        }
+        
+        return dp[n][sum];
+    }
+
+    bool isSubsetSum(vector<int> arr, int sum) {
+        int n = arr.size();
+        vector<vector<int>> dp(n + 1, vector<int>(sum + 1, -1));
+        return issubsetsumcheck(arr, sum, n ,  dp);
+    }
+};
+
+// ======================>>>> TOP-DOWN Approch <<<===================
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// =============>>> Tabulation method <<<=============
+class Solution {
+public:
+    bool issubsetsumcheck(vector<int>& arr , int sum , int n , vector<vector<bool>> &dp) {
+        
+        // initialization   ===>>> base case bhi bolte hai 
+          for(int i = 0 ; i <= n ; i++){
+               dp[i][0] = true; 
+        }
+        
+        for(int j = 1 ; j <= sum; j++){
+                dp[0][j] = false;
+            
+        }
+       
+      
+        
+        // recursive part bhi bolte hai 
+        // code rest of the dp matrix ke liye value store karegeee
+        for(int i = 1  ; i <= n ; i++){
+            for(int j = 1 ; j <= sum ; j++){
+                
+                if(arr[i-1] <=  j){
+                    dp[i][j] = dp[i-1][j- arr[i-1]] || dp[i-1][j];
+                }
+                else if(arr[i-1] > j){
+                      dp[i][j]  = dp[i-1][j];
+                }
+                
+            }
+        }
+      return dp[n][sum];    
+        
+    }
+
+    bool isSubsetSum(vector<int> arr, int sum) {
+        int n = arr.size();
+        vector<vector<bool>> dp(n + 1, vector<bool>(sum + 1));
+        return issubsetsumcheck(arr, sum, n ,  dp);
+    }
+};
+
+// ====================>>> Q3)
