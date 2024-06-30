@@ -271,3 +271,762 @@ int frogJump(int n, vector<int> &heights) {
 
     return prev1;
 }
+
+
+// ======================================>>>> Q4) Frog Jump with k distances(DP-4) <<<======================
+// =============>>> link for the code ==>> https://www.geeksforgeeks.org/problems/minimal-cost/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=minimal-cost
+// ================>>> Very very important Question  hai <<<======================
+// =======>>>> For further optimisation you can visit to previous problem exact similiar to this <<<==================
+space complexity :- O(n)
+Time complexity :- O(n*k)
+//class Solution {
+public:
+    int findmincost(int index, vector<int> &height, int k, vector<int> &dp) {
+        // Base case
+        if (index == 0) {
+            return 0;
+        }
+        
+        // Memoization check
+        if (dp[index] != -1) {
+            return dp[index];
+        }
+
+        int minii = INT_MAX;
+        for (int s = 1; s <= k; ++s) {
+            if (index - s >= 0) {
+                int jumpCost = findmincost(index - s, height, k, dp) + abs(height[index] - height[index - s]);
+                minii = min(minii, jumpCost);
+            }
+        }
+        
+        dp[index] = minii;
+        return dp[index];
+    }
+
+    int minimizeCost(vector<int>& height, int n, int k) {
+        vector<int> dp(n, -1);
+        return findmincost(n - 1, height, k, dp);
+    }
+};
+
+
+// =======================>>>> Q5)Maximum sum of non-adjacent elements (DP 5) <<======================
+//========>>> Ek dry run kar ke dekh lena waise yaha tak to asaan hi hai ====>>> jo index ko liye usko add kiye adjacent nahi le sakte to siimply index-2 ko function call kar diye agar pick nahi kiye to simply usko index-1 ko call 
+//=====>>> brute force approch <<==========
+class Solution {
+public:
+    int findrob(int index , vector<int>&nums){
+        // understand the approach 
+        // ===>>> base case <<=====
+          if(index == 0) return nums[index];
+          if(index < 0) return 0;
+
+        // ====>>> main code <<<=====
+        int pick = nums[index] + findrob(index - 2  , nums);    // qki adjacent nahi hona chahiye isliye -2 liya hu  
+        
+        // pick nahi kiye
+        int donotpick =  0 + findrob(index-1 , nums);
+
+        return max(pick , donotpick);
+    }
+    int rob(vector<int>& nums) {
+        int index =  nums.size() -1;
+        // return maximum amount of money
+        int ans = findrob(index , nums);
+        return ans;
+
+    } 
+            
+};
+
+// =============>>> Memoization method <<<<============
+class Solution {
+public:
+    int findrob(int index , vector<int>&nums , vector<int> &dp){
+        // understand the approach 
+        // ===>>> base case <<=====
+          if(index == 0) return nums[index];
+          if(index < 0) return 0;
+         
+         if(dp[index] != -1){
+            return dp[index];
+         }
+        // ====>>> main code <<<=====
+        int pick = nums[index] + findrob(index - 2  , nums , dp);    // qki adjacent nahi hona chahiye isliye -2 liya hu  
+        
+        // pick nahi kiye
+        int donotpick =  0 + findrob(index-1 , nums , dp);
+
+        dp[index] = max(pick , donotpick);
+
+        return dp[index];
+    }
+    int rob(vector<int>& nums) {
+        int index =  nums.size() -1;
+        // return maximum amount of money
+        int n = nums.size();
+        vector<int>dp(n , -1);
+        int ans = findrob(index , nums , dp);
+        return ans;
+
+    } 
+            
+};
+// ==============>>>> bottom-up or tabulation appoach <<<<============
+class Solution {
+public:
+    int findrob(int index , vector<int>&nums , vector<int> &dp){
+        // understand the approach 
+        // ===>>> base case <<=====
+          if(index == 0) return nums[index];
+          
+          dp[0] = nums[0];
+
+          
+          for(int i = 1 ; i <= index ; i++){
+            // i == 1 to return karoge ya kuch to hoga na 
+            int pick = nums[i]; 
+            if(i>1){
+               pick = nums[i] + dp[i-2];
+            }
+            int donotpick = 0 + dp[i-1];
+             dp[i] = max(pick , donotpick);
+          }
+          
+          return dp[index];
+       
+    }
+    int rob(vector<int>& nums) {
+        int index =  nums.size() -1;
+        // return maximum amount of money
+        int n = nums.size();
+        vector<int>dp(n );
+        int ans = findrob(index , nums , dp);
+        return ans;
+
+    } 
+            
+};
+====>>>> Another way previous one is more better than curr
+class Solution {
+public:
+    int findrob(int index, vector<int>& nums, vector<int>& dp) {
+        // Base cases
+        if (index == 0) return nums[index];
+        if (index == 1) return max(nums[0], nums[1]);
+
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+
+        for (int i = 2; i <= index; i++) {
+            int pick = nums[i] + dp[i - 2];
+            int donotpick = dp[i - 1];
+            dp[i] = max(pick, donotpick);
+        }
+
+        return dp[index];
+    }
+
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 0) return 0;
+        if (n == 1) return nums[0];
+
+        vector<int> dp(n);
+        int ans = findrob(n - 1, nums, dp);
+        return ans;
+    }
+};
+
+// ==============>>>> space optimisation <<<===============
+class Solution {
+public:
+    int findrob(int index , vector<int>&nums , vector<int> &dp){
+        // understand the approach 
+        // ===>>> base case <<=====
+          if(index == 0) return nums[index];
+          
+           int prev = nums[0];
+           int prev2 = 0;
+
+          
+          for(int i = 1 ; i <= index ; i++){
+            // i == 1 to return karoge ya kuch to hoga na 
+            int pick = nums[i]; 
+            if(i>1){
+               pick = nums[i] + prev2;
+            }
+            int donotpick = 0 + prev;
+             int curr = max(pick , donotpick);
+             prev2 = prev;
+             prev = curr;
+          }
+          
+          return prev;
+       
+    }
+    int rob(vector<int>& nums) {
+        int index =  nums.size() -1;
+        // return maximum amount of money
+        int n = nums.size();
+        vector<int>dp(n );
+        int ans = findrob(index , nums , dp);
+        return ans;
+
+    } 
+            
+};
+
+
+/// ===============>>>> Q6)House Robber (DP 6) <<<===============
+===============>>>>> VERY IMPORTATN QUESTION HAI <<<<<===========
+class Solution {
+public:
+    int findrobcicle(int index, vector<int>& nums, vector<int>& dp) {
+        if (index == 0) return nums[0];
+        if (index < 0) return 0;
+
+        if (dp[index] != -1) return dp[index];
+
+        int pick = nums[index] + findrobcicle(index - 2, nums, dp);
+        int dontpick = findrobcicle(index - 1, nums, dp);
+
+        dp[index] = max(pick, dontpick);
+        return dp[index];
+    }
+
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 1) return nums[0];
+
+        vector<int> dp1(n, -1);
+        vector<int> dp2(n, -1);
+
+        // MOST IMPORTANT PART OF THE CODE ==>>> must know how it is working
+        vector<int> temp1(nums.begin(), nums.end() - 1); // Exclude last house
+        vector<int> temp2(nums.begin() + 1, nums.end()); // Exclude first house
+
+        int rob1 = findrobcicle(n - 2, temp1, dp1); // n - 2 because last index in temp1 is n-2
+        int rob2 = findrobcicle(n - 2, temp2, dp2); // n - 2 because last index in temp2 is n-2
+
+        return max(rob1, rob2);
+    }
+};
+
+// =======================>>>> Q7) Geek's Training or 	Ninja's Training (DP 7)   <<<=========================
+// =================>>> Very very important Question hai must remember type question <<<===========
+==>>> Abb sach me majja anne laggga hai code karne me bahut majja aa raaha hai <<<============
+  public:
+    int findmaximumPoints(int index , int last , vector<vector<int>>&points , vector<vector<int>>&dp){
+        // very very important Question to understant in better way
+        // base case hai 
+        if(index == 0){
+            int maxi = 0;
+            for(int i = 0 ; i < points[0].size(); i++){
+                if(i != last){
+                    maxi = max(maxi , points[0][i]);
+                }
+            }
+            return maxi;
+        }
+        
+        if(dp[index][last] != -1){
+            return dp[index][last];
+        }
+        
+        // ===>>> jab choice karna hai 3 me ek then take loop check all the possible way
+        int maxi =0;
+        for(int i = 0 ; i <3 ; i++){
+            if(last != i){
+                int temp =  points[index][i] +  findmaximumPoints(index - 1 , i , points , dp);
+                maxi = max(maxi , temp);
+            }
+        }
+        dp[index][last] = maxi;
+        return  dp[index][last];
+    }
+    int maximumPoints(vector<vector<int>>& points, int n) {
+       // first we have to think of the index and if neccesary then take one variable  for next 
+       int last = points[0].size();   // jaruri nahi yahi initialise karo last = -1 kar sakte hai 
+       //applying dp
+       vector<vector<int>>dp(n , vector<int>(last , -1));
+       int ans =  findmaximumPoints(n-1 , last  , points , dp);
+
+       return ans;
+    }
+};
+
+// ============================>>> more better way <<==
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Recursive function to calculate the maximum points for the ninja training
+int f(int day, int last, vector<vector<int>> &points, vector<vector<int>> &dp) {
+  // If the result for this day and last activity is already calculated, return it
+  if (dp[day][last] != -1) return dp[day][last];
+
+  // Base case: When we reach the first day (day == 0)
+  if (day == 0) {
+    int maxi = 0;
+    // Calculate the maximum points for the first day by choosing an activity
+    // different from the last one
+    for (int i = 0; i <= 2; i++) {
+      if (i != last)
+        maxi = max(maxi, points[0][i]);
+    }
+    // Store the result in dp array and return it
+    return dp[day][last] = maxi;
+  }
+
+  int maxi = 0;
+  // Iterate through the activities for the current day
+  for (int i = 0; i <= 2; i++) {
+    if (i != last) {
+      // Calculate the points for the current activity and add it to the
+      // maximum points obtained so far (recursively calculated)
+      int activity = points[day][i] + f(day - 1, i, points, dp);
+      maxi = max(maxi, activity);
+    }
+  }
+
+  // Store the result in dp array and return it
+  return dp[day][last] = maxi;
+}
+
+// Function to find the maximum points for ninja training
+int ninjaTraining(int n, vector<vector<int>> &points) {
+  // Create a memoization table (dp) to store intermediate results
+  vector<vector<int>> dp(n, vector<int>(4, -1));
+  // Start the recursive calculation from the last day with no previous activity
+  return f(n - 1, 3, points, dp);
+}
+
+// ============>>> Tabulation method <<<===============
+// ==============>>>> 2D dp me initilaise base condition ko acche se karna hota hai to dhayan me rakhan 
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to find the maximum points for ninja training
+int ninjaTraining(int n, vector<vector<int>>& points) {
+  // Create a 2D DP (Dynamic Programming) table to store the maximum points
+  // dp[i][j] represents the maximum points at day i, considering the last activity as j
+  vector<vector<int>> dp(n, vector<int>(4, 0));
+
+  // Initialize the DP table for the first day (day 0)
+  dp[0][0] = max(points[0][1], points[0][2]);
+  dp[0][1] = max(points[0][0], points[0][2]);
+  dp[0][2] = max(points[0][0], points[0][1]);
+  dp[0][3] = max(points[0][0], max(points[0][1], points[0][2]));
+
+  // Iterate through the days starting from day 1
+  for (int day = 1; day < n; day++) {
+    for (int last = 0; last < 4; last++) {
+      dp[day][last] = 0;
+      // Iterate through the tasks for the current day
+      for (int task = 0; task <= 2; task++) {
+        if (task != last) {
+          // Calculate the points for the current activity and add it to the
+          // maximum points obtained on the previous day (recursively calculated)
+          int activity = points[day][task] + dp[day - 1][task];
+          // Update the maximum points for the current day and last activity
+          dp[day][last] = max(dp[day][last], activity);
+        }
+      }
+    }
+  }
+
+  // The maximum points for the last day with any activity can be found in dp[n-1][3]
+  return dp[n - 1][3];
+}
+
+// ======================>>>>>>>>>>Q8)Grid Unique Paths : DP on Grids (DP8)   <<<<<==========================================
+//====>>> brute force approach <<<===
+class Solution {
+public:
+    int finduniquepaths(int down , int  right ){
+        if(down == 0 && right == 0){
+            return 1;
+        }
+        if (down < 0 || right < 0) {
+            return 0;
+        }
+
+        int dn = finduniquepaths(down -1 , right);
+        int rt = finduniquepaths(down , right -1);
+
+        return dn + rt;
+    }
+    int uniquePaths(int m, int n) {
+        int ans = finduniquepaths(m-1 , n-1);
+        return ans;
+    }
+};
+
+// ===========>>> memoization <<<===============
+#include <bits/stdc++.h>
+using namespace std;
+
+// Recursive function to count the number of ways to reach (i, j) from (0, 0)
+// in a grid of size m x n
+int countWaysUtil(int i, int j, vector<vector<int>>& dp) {
+    // Base case: If we reach the top-left corner (0, 0), there is one way.
+    if (i == 0 && j == 0)
+        return 1;
+
+    // If we go out of bounds or reach a blocked cell, there are no ways.
+    if (i < 0 || j < 0)
+        return 0;
+
+    // If we have already computed the number of ways for this cell, return it.
+    if (dp[i][j] != -1)
+        return dp[i][j];
+
+    // Calculate the number of ways by moving up and left recursively.
+    int up = countWaysUtil(i - 1, j, dp);
+    int left = countWaysUtil(i, j - 1, dp);
+
+    // Store the result in the dp table and return it.
+    return dp[i][j] = up + left;
+}
+
+
+// ===========>>>  Tabulation <<<======================
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to count the number of ways to reach the bottom-right cell (m-1, n-1)
+// from the top-left cell (0, 0) in a grid of size m x n
+int countWaysUtil(int m, int n, vector<vector<int>>& dp) {
+    // Loop through the grid using two nested loops
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            // Base condition: If we are at the top-left cell (0, 0), there is one way.
+            if (i == 0 && j == 0) {
+                dp[i][j] = 1;
+                continue; // Skip the rest of the loop and continue with the next iteration.
+            }
+
+            // Initialize variables to store the number of ways from the cell above (up) and left (left).
+            int up = 0;
+            int left = 0;
+
+            // If we are not at the first row (i > 0), update 'up' with the value from the cell above.
+            if (i > 0)
+                up = dp[i - 1][j];
+
+            // If we are not at the first column (j > 0), update 'left' with the value from the cell to the left.
+            if (j > 0)
+                left = dp[i][j - 1];
+
+            // Calculate the number of ways to reach the current cell by adding 'up' and 'left'.
+            dp[i][j] = up + left;
+        }
+    }
+
+    // The result is stored in the bottom-right cell (m-1, n-1).
+    return dp[m - 1][n - 1];
+}
+
+// ====>> space optimisation will be done after coding round or when i will have time <<<=====
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to count the number of ways to reach the bottom-right cell (m-1, n-1)
+// from the top-left cell (0, 0) in a grid of size m x n
+int countWays(int m, int n) {
+    // Create a vector to represent the previous row of the grid.
+    vector<int> prev(n, 0);
+
+    // Iterate through the rows of the grid.
+    for (int i = 0; i < m; i++) {
+        // Create a temporary vector to represent the current row.
+        vector<int> temp(n, 0);
+
+        // Iterate through the columns of the grid.
+        for (int j = 0; j < n; j++) {
+            // Base case: If we are at the top-left cell (0, 0), there is one way.
+            if (i == 0 && j == 0) {
+                temp[j] = 1;
+                continue;
+            }
+
+            // Initialize variables to store the number of ways from the cell above (up) and left (left).
+            int up = 0;
+            int left = 0;
+
+            // If we are not at the first row (i > 0), update 'up' with the value from the previous row.
+            if (i > 0)
+                up = prev[j];
+
+            // If we are not at the first column (j > 0), update 'left' with the value from the current row.
+            if (j > 0)
+                left = temp[j - 1];
+
+            // Calculate the number of ways to reach the current cell by adding 'up' and 'left'.
+            temp[j] = up + left;
+        }
+
+        // Update the previous row with the values calculated for the current row.
+        prev = temp;
+    }
+
+    // The result is stored in the last cell of the previous row (n-1).
+    return prev[n - 1];
+}
+
+
+// ==========================>>>> Q9) Grid Unique Paths 2 (DP 9)  <<<=============================================
+
+class Solution {
+public:
+    int  finduniquepathwithobstacle(int i , int j , vector<vector<int>>& obstacleGrid , vector<vector<int>> &dp ){
+        if(i == 0  && j == 0 && obstacleGrid[i][j] != 1){
+            return dp[i][j] = 1;
+        }
+        if(i < 0 || j < 0){
+            return 0;
+        }
+        if(obstacleGrid[i][j] == 1){
+            return 0;
+        }
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+
+        int up = finduniquepathwithobstacle(i-1 , j , obstacleGrid , dp );
+        int left = finduniquepathwithobstacle(i , j-1 , obstacleGrid  , dp);
+        dp[i][j] = up + left;
+        return dp[i][j];
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+        if(n == 0 && m == 0){
+            return 0;
+        }
+        vector<vector<int>>dp(m , vector<int>(n , -1));
+        int ans =  finduniquepathwithobstacle(m-1 , n-1 , obstacleGrid , dp);
+        return ans;
+    }
+};
+
+============>>> ye bhi dekh lena time mile to same hi hai <<<======
+int mazeObstaclesUtil(int i, int j, vector<vector<int>> &maze, vector<vector<int>> &dp) {
+    // Base cases
+    if (i > 0 && j > 0 && maze[i][j] == -1) return 0; // If there's an obstacle at (i, j), return 0
+    if (i == 0 && j == 0) return 1; // If we reach the destination (0, 0), return 1
+    if (i < 0 || j < 0) return 0; // If we go out of bounds, return 0
+    if (dp[i][j] != -1) return dp[i][j]; // If the result is already computed, return it
+
+    // Recursive calls to explore paths from (i, j) to (0, 0)
+    int up = mazeObstaclesUtil(i - 1, j, maze, dp);
+    int left = mazeObstaclesUtil(i, j - 1, maze, dp);
+
+    // Store the result in the DP table and return it
+    return dp[i][j] = up + left;
+}
+
+// Main function to count paths with obstacles in a maze
+int mazeObstacles(int n, int m, vector<vector<int>> &maze) {
+    vector<vector<int>> dp(n, vector<int>(m, -1)); // DP table to memoize results
+    return mazeObstaclesUtil(n - 1, m - 1, maze, dp); // Start from the bottom-right corner
+}
+
+
+
+
+
+
+// =========================>>> Q10 )Minimum path sum in Grid (DP 10) <<===========
+===============>>>> must know the some edge case where it can fails 
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+class Solution {
+public:
+    int findMinPathSum(int i, int j, vector<vector<int>>& grid, vector<vector<long>>& dp) {
+        if (i == 0 && j == 0) {
+            return grid[0][0];
+        }
+
+        // Boundary check
+        if (i < 0 || j < 0) {
+            return INT_MAX; // Out of bounds
+        }
+
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        long left = INT_MAX, up = INT_MAX;
+
+        if (j > 0) {
+            left = grid[i][j] + findMinPathSum(i, j - 1, grid, dp);
+        }
+        if (i > 0) {
+            up = grid[i][j] + findMinPathSum(i - 1, j, grid, dp);
+        }
+
+        dp[i][j] = min(left, up);
+        return dp[i][j];
+    }
+
+    int minPathSum(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<long>> dp(m, vector<long>(n, -1));
+        return findMinPathSum(m - 1, n - 1, grid, dp);
+    }
+};
+=====>>> tabulation <<===========
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to find the minimum sum path from (0, 0) to (n-1, m-1) in the matrix
+int minSumPath(int n, int m, vector<vector<int>> &matrix) {
+    vector<vector<int>> dp(n, vector<int>(m, 0)); // Initialize a DP table to store minimum path sums
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (i == 0 && j == 0)
+                dp[i][j] = matrix[i][j]; // If we are at the top-left corner, the minimum path sum is the value at (0, 0)
+            else {
+                // Calculate the minimum path sum considering moving up and moving left
+                int up = matrix[i][j];
+                if (i > 0)
+                    up += dp[i - 1][j]; // Include the minimum path sum from above
+                else
+                    up += 1e9; // A large value if moving up is not possible (out of bounds)
+
+                int left = matrix[i][j];
+                if (j > 0)
+                    left += dp[i][j - 1]; // Include the minimum path sum from the left
+                else
+                    left += 1e9; // A large value if moving left is not possible (out of bounds)
+
+                // Store the minimum path sum in dp[i][j]
+                dp[i][j] = min(up, left);
+            }
+        }
+    }
+
+    // The final result is stored in dp[n-1][m-1], which represents the destination
+    return dp[n - 1][m - 1];
+}
+
+
+// =====================>>>> Q11)Minimum path sum in Triangular Grid (DP 11)  <<==========================
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    int findmin(int i, int j, vector<vector<int>>& triangle, vector<vector<int>>& dp) {
+        int m = triangle.size();
+        if (i == m - 1) return triangle[m - 1][j];
+        
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+        
+        // down 
+        int down = triangle[i][j] + findmin(i + 1, j, triangle, dp);
+        
+        // diagonal 
+        int diagonal = triangle[i][j] + findmin(i + 1, j + 1, triangle, dp);
+        
+        dp[i][j] = min(down, diagonal);
+        return dp[i][j];
+    }
+    
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int m = triangle.size();
+        int n = triangle[m - 1].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        int ans = findmin(0, 0, triangle, dp);
+        return ans;
+    }
+};
+
+// ===>>> Tabulation <<============
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to find the minimum path sum in the given triangle using dynamic programming
+int minimumPathSum(vector<vector<int> > &triangle, int n) {
+    // Create a 2D DP (dynamic programming) array to store minimum path sums
+    vector<vector<int> > dp(n, vector<int>(n, 0));
+
+    // Initialize the bottom row of dp with the values from the triangle
+    for (int j = 0; j < n; j++) {
+        dp[n - 1][j] = triangle[n - 1][j];
+    }
+
+    // Iterate through the triangle rows in reverse order
+    for (int i = n - 2; i >= 0; i--) {
+        for (int j = i; j >= 0; j--) {
+            // Calculate the minimum path sum for the current cell
+            int down = triangle[i][j] + dp[i + 1][j];
+            int diagonal = triangle[i][j] + dp[i + 1][j + 1];
+
+            // Store the minimum of the two possible paths in dp
+            dp[i][j] = min(down, diagonal);
+        }
+    }
+
+    // The top-left cell of dp now contains the minimum path sum
+    return dp[0][0];
+}
+
+
+
+// ===================================>>>>Q12) Minimum/Maximum Falling Path Sum (DP-12) <<<======================================
+class Solution {
+public:
+    int findminFallingPathSum(int i, int j, vector<vector<int>>& matrix, vector<vector<int>>& dp) {
+        // Base case: out of boundary
+        if (j >= matrix[0].size() || j < 0) {
+            return 1e9; // large number to signify an invalid path
+        }
+        // Base case: top row
+        if (i == 0) {
+            return matrix[0][j];
+        }
+
+        // Check if the result is already computed
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        // Recursive calculation of minimum path sum
+        int up = matrix[i][j] + findminFallingPathSum(i - 1, j, matrix, dp);
+        int ldig = matrix[i][j] + findminFallingPathSum(i - 1, j - 1, matrix, dp);
+        int rdig = matrix[i][j] + findminFallingPathSum(i - 1, j + 1, matrix, dp);
+
+        dp[i][j] = min(up, min(ldig, rdig));
+        return dp[i][j];
+    }
+
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        if (n == 0 || matrix[0].size() == 0) {
+            return 0; // edge case: empty matrix
+        }
+
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+
+        int mini = INT_MAX;
+        for (int i = 0; i < n; i++) {
+            int value = findminFallingPathSum(n - 1, i, matrix, dp);
+            mini = min(mini, value);
+        }
+        return mini;
+    }
+};
