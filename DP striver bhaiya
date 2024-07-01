@@ -1030,3 +1030,240 @@ public:
         return mini;
     }
 };
+
+// ====================>>>> Q13)3-d DP : Ninja and his friends (DP-13) <<===============================
+#include <bits/stdc++.h>
+using namespace std;
+
+int findmaximum(int i, int j1, int j2, vector<vector<int>> &grid) {
+    int row = grid.size();
+    int col = grid[0].size();
+
+    // boundary check
+    if(j1 < 0 || j1 >= col || j2 < 0 || j2 >= col){
+        return -1e8;  // using a large negative value instead of INT_MIN
+    }
+
+    // base case
+    if(i == row - 1){
+        // same cell taken value once 
+        if(j1 == j2){
+            return grid[i][j1];
+        } else {
+            return grid[i][j1] + grid[i][j2];
+        }
+    }
+
+    // all possible moves
+    int dir[] = {-1, 0, 1};
+    int maxi = INT_MIN;
+    for(int di = 0; di < 3; di++) {
+        for(int dj = 0; dj < 3; dj++) {
+            int newJ1 = j1 + dir[di];
+            int newJ2 = j2 + dir[dj];
+            int path;
+            if(j1 == j2){
+                path = grid[i][j1] + findmaximum(i + 1, newJ1, newJ2, grid);
+            } else {
+                path = grid[i][j1] + grid[i][j2] + findmaximum(i + 1, newJ1, newJ2, grid);
+            }
+            maxi = max(maxi, path);
+        }
+    }
+    return maxi;
+}
+
+int maximumChocolates(int r, int c, vector<vector<int>> &grid) {
+    return findmaximum(0, 0, c - 1, grid);
+}
+
+======>>> memoization <<<================
+#include <bits/stdc++.h>
+using namespace std;
+
+int findmaximum(int i, int j1, int j2, vector<vector<int>> &grid , vector<vector<vector<int>>> &dp) {
+    int row = grid.size();
+    int col = grid[0].size();
+
+    // boundary check
+    if(j1 < 0 || j1 >= col || j2 < 0 || j2 >= col){
+        return -1e8;  // using a large negative value instead of INT_MIN
+    }
+
+    // base case
+    if(i == row - 1){
+        // same cell taken value once 
+        if(j1 == j2){
+            return grid[i][j1];
+        } else {
+            return grid[i][j1] + grid[i][j2];
+        }
+    }
+    if(dp[i][j1][j2] != -1){
+        return dp[i][j1][j2];
+    }
+
+    // all possible moves
+    int dir[] = {-1, 0, 1};
+    int maxi = INT_MIN;
+    for(int di = 0; di < 3; di++) {
+        for(int dj = 0; dj < 3; dj++) {
+            int newJ1 = j1 + dir[di];
+            int newJ2 = j2 + dir[dj];
+            int path;
+            if(j1 == j2){
+                path = grid[i][j1] + findmaximum(i + 1, newJ1, newJ2, grid , dp);
+            } else {
+                path = grid[i][j1] + grid[i][j2] + findmaximum(i + 1, newJ1, newJ2, grid , dp);
+            }
+            maxi = max(maxi, path);
+        }
+    }
+    dp[i][j1][j2] = maxi;
+
+    return dp[i][j1][j2];
+}
+
+int maximumChocolates(int r, int c, vector<vector<int>> &grid) {
+    int n = grid.size();
+    int m = grid[0].size();
+    vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
+    return findmaximum(0, 0, c - 1, grid , dp);
+} 
+
+========>>>> Tabulation (due  rahega kabhi or karege ) <=====
+
+
+
+
+
+
+
+
+//============================================>>>>*************************<<<<<==============================================
+//============================================>>>>>> DP ON SUBSEQUENCES <<<<<<================================================
+//============================================>>>>*************************<<<<<==============================================
+
+Q14) ========================>>>>> Subset sum equal to target (DP- 14)  <<<======================
+// =======>>> brute force approach <<<<====
+class Solution{   
+public:
+    bool findisSubsetsum(int index , int sum , vector<int>&arr){
+        if(index == 0 && sum != 0){
+            return false;
+        }
+        if(sum == 0){
+            return true;
+        }
+        
+        // pick 
+        bool pick = false;
+        if(arr[index -1] <= sum){
+            pick = findisSubsetsum(index -1 , sum - arr[index -1] , arr);
+        }
+        
+        // dont pick 
+        bool notpick = findisSubsetsum(index -1 , sum  , arr);
+        
+        
+        return pick || notpick ;
+    }
+    bool isSubsetSum(vector<int>arr, int sum){
+        int n = arr.size();
+        bool ans = findisSubsetsum(n-1 , sum , arr);
+        return ans;
+    }
+};
+
+//==========>>> memoization <<<=======
+class Solution{   
+public:
+    bool findisSubsetsum(int index , int sum , vector<int>&arr , vector<vector<int>>&dp){
+       
+        if(sum == 0){
+            return true;
+        }
+        if(index == 0){
+            return arr[0] == sum;
+        }
+        
+        if(dp[index][sum] != -1){
+            return dp[index][sum];
+        }
+        
+        
+        // dont pick 
+        bool notpick = findisSubsetsum(index -1 , sum  , arr , dp);
+        
+        
+        // pick 
+        bool pick = false;
+        if(arr[index] <= sum){
+            pick = findisSubsetsum(index -1 , sum - arr[index] , arr , dp);
+        }
+        
+        dp[index][sum] = pick || notpick;
+        
+        return dp[index][sum];
+    }
+    bool isSubsetSum(vector<int>arr, int sum){
+        int n = arr.size();
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1)); 
+        bool ans = findisSubsetsum(n-1 , sum , arr , dp);
+        return ans;
+    }
+};
+
+// ========>>> Tabulation jarurii nahi hai <<<=====>> easy hi hai <<<=============
+
+
+
+// ===========================>>> Q2) Partition Equal Subset Sum (DP- 15)  <<<====
+privously have done this question in aditya dp lec
+======>>> stivar bhaiya <<<====
+class Solution {
+public:
+    bool canpartition(int index , int sum , vector<int>&nums , vector<vector<int>> &dp){
+        if(sum == 0) return true;
+
+        if(index == 0){
+            return nums[0] == sum;
+        }
+
+        if(dp[index][sum] != -1){
+            return dp[index][sum];
+        }
+
+        // donot pick 
+        bool notpick =  canpartition(index -1 , sum  , nums , dp);
+
+        // pick 
+        bool pick = false;
+        if(nums[index] <= sum){
+            pick =  canpartition(index -1 , sum - nums[index] , nums , dp);
+        }
+
+        dp[index][sum] = pick || notpick;
+        return dp[index][sum];
+    }
+    bool canPartition(vector<int>& nums) {
+        
+        // memoization code 
+        int n = nums.size();
+        if(n == 1) return false; 
+        int sum = 0;
+        for(int i = 0; i < nums.size()  ; i++){
+            sum = sum + nums[i];
+        }
+
+        if(sum % 2 != 0){
+            return false;
+        }
+        int W = sum/2;
+        vector<vector<int>>dp(n , vector<int>(W+1 , -1));
+        bool ans = canpartition(n-1 , W, nums , dp);
+        return ans;
+    }
+};
+
+// =============================>>> Q3)
