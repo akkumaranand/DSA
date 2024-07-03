@@ -1218,7 +1218,7 @@ public:
 
 
 
-// ===========================>>> Q2) Partition Equal Subset Sum (DP- 15)  <<<====
+// ===========================>>> Q15) Partition Equal Subset Sum (DP- 15)  <<<====
 privously have done this question in aditya dp lec
 ======>>> stivar bhaiya <<<====
 class Solution {
@@ -1266,7 +1266,7 @@ public:
     }
 };
 
-// =============================>>> Q3) Count Subsets with Sum K (DP - 17)   <<<==========================================
+// =============================>>> Q16) Count Subsets with Sum K (DP - 17)   <<<==========================================
 
 
 =====>>> EK BAAR ISS QUESTION KO DEKHNA HAI <<<<==============
@@ -1304,7 +1304,49 @@ public:
     }
 };
 =======================>>> memoization method <<<+
+=====>>> correct code hai <<========================
+// =============>>>> this code handle the zeros case also so this is beeter than privous <<<============
+==============>>> case when    0 <=arr[i] <=10000   <<<==================
+ class Solution {
+public:
+    const int MOD = 1000000007;
+
+    int findcount(int index, int sum, int arr[], vector<vector<int>>& dp) {
+        if (index == 0) {
+            if (sum == 0 && arr[0] == 0) {
+                return 2; // two ways: including or not including the zero element
+            }
+            if (sum == 0 || sum == arr[0]) {
+                return 1; // one way to achieve the sum
+            }
+            return 0; // no way to achieve the sum
+        }
+
+        if (dp[index][sum] != -1) {
+            return dp[index][sum];
+        }
+
+        // don't pick the current element
+        int notpick = findcount(index - 1, sum, arr, dp);
+
+        // pick the current element
+        int pick = 0;
+        if (arr[index] <= sum) {
+            pick = findcount(index - 1, sum - arr[index], arr, dp);
+        }
+
+        dp[index][sum] = (notpick + pick) % MOD;
+        return dp[index][sum];
+    }
+
+    int perfectSum(int arr[], int n, int sum) {
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+        return findcount(n - 1, sum, arr, dp);
+    }
+};
+
  
+// ==============>>> case when    1<=arr[i] <=10000   <<<==================
 public:
     const int MOD = 1000000007;
 
@@ -1313,8 +1355,8 @@ public:
             return 1;
         }
         
-        if (index < 0) {
-            return 0;
+        if (index == 0) {
+            return arr[0] == sum 
         }
 
         if (dp[index][sum] != -1) {
@@ -1383,5 +1425,82 @@ public:
     }
 };
 
+/// ==========================>>>> Q17)Partition Set Into 2 Subsets With Min Absolute Sum Diff (DP- 16)<<<<======================
+class Solution{
+
+  public:
+	int minDifference(int arr[], int n)  { 
+        int Totalsum = 0;
+        for (int i = 0; i < n; i++) {
+            Totalsum += arr[i];
+        }
+       
+        vector<vector<bool>> dp(n, vector<bool>(Totalsum + 1, false));
+        
+        // Base case: Any subset can sum to 0 by not including any elements.
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = true;
+        }
+
+        // Base case: The subset sum that includes only the first element.
+        if (arr[0] <= Totalsum) {
+            dp[0][arr[0]] = true;
+        }
+
+        // Fill the dp table
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= Totalsum; j++) {
+                // Not take
+                bool nottake = dp[i-1][j];
+
+                // Take
+                bool take = false;
+                if (arr[i] <= j) {
+                    take = dp[i-1][j-arr[i]];
+                }
+
+                dp[i][j] = take || nottake;
+            }
+        }
+        
+        // Find the minimum difference
+        int mini = INT_MAX;
+        for (int target = 0; target <= Totalsum / 2; target++) {
+            if (dp[n-1][target] == true) {
+                int sumdiff = abs(target - (Totalsum - target));
+                mini = min(mini, sumdiff);
+            }
+        }
+
+        return mini;
+ // Your code goes here
+	} 
+};
+
+//=====>>> Memoization at the time of rivision <<<<<================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =========================>>>  Q18)Count Partitions with Given Difference (DP - 18) <<<=============================
 
 
