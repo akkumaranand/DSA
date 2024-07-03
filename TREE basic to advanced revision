@@ -76,3 +76,64 @@ public:
         return ans.second;
     }
 };
+
+// ==============>>> Q4) Zig-Zag traversal <<=============
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>>ans;
+        if(root == NULL){
+            return ans;
+        }
+        queue<TreeNode*> q;
+        q.push(root);
+        bool traveral = true;
+       while(!q.empty()){
+         int n = q.size();
+         // indexing jarurii hai 
+         vector<int>temp(n);
+         for(int i = 0 ;i< n ; i++){
+            TreeNode * front = q.front();
+            q.pop();
+            int index = traveral ? i : n - i -1;
+            temp[index] = front->val;
+            if(front->left) q.push(front->left);
+            if(front->right) q.push(front->right);
+         }
+         traveral = !traveral;
+         ans.push_back(temp);
+         
+       }
+       return ans;
+    }
+};
+
+// ======================= Q5) Check the symmetry of the tree <<<==============
+class Solution {
+public:
+    void  checkforsameornot(TreeNode * p , TreeNode * q , bool & ans){
+        if(p == NULL && q == NULL){
+            return ;
+        }
+        else if(p == NULL || q == NULL || p->val != q->val){
+            ans = false;
+            return ;
+        }
+
+      
+
+        checkforsameornot(p->left , q->left , ans);
+        checkforsameornot(p->right , q->right  , ans);
+
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        bool ans = true ;
+        if(p == NULL && q == NULL ){
+            return true;
+        }
+        checkforsameornot(p , q , ans);
+
+        return ans;
+    }
+};
+//================>>>>
