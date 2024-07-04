@@ -136,4 +136,73 @@ public:
         return ans;
     }
 };
-//================>>>>
+//================>>>> Q6) boundary traversal <<<==================
+void traversalleft( TreeNode<int> *root , vector<int> &ans){
+    if((root == NULL)|| (root->left == NULL && root->right == NULL)){
+        return ;
+    }
+    ans.push_back(root->data);
+   
+    if(root->left){
+        traversalleft(root->left , ans);
+    }
+    else{
+        traversalleft(root->right , ans);
+    }
+
+}
+
+void leafNodetraversal(TreeNode<int> *root , vector<int> &ans){
+    // inorder lagana hai qki humlog left to right
+
+    if(root == NULL){
+        return ;
+    }
+
+    if(root->left == NULL && root->right == NULL){
+        ans.push_back(root->data);
+    }
+    // left first then right 
+    leafNodetraversal(root->left , ans);
+
+    leafNodetraversal(root->right , ans);
+
+}
+
+void traversalright(TreeNode<int> *root , vector<int> &ans){
+    if((root == NULL) || (root->left == NULL && root->right == NULL) ){
+        return ;
+    }
+    if(root->right){
+       traversalright(root->right , ans);
+    }
+    else{
+       traversalright(root->left , ans);  
+    }
+   
+    ans.push_back(root->data);
+}
+
+
+vector<int> traverseBoundary(TreeNode<int> *root)
+{
+    vector<int> ans;
+    if(root == NULL){
+        return ans;
+    }
+    ans.push_back(root->data);
+    // left part of the tree 
+    traversalleft(root->left , ans);
+
+    // to store leaf node of the tree 
+    // left part leafNode 
+    // leafNodetraversal(root->left , ans);
+    
+    // right part leafNOde
+    leafNodetraversal(root , ans);
+
+	// right part excuding leaf node 
+    traversalright(root->right , ans );
+    
+  return ans;
+}
