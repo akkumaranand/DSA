@@ -371,4 +371,252 @@ public:
 };
 
 
-// ===============>>>>> Q5)
+// ===============>>>>> Q5) 0/1 Knapsack (DP - 19) <<<<===================
+class Solution
+{
+public:
+    // Function to return max value that can be put in knapsack of capacity W.
+    int findknapSack(int ind, int Weight, int wt[], int val[], vector<vector<int>> &dp) {
+        if (Weight == 0 || ind < 0) {
+            return 0;
+        }
+
+        if (dp[ind][Weight] != -1) {
+            return dp[ind][Weight];
+        }
+
+        // notpick
+        int notpick = findknapSack(ind - 1, Weight, wt, val, dp);
+
+        int pick = INT_MIN;
+        if (wt[ind] <= Weight) {
+            pick = val[ind] + findknapSack(ind - 1, Weight - wt[ind], wt, val, dp);
+        }
+
+        return dp[ind][Weight] = max(notpick, pick);
+    }
+
+    int knapSack(int W, int wt[], int val[], int n) {
+        vector<vector<int>> dp(n, vector<int>(W + 1, -1));
+        int ans = findknapSack(n - 1, W, wt, val, dp);
+        return ans;
+    }
+};
+// =========>>>> Better approach to know about the base case how to write code <<==========
+#include <bits/stdc++.h> 
+
+int findknapsack(int ind , int maxWeight , vector<int> &weight , vector<int> &value , vector<vector<int>> &dp){
+
+        // base case ===>> socho 
+		if(ind == 0){
+			// case 1 ==>>> last element ka weight bag ka barabar ho ya usse chota ho 
+            if(weight[ind] <= maxWeight){
+				return value[ind];
+			}
+			// case 2 ==>>> last element ka weight bada ho 
+			else{
+				return 0;
+			}
+		}
+
+
+        if(dp[ind][maxWeight] != -1){
+			return dp[ind][maxWeight];
+		}
+		// all possibility 
+        int notpick = 0 + findknapsack(ind -1 , maxWeight , weight , value , dp);
+
+        // pick me two case hai ek baar weight jada ho gaya 
+		int pick = INT_MIN;   // when weight of the bag is small
+		if(weight[ind] <= maxWeight){
+			pick = value[ind] + findknapsack(ind -1 , maxWeight-weight[ind] , weight , value , dp);
+		}
+
+        // maximum
+		dp[ind][maxWeight] = max(pick , notpick);
+		return dp[ind][maxWeight];
+
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// must visit the copy learn more about this question
+	vector<vector<int>>dp(n , vector<int>(maxWeight + 1 , -1));
+	int ans = findknapsack(n-1 , maxWeight , weight , value , dp);
+	return ans;
+}
+
+//===================================>> Q6)Minimum Coins (DP - 20) <<============
+
+class Solution {
+public:
+    int findmincoin(int ind , int amount , vector<int> & coins , vector<vector<int>> &dp){
+        if (amount == 0) {
+            return 0;
+        }
+        if (ind == 0) {
+            if (amount % coins[ind] == 0) {
+                return amount / coins[ind];
+            } else {
+                return INT_MAX;
+            }
+        }
+
+
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+
+        // since repetation of coin hai ====>>> possibility to 2 hi hai pick or not pick 
+        // notpick 
+        int notpick = 0 + findmincoin(ind-1 , amount , coins , dp);
+        
+        // pick 
+        int pick = INT_MAX;
+        if(coins[ind] <= amount){
+            int res  = findmincoin(ind , amount-coins[ind] , coins , dp);   // since repetatin is allowed
+            if(res != INT_MAX){
+                pick = res + 1;
+            }
+        }
+       
+        dp[ind][amount] = min(notpick , pick);
+        return dp[ind][amount];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        // minimum no of coin chahiye to make this amount ===>>> repetation bhi hai 
+        int n = coins.size();
+        vector<vector<int>>dp(n , vector<int>(amount + 1 , -1));
+        int ans = findmincoin(n-1 , amount , coins , dp);
+        if(ans == INT_MAX){
+            return -1;
+        }
+        return ans;
+    }
+};
+
+// ==================>>>> better way as i expected <<<============
+class Solution {
+public:
+    int findmincoin(int ind , int amount , vector<int> & coins , vector<vector<int>> &dp){
+       
+        if (ind == 0) {
+            if (amount % coins[ind] == 0) {
+                return amount / coins[ind];
+            } else {
+                return INT_MAX;
+            }
+        }
+
+
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+
+        // since repetation of coin hai ====>>> possibility to 2 hi hai pick or not pick 
+        // notpick 
+        int notpick = 0 + findmincoin(ind-1 , amount , coins , dp);
+        
+        // pick 
+        int pick = INT_MAX;
+        if(coins[ind] <= amount){
+            int res  = findmincoin(ind , amount-coins[ind] , coins , dp);   // since repetatin is allowed
+            if(res != INT_MAX){
+                pick = res + 1;
+            }
+        }
+       
+        dp[ind][amount] = min(notpick , pick);
+        return dp[ind][amount];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        // minimum no of coin chahiye to make this amount ===>>> repetation bhi hai 
+        int n = coins.size();
+        vector<vector<int>>dp(n , vector<int>(amount + 1 , -1));
+        int ans = findmincoin(n-1 , amount , coins , dp);
+        if(ans == INT_MAX){
+            return -1;
+        }
+        return ans;
+    }
+};
+
+// ============================>>> Q7) Coin Change 2 (DP - 22) <<================================================
+class Solution {
+public:
+    int findchange(int ind , int amount , vector<int> & coins , vector<vector<int>> &dp){
+        // base case
+        if(amount == 0){
+            return 1;
+        }
+        if(ind == 0){
+           if(amount % coins[ind] == 0){
+            return 1;
+           }else{
+            return 0;
+           }
+        }
+
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+        
+        // possibility 
+        int notpick = findchange(ind - 1 , amount , coins , dp );
+
+         int pick = 0;
+         if(coins[ind] <= amount){
+            pick = findchange(ind , amount-coins[ind] , coins , dp );
+         }
+        // count hai return left + right 
+        dp[ind][amount] = pick + notpick;
+        return dp[ind][amount];
+    }
+    int change(int amount, vector<int>& coins) {
+         int n = coins.size();
+         vector<vector<int>>dp(n , vector<int>(amount +1 , -1));
+         int count = findchange(n-1 , amount , coins , dp);
+         return count;
+    }
+};
+
+// ========================>>>> Q8) Rod Cutting Problem | (DP - 24) <<<<<===============
+// ==============>>> almost same as the as the unbounded knapsack but only change is here we have create a weight vector according to question to make it similar to knapsack <<<<<<===========================
+class Solution{
+  public:
+    int findmaxprice(int ind , int W , int price[] , vector<int> & wt , vector<vector<int>> &dp){
+        if(ind == 0){
+           return (W / wt[0]) * price[0];
+        }
+        
+        if(dp[ind][W] != -1){
+            return dp[ind][W];
+        }
+        
+        // all stuff
+        int notpick = findmaxprice(ind -1 , W , price , wt , dp);
+        
+        int pick = INT_MIN;
+        if(wt[ind] <= W){
+            pick =  price[ind] + findmaxprice(ind, W- wt[ind], price , wt , dp);
+        }
+        
+        dp[ind][W] = max(notpick , pick);
+        return dp[ind][W];
+    }
+    int cutRod(int price[], int n) {
+        //code here ===>>> similar code hai 
+        // lwt see 1 based indexing kya fark padta hai 
+        
+       // according to my approach creae a wt array by given data 
+       vector<int> wt(n);
+        for (int i = 0; i < n; i++) {
+            wt[i] = i + 1;
+        }
+       
+       // ======>>> weight array create kar diya simple hai jaise pahle wala question tha <<==
+       vector<vector<int>>dp(n , vector<int>(n+1 , -1));
+       int ans = findmaxprice(n-1 , n , price , wt, dp);
+       return ans;
+        
+    }
+};
