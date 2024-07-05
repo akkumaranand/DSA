@@ -1144,7 +1144,7 @@ int maximumChocolates(int r, int c, vector<vector<int>> &grid) {
 //============================================>>>>>> DP ON SUBSEQUENCES <<<<<<================================================
 //============================================>>>>*************************<<<<<==============================================
 
-Q14) ========================>>>>> Subset sum equal to target (DP- 14)  <<<======================
+Q14) ========================>>>>> Subset sum Problem  <<<======================
 // =======>>> brute force approach <<<<====
 class Solution{   
 public:
@@ -1483,24 +1483,881 @@ class Solution{
 
 
 
+// ===============>>>>> Q5) 0/1 Knapsack (DP - 19) <<<<===================
+class Solution
+{
+public:
+    // Function to return max value that can be put in knapsack of capacity W.
+    int findknapSack(int ind, int Weight, int wt[], int val[], vector<vector<int>> &dp) {
+        if (Weight == 0 || ind < 0) {
+            return 0;
+        }
+
+        if (dp[ind][Weight] != -1) {
+            return dp[ind][Weight];
+        }
+
+        // notpick
+        int notpick = findknapSack(ind - 1, Weight, wt, val, dp);
+
+        int pick = INT_MIN;
+        if (wt[ind] <= Weight) {
+            pick = val[ind] + findknapSack(ind - 1, Weight - wt[ind], wt, val, dp);
+        }
+
+        return dp[ind][Weight] = max(notpick, pick);
+    }
+
+    int knapSack(int W, int wt[], int val[], int n) {
+        vector<vector<int>> dp(n, vector<int>(W + 1, -1));
+        int ans = findknapSack(n - 1, W, wt, val, dp);
+        return ans;
+    }
+};
+// =========>>>> Better approach to know about the base case how to write code <<==========
+#include <bits/stdc++.h> 
+
+int findknapsack(int ind , int maxWeight , vector<int> &weight , vector<int> &value , vector<vector<int>> &dp){
+
+        // base case ===>> socho 
+		if(ind == 0){
+			// case 1 ==>>> last element ka weight bag ka barabar ho ya usse chota ho 
+            if(weight[ind] <= maxWeight){
+				return value[ind];
+			}
+			// case 2 ==>>> last element ka weight bada ho 
+			else{
+				return 0;
+			}
+		}
+
+
+        if(dp[ind][maxWeight] != -1){
+			return dp[ind][maxWeight];
+		}
+		// all possibility 
+        int notpick = 0 + findknapsack(ind -1 , maxWeight , weight , value , dp);
+
+        // pick me two case hai ek baar weight jada ho gaya 
+		int pick = INT_MIN;   // when weight of the bag is small
+		if(weight[ind] <= maxWeight){
+			pick = value[ind] + findknapsack(ind -1 , maxWeight-weight[ind] , weight , value , dp);
+		}
+
+        // maximum
+		dp[ind][maxWeight] = max(pick , notpick);
+		return dp[ind][maxWeight];
+
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// must visit the copy learn more about this question
+	vector<vector<int>>dp(n , vector<int>(maxWeight + 1 , -1));
+	int ans = findknapsack(n-1 , maxWeight , weight , value , dp);
+	return ans;
+}
+
+//===================================>> Q6)Minimum Coins (DP - 20) <<============
+
+class Solution {
+public:
+    int findmincoin(int ind , int amount , vector<int> & coins , vector<vector<int>> &dp){
+        if (amount == 0) {
+            return 0;
+        }
+        if (ind == 0) {
+            if (amount % coins[ind] == 0) {
+                return amount / coins[ind];
+            } else {
+                return INT_MAX;
+            }
+        }
+
+
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+
+        // since repetation of coin hai ====>>> possibility to 2 hi hai pick or not pick 
+        // notpick 
+        int notpick = 0 + findmincoin(ind-1 , amount , coins , dp);
+        
+        // pick 
+        int pick = INT_MAX;
+        if(coins[ind] <= amount){
+            int res  = findmincoin(ind , amount-coins[ind] , coins , dp);   // since repetatin is allowed
+            if(res != INT_MAX){
+                pick = res + 1;
+            }
+        }
+       
+        dp[ind][amount] = min(notpick , pick);
+        return dp[ind][amount];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        // minimum no of coin chahiye to make this amount ===>>> repetation bhi hai 
+        int n = coins.size();
+        vector<vector<int>>dp(n , vector<int>(amount + 1 , -1));
+        int ans = findmincoin(n-1 , amount , coins , dp);
+        if(ans == INT_MAX){
+            return -1;
+        }
+        return ans;
+    }
+};
+
+// ==================>>>> better way as i expected <<<============
+class Solution {
+public:
+    int findmincoin(int ind , int amount , vector<int> & coins , vector<vector<int>> &dp){
+       
+        if (ind == 0) {
+            if (amount % coins[ind] == 0) {
+                return amount / coins[ind];
+            } else {
+                return INT_MAX;
+            }
+        }
+
+
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+
+        // since repetation of coin hai ====>>> possibility to 2 hi hai pick or not pick 
+        // notpick 
+        int notpick = 0 + findmincoin(ind-1 , amount , coins , dp);
+        
+        // pick 
+        int pick = INT_MAX;
+        if(coins[ind] <= amount){
+            int res  = findmincoin(ind , amount-coins[ind] , coins , dp);   // since repetatin is allowed
+            if(res != INT_MAX){
+                pick = res + 1;
+            }
+        }
+       
+        dp[ind][amount] = min(notpick , pick);
+        return dp[ind][amount];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        // minimum no of coin chahiye to make this amount ===>>> repetation bhi hai 
+        int n = coins.size();
+        vector<vector<int>>dp(n , vector<int>(amount + 1 , -1));
+        int ans = findmincoin(n-1 , amount , coins , dp);
+        if(ans == INT_MAX){
+            return -1;
+        }
+        return ans;
+    }
+};
+
+// ============================>>> Q7) Coin Change 2 (DP - 22) <<================================================
+class Solution {
+public:
+    int findchange(int ind , int amount , vector<int> & coins , vector<vector<int>> &dp){
+        // base case
+        if(amount == 0){
+            return 1;
+        }
+        if(ind == 0){
+           if(amount % coins[ind] == 0){
+            return 1;
+           }else{
+            return 0;
+           }
+        }
+
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+        
+        // possibility 
+        int notpick = findchange(ind - 1 , amount , coins , dp );
+
+         int pick = 0;
+         if(coins[ind] <= amount){
+            pick = findchange(ind , amount-coins[ind] , coins , dp );
+         }
+        // count hai return left + right 
+        dp[ind][amount] = pick + notpick;
+        return dp[ind][amount];
+    }
+    int change(int amount, vector<int>& coins) {
+         int n = coins.size();
+         vector<vector<int>>dp(n , vector<int>(amount +1 , -1));
+         int count = findchange(n-1 , amount , coins , dp);
+         return count;
+    }
+};
+
+// ========================>>>> Q8) Rod Cutting Problem | (DP - 24) <<<<<===============
+// ==============>>> almost same as the as the unbounded knapsack but only change is here we have create a weight vector according to question to make it similar to knapsack <<<<<<===========================
+class Solution{
+  public:
+    int findmaxprice(int ind , int W , int price[] , vector<int> & wt , vector<vector<int>> &dp){
+        if(ind == 0){
+           return (W / wt[0]) * price[0];
+        }
+        
+        if(dp[ind][W] != -1){
+            return dp[ind][W];
+        }
+        
+        // all stuff
+        int notpick = findmaxprice(ind -1 , W , price , wt , dp);
+        
+        int pick = INT_MIN;
+        if(wt[ind] <= W){
+            pick =  price[ind] + findmaxprice(ind, W- wt[ind], price , wt , dp);
+        }
+        
+        dp[ind][W] = max(notpick , pick);
+        return dp[ind][W];
+    }
+    int cutRod(int price[], int n) {
+        //code here ===>>> similar code hai 
+        // lwt see 1 based indexing kya fark padta hai 
+        
+       // according to my approach creae a wt array by given data 
+       vector<int> wt(n);
+        for (int i = 0; i < n; i++) {
+            wt[i] = i + 1;
+        }
+       
+       // ======>>> weight array create kar diya simple hai jaise pahle wala question tha <<==
+       vector<vector<int>>dp(n , vector<int>(n+1 , -1));
+       int ans = findmaxprice(n-1 , n , price , wt, dp);
+       return ans;
+        
+    }
+};
+
+// =====>>>> More better way with <<<<==========
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+  public:
+    int findmaxprice(int ind , int W , int price[] , vector<vector<int>> &dp){
+        if(ind == 0){
+           return W  * price[0];
+        }
+        
+        if(dp[ind][W] != -1){
+            return dp[ind][W];
+        }
+        
+        // all stuff
+        int notpick = findmaxprice(ind -1 , W , price , dp);
+        
+        int pick = INT_MIN;
+        int index = ind + 1;
+        if(index <= W){
+            pick =  price[ind] + findmaxprice(ind, W- index, price , dp);
+        }
+        
+        dp[ind][W] = max(notpick , pick);
+        return dp[ind][W];
+    }
+    int cutRod(int price[], int n) {
+        
+       vector<vector<int>>dp(n , vector<int>(n+1 , -1));
+       int ans = findmaxprice(n-1 , n , price , dp);
+       return ans;
+        
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        int a[n];
+        for (int i = 0; i < n; i++) 
+            cin >> a[i];
+            
+        Solution ob;
+
+        cout << ob.cutRod(a, n) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
+
+// ==========================>>>> Count Partitions with Given Difference (DP - 18)  <<<<<===================================
+class Solution {
+public:
+    int MOD = 10000007;
+    int findcountpartitions(int ind, int tolsum, vector<int>& arr, vector<vector<int>>& dp) {
+        if (ind == 0) {
+            if (tolsum == 0 && arr[ind] == 0) {
+                return dp[ind][tolsum] = 2;
+            }
+            if (tolsum == 0 || arr[ind] == tolsum) {
+                return dp[ind][tolsum] = 1;
+            }
+            return dp[ind][tolsum] = 0;
+        }
+        if (dp[ind][tolsum] != -1) {
+            return dp[ind][tolsum];
+        }
+
+        // Not pick
+        int notpick = findcountpartitions(ind - 1, tolsum, arr, dp);
+        
+        // Pick
+        int pick = 0;
+        if (arr[ind] <= tolsum) {
+            pick = findcountpartitions(ind - 1, tolsum - arr[ind], arr, dp);
+        }
+        
+        dp[ind][tolsum] = (pick + notpick) % MOD;
+        return dp[ind][tolsum];
+    }
+
+    int countPartitions(int n, int d, vector<int>& arr) {
+        int tolsum = 0;
+        for (int i = 0; i < n; i++) {
+            tolsum += arr[i];
+        }
+      
+        // Base case check
+        if ((tolsum - d) % 2 != 0 || tolsum < d) {
+            return 0;
+        }
+
+        int sum = (tolsum - d) / 2;
+    
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+      
+        int count = findcountpartitions(n - 1, sum, arr, dp);
+        return count % MOD;
+    }
+};
+
+// =======================>>>>> Target Sum (DP - 21)  <<<<===============================
+ // similar question as partition into two subset with  diff equal to d;===>>> exactly same hai  
+// ekdam same question hai sochna ek baar baith ke acche se kaise usko isme break kar ke solve kar sakte hai assan tha banna bhi diye kuch matlab achhha hai yaad rah raha ahia 
+class Solution {
+public:
+    int findcount(int ind , int target , vector<int> & nums , vector<vector<int>> & dp){
+        // base case 
+        if(ind == 0){
+            if(nums[ind] == 0 && target == 0 ){
+                return 2;
+            }
+            if(target == 0 || target == nums[0]){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+
+        if(dp[ind][target] != -1){
+            return dp[ind][target];
+        }
+        // stuffs 
+        int notpick = findcount(ind -1 , target , nums , dp);
+
+        int pick = 0;
+        if(nums[ind] <= target){
+            pick = findcount(ind -1 , target- nums[ind] , nums , dp);
+        }
+        // count ways hai  ===>> + 
+        dp[ind][target] = pick + notpick;
+        return dp[ind][target]; 
+
+
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+      // similar question as partition into two subset with  diff equal to d;===>>> exactly same hai 
+      int n = nums.size();
+      int Tolsum = 0;
+      for(int i = 0  ; i < n ; i++){
+        Tolsum = Tolsum + nums[i];
+      }
+
+      // as we know s1 + s2 = Tolsum ==>>
+      // s1 - s2 = d ==>>> Tolsum - 2s1 = d ==>> s1 = (Tolsum - d)/2
+      if((Tolsum - target) % 2 != 0 || Tolsum - target < 0){
+        return 0;
+      }
+      
+      int sum = (Tolsum - target)/2;
+      vector<vector<int>>dp(n , vector<int>(sum + 1 , -1));
+      int ans = findcount(n-1 , sum , nums , dp );
+      return ans;
+
+    }
+};
 
 
 
+// ================================================================================================================================
+// ===========================================>>>>> DP ON STRINGS <<<<=============================================================
+// ================================================================================================================================
+
+=============================>>> Q1)Longest Common Subsequence | (DP - 25) <<<====================================================
+class Solution {
+public:
+    int findlongestCommon(int ind1 , int ind2 , string & s1 , string & s2 , vector<vector<int>> &dp){
+        // base case 
+        if(ind1 < 0 || ind2 < 0){
+            return 0;
+        }
+        
+        if(dp[ind1][ind2] != -1){
+            return dp[ind1][ind2];
+        }
+        // possibility of stuff 
+        // match 
+        if(s1[ind1] == s2[ind2] ){
+            return dp[ind1][ind2] = 1 + findlongestCommon(ind1 -1 , ind2 -1 , s1 , s2 , dp);
+        }
+
+        // not match 
+        return dp[ind1][ind2] = 0 + max(findlongestCommon(ind1 -1 , ind2 , s1 , s2 , dp) , findlongestCommon(ind1 , ind2-1 , s1 , s2 , dp));
+
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        int n = text1.size();
+        int m = text2.size();
+
+        vector<vector<int>>dp(n , vector<int>(m , -1));
+        int ans = findlongestCommon(n-1 ,  m-1 , text1 , text2 , dp);
+        return ans;
+    }
+};
+// ===================>>> After shifting the index you have to know because in some case it is easier to think in shifting so we can do that 
+
+// =================>>>> tabulation <<<<=======================
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int findlongestCommon(int n, int m, string &s1, string &s2, vector<vector<int>> &dp) {
+        // Initialize the base cases
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0;
+        }
+
+        for (int j = 0; j <= m; j++) {
+            dp[0][j] = 0;
+        }
+
+        // Fill the DP table using bottom-up approach
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+    }
+
+    int longestCommonSubsequence(string text1, string text2) {
+        int n = text1.size();
+        int m = text2.size();
+
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        return findlongestCommon(n, m, text1, text2, dp);
+    }
+};
+
+// ==============>>>
+class Solution {
+public:
+    int findlongestCommon(int ind1 , int ind2 , string & s1 , string & s2 , vector<vector<int>> &dp){
+        // base case 
+        if(ind1 == 0 || ind2 == 0){
+            return 0;
+        }
+        
+        if(dp[ind1][ind2] != -1){
+            return dp[ind1][ind2];
+        }
+        // possibility of stuff 
+        // match 
+        if(s1[ind1-1] == s2[ind2-1] ){
+            return dp[ind1][ind2] = 1 + findlongestCommon(ind1 -1 , ind2 -1 , s1 , s2 , dp);
+        }
+
+        // not match 
+        return dp[ind1][ind2] = 0 + max(findlongestCommon(ind1 -1 , ind2 , s1 , s2 , dp) , findlongestCommon(ind1 , ind2-1 , s1 , s2 , dp));
+
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        int n = text1.size();
+        int m = text2.size();
+
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , -1));
+        int ans = findlongestCommon(n ,  m , text1 , text2 , dp);
+        return ans;
+    }
+};
+
+// =============================================>>> Q2) Print Longest Common Subsequence | (DP - 26)  <<<<============================================
+// =======================>>> it return only one LCS <<<=====================
+{
+	public:
+		int findlen(int ind1 , int ind2 , string  &s1  , string &s2 , vector<vector<int>> & dp){
+	         int  n = s1.size();
+	         int m  = s2.size();
+	         for (int i = 0; i <= n; i++) {
+                 dp[i][0] = 0;
+             }
+             for (int i = 0; i <= m; i++) {
+               dp[0][i] = 0;
+             }
+             
+              for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= m; j++) {
+                   if (s1[i - 1] == s2[j - 1])
+                      dp[i][j] = 1 + dp[i - 1][j - 1];
+                        else
+                   dp[i][j] = 0 + max(dp[i- 1][j], dp[i][j - 1]);
+                   }
+               }
+               
+               return dp[ind1][ind2];
+	    }
+		vector<string> all_longest_common_subsequences(string s, string t)
+		{
+		   // We have to apply tabulation method 
+		   // we cant use the memoization method 
+		   vector<string>ans;
+		   int n = s.size();
+		   int m = t.size();
+		   
+		   vector<vector<int>>dp(n+1 , vector<int>(m+1 , 0));
+		   int len = findlen(n, m , s, t , dp);
+		   
+		   // correct as expected tha 
+		  // for(int i = 0 ; i <= n ; i++){
+		  //     for(int j = 0; j <= m ; j++){
+		  //         cout<<dp[i][j]<<" ";
+		  //     }
+		  //     cout<<endl;
+		  // }
+		   string temp = "";
+		   for(int i = 0 ; i < len ; i++){
+		       temp += '$';
+		   }
+		   int index = len-1;
+		   
+		   int i = n ;
+		   int j  = m ;
+		   while(i > 0 && j > 0){
+		       if(s[i-1] == t[j-1]){
+		           temp[index] = s[i-1];
+		           index--;
+		           i--;
+		           j--;
+		       }
+		       else if(dp[i-1][j] > dp[i][j-1]){
+		           i--;
+		       }else{
+		           j--;
+		       }
+		   }
+		   
+		   ans.push_back(temp);
+		   return ans;
+		}
+};
+// ==============>>>> IMPORTANT HAI MUST <<<<=========
+// ========================>>> Q3) Print all LCS sequences  <<<<<================
+#include <vector>
+#include <string>
+#include <algorithm>
+
+class Solution {
+public:
+    using namespace std;
+
+    int findlen(int ind1, int ind2, string &s1, string &s2, vector<vector<int>> &dp) {
+        int n = s1.size();
+        int m = s2.size();
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0;
+        }
+        for (int i = 0; i <= m; i++) {
+            dp[0][i] = 0;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[ind1][ind2];
+    }
+    
+    void findAllLCS(int i, int j, string &s1, string &s2, vector<vector<int>> &dp, string currentLCS, vector<string> &ans) {
+        if (i == 0 || j == 0) {
+            reverse(currentLCS.begin(), currentLCS.end());
+            ans.push_back(currentLCS);
+            return;
+        }
+        
+        if (s1[i - 1] == s2[j - 1]) {
+            findAllLCS(i - 1, j - 1, s1, s2, dp, currentLCS + s1[i - 1], ans);
+        } else {
+            if (dp[i - 1][j] == dp[i][j]) {
+                findAllLCS(i - 1, j, s1, s2, dp, currentLCS, ans);
+            }
+            if (dp[i][j - 1] == dp[i][j]) {
+                findAllLCS(i, j - 1, s1, s2, dp, currentLCS, ans);
+            }
+        }
+    }
+    
+    vector<string> all_longest_common_subsequences(string s, string t) {
+        vector<string> ans;
+        int n = s.size();
+        int m = t.size();
+        
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        int len = findlen(n, m, s, t, dp);
+        
+        findAllLCS(n, m, s, t, dp, "", ans);
+        
+        // Remove duplicates
+        sort(ans.begin(), ans.end());
+        ans.erase(unique(ans.begin(), ans.end()), ans.end());
+        
+        return ans;
+    }
+};
+
+// ================>>>>> further optimised code <<<<================
+class Solution{
+    
+	public:
+	
+	vector<string> all_longest_common_subsequences(string s, string t){
+	    
+	    int n = s.size();
+	    int m = t.size();
+	    vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
+	    
+	    // Base cases
+	    for(int j=0; j<=m; j++) dp[0][j] = 0;
+	    for(int i=0; i<=n; i++) dp[i][0] = 0;
+	    
+	    // States
+	    for(int i=1; i<=n; i++){
+	        for(int j=1; j<=m; j++){
+	            
+	            // Recursion
+	            if(s[i - 1] == t[j - 1]){
+	                dp[i][j] = 1 + dp[i - 1][j - 1];
+	            }
+	            else{
+	                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+	            }
+	            
+	        }
+	    }
+	    
+	    set<string> ans;
+	    queue<pair<pair<int, int>, string>> q;
+	    q.push({{n, m}, ""});
+	    
+	    // BFS in dp array
+	    while(!q.empty()){
+	        
+	        int x = q.front().first.first;
+	        int y = q.front().first.second;
+	        string str = q.front().second;
+	        q.pop();
+	        
+	        if(x == 0 || y == 0) ans.insert(str);
+	        else{
+	            
+	            if(s[x - 1] == t[y - 1]){
+	                q.push({{x - 1, y - 1}, s[x - 1] + str});
+	            }
+	            else{
+	                
+	                if(dp[x - 1][y] >= dp[x][y - 1]){
+	                     q.push({{x - 1, y}, str});
+	                 }
+	                
+	                 if(dp[x][y - 1] >= dp[x - 1][y]){
+	                     q.push({{x, y - 1}, str});
+	                 }
+	            
+	            }
+	            
+	        }
+	        
+	    }
+	    
+	    return vector<string>(ans.begin(), ans.end());
+	    
+	}
+
+    
+};
+
+//=============================>>>> Q3) Longest Common Substring | (DP - 27)   <<<=============================================
+class Solution{
+    public:
+    
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , 0));
+        
+        // initialiastion
+        for(int i = 0 ; i <= n ; i++){
+            dp[i][0] = 0;
+        }
+        for(int j = 0 ; j <= m ; j++){
+            dp[0][j] = 0;
+        }
+        
+        for(int i = 1 ; i <= n ; i++){
+            for(int j = 1 ; j <= m ; j++){
+                if(S1[i-1] == S2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }else{
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        
+        int ans = INT_MIN;
+        for( int i = 0; i <= n ; i++){
+            for(int j = 0 ; j <= m ; j++){
+                if(dp[i][j] > ans){
+                    ans = dp[i][j];
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
+
+=============>>> More better approach <<<<============
+class Solution{
+    public:
+    
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , 0));
+        
+        int ans = 0;
+        for(int i = 1 ; i <= n ; i++){
+            for(int j = 1 ; j <= m ; j++){
+                if(S1[i-1] == S2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                    if(dp[i][j] > ans ){
+                        ans = dp[i][j];
+                    }
+                }else{
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        
+       
+        
+        return ans;
+    }
+};
+
+// ==============================>>> Q4)]Longest Palindromic Subsequence | (DP-28) <<<===========================================
+class Solution {
+public:
+    int findlongestpalindromsub(int ind1 , int ind2 , string &s1  , string &s2 , vector<vector<int>> &dp){
+        if(ind1 == 0 || ind2 == 0){
+            return 0;
+        }
+
+        if(dp[ind1][ind2] != -1){
+            return dp[ind1][ind2];
+        }
+
+        // if match 
+        if(s1[ind1 -1 ]  == s2[ind2-1]){
+            return dp[ind1][ind2] =  1 + findlongestpalindromsub(ind1 - 1 , ind2-1 , s1 , s2 , dp);
+        }
 
 
+        // not match 
+        return dp[ind1][ind2] = max(findlongestpalindromsub(ind1 -1 , ind2 , s1 , s2 , dp) , findlongestpalindromsub(ind1 , ind2-1 , s1 , s2 , dp));
+    }
+    int longestPalindromeSubseq(string s) {
+        cout<<s<<endl;
+        string s2 =  s;
+        reverse(s2.begin() , s2.end());
+        int n = s.size();
+        int m = s2.size();
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , -1));
+        int len = findlongestpalindromsub(n , m , s , s2 , dp);
+        return len ;
+    }
+};
+// ====================>>> Tabulation method <<=======
+ int findlongestCommon(int n, int m, string &s1, string &s2, vector<vector<int>> &dp) {
+        // Initialize the base cases
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0;
+        }
+
+        for (int j = 0; j <= m; j++) {
+            dp[0][j] = 0;
+        }
+
+        // Fill the DP table using bottom-up approach
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+    }
+ int longestPalindromeSubseq(string s) {
+        cout<<s<<endl;
+        string s2 =  s;
+        reverse(s2.begin() , s2.end());
+        int n = s.size();
+        int m = s2.size();
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , -1));
+        int len = findlongestCommon(n , m , s , s2 , dp);
+        return len ;
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-// =========================>>>  Q18)Count Partitions with Given Difference (DP - 18) <<<=============================
-
-
+// ===========================================>>>> 
