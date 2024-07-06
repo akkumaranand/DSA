@@ -2360,4 +2360,376 @@ public:
     }
 
 
-// ===========================================>>>> 
+// ===========================================>>>>  Q5) Minimum insertions to make string palindrome | DP-29  <<===============================
+==============>>> better understanding must visit copy <<<<=======================
+lass Solution {
+public:
+    int findlcs(int ind1 , int ind2 , string & s1 , string & s2 , vector<vector<int>> &dp){
+        if(ind1 == 0 || ind2 == 0){
+            return 0;
+        }
+
+        if(dp[ind1][ind2] != -1){
+            return dp[ind1][ind2];
+        }
+
+        if(s1[ind1-1] == s2[ind2 -1]){
+            return dp[ind1][ind2] = 1 + findlcs(ind1 -1 , ind2 -1 , s1 , s2 , dp);
+        }
+
+        return dp[ind1][ind2] =  max(findlcs(ind1-1 , ind2 , s1 , s2 , dp) , findlcs(ind1 , ind2-1 , s1 , s2 , dp));
+    }
+    int minInsertions(string s) {
+        string s2 = s;
+        reverse(s2.begin() , s2.end());
+        int n = s.size();
+        vector<vector<int>>dp(n+1 , vector<int>(n+1 , -1));
+       // find the longest common subsequence s and s2 will give length of the palindrome that is incontact means palindrome in subsequence rest of that will make insertion 
+        int len =  findlcs(n , n , s, s2 , dp);
+        int ans = n - len;   // jitna length bachega utna hi insertion karna padege 
+        return ans;
+    }
+};
+
+// =========================================>>>>> Q6) Minimum Insertions/Deletions to Convert String | (DP- 30) <<<=====================
+class Solution {
+public:
+        int findlcs(int ind1 , int ind2 , string & s1 , string & s2 , vector<vector<int>> &dp){
+        if(ind1 == 0 || ind2 == 0){
+            return 0;
+        }
+
+        if(dp[ind1][ind2] != -1){
+            return dp[ind1][ind2];
+        }
+
+        if(s1[ind1-1] == s2[ind2 -1]){
+            return dp[ind1][ind2] = 1 + findlcs(ind1 -1 , ind2 -1 , s1 , s2 , dp);
+        }
+
+        return dp[ind1][ind2] =  max(findlcs(ind1-1 , ind2 , s1 , s2 , dp) , findlcs(ind1 , ind2-1 , s1 , s2 , dp));
+    }
+    int minDistance(string word1, string word2) {
+        int n = word1.size();
+        int m = word2.size();
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , -1));
+        int len = findlcs(n , m , word1 , word2 , dp);
+        
+        // bahut hi assan tha bhai koiii dikkat hi nahi hai 
+        int add = n - len;
+        int dele = m - len;
+        return add + dele;
+        
+      return 0;
+    }
+};
+Q7
+// ============================>>> Q7) 	Shortest Common Supersequence | (DP - 31)   <<<==========================================
+// ============>>> Very important code must remember if possible <<<<=======
+class Solution {
+public:
+     int findlongestCommon(int n, int m, string &s1, string &s2, vector<vector<int>> &dp) {
+        // Initialize the base cases
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0;
+        }
+
+        for (int j = 0; j <= m; j++) {
+            dp[0][j] = 0;
+        }
+
+        // Fill the DP table using bottom-up approach
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+    }
+    string shortestCommonSupersequence(string str1, string str2) {
+        int n = str1.size();
+        int m = str2.size();
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , 0));
+        int len = findlongestCommon(n , m , str1 , str2 , dp);
+
+        // ============>>> yaha se main kaam start hota hai <<<<======
+        // ====>>> with the help of dp table <<<====
+        int lensup = n + m  - len;
+        int i = n;
+        int j = m;
+        string ans = "";
+       
+        while(i > 0 && j > 0){
+            if(str1[i-1] == str2[j-1]){
+               ans.push_back(str1[i-1]);
+               i--;
+               j--;
+            }else if(dp[i][j-1] > dp[i-1][j]){
+                ans.push_back(str2[j-1]);
+                j--;
+            }else{
+               ans.push_back(str1[i-1]); 
+               i--;
+            }
+        }
+
+        while(i > 0 ){
+            ans += str1[i-1];
+            i--;
+        }
+
+        while(j > 0){
+            ans = ans + str2[j-1];
+            j--;
+        }
+        reverse(ans.begin() , ans.end());
+        return ans;
+    }
+};
+
+
+// =================================>>>> Q8) Distinct Subsequences| (DP-32)   <<<======================================
+class Solution {
+public:
+    int findnoways(int ind1 , int ind2 , string &s1 , string &s2 , vector<vector<int>> &dp){
+        if(ind2 < 0) return 1;
+        if(ind1 < 0) return 0;
+
+        if(dp[ind1][ind2] != -1){
+             return dp[ind1][ind2];
+        }
+
+        // match ====>>===========>>>> take                         nottake 
+        if(s1[ind1] == s2[ind2]){
+            return dp[ind1][ind2] = findnoways(ind1 -1 , ind2 -1 , s1 , s2 , dp ) + findnoways(ind1-1 , ind2 , s1 , s2  , dp );
+        }
+
+        // not match 
+        return dp[ind1][ind2] = findnoways(ind1 -1 , ind2 , s1 , s2 , dp);
+    }
+    int numDistinct(string s, string t) {
+        // try all ways ==>> apply recursion 
+        int n = s.size();
+        int m = t.size();
+        vector<vector<int>>dp(n , vector<int>(m , -1));
+        int ans = findnoways(n- 1, m-1 , s, t , dp);
+        return ans;
+    }
+};
+// ======>>> Shifting indexing <<<============= for easier tabulation <<<=====
+class Solution {
+public:
+    int findnoways(int ind1 , int ind2 , string &s1 , string &s2 , vector<vector<int>> &dp){
+        if(ind2 == 0) return 1;
+        if(ind1 == 0) return 0;
+
+        if(dp[ind1][ind2] != -1){
+             return dp[ind1][ind2];
+        }
+
+        // match ====>>===========>>>> take                         nottake 
+        if(s1[ind1-1] == s2[ind2-1]){
+            return dp[ind1][ind2] = findnoways(ind1 -1 , ind2 -1 , s1 , s2 , dp ) + findnoways(ind1-1 , ind2 , s1 , s2  , dp );
+        }
+
+        // not match 
+        return dp[ind1][ind2] = findnoways(ind1 -1 , ind2 , s1 , s2 , dp);
+    }
+    int numDistinct(string s, string t) {
+        // try all ways ==>> apply recursion 
+        int n = s.size();
+        int m = t.size();
+        vector<vector<int>>dp(n+1 , vector<int>(m+1 , -1));
+        int ans = findnoways(n, m, s, t , dp);
+        return ans;
+    }
+};
+
+
+// ===============>>> Tabulation <<<<<==================
+// =====>>> ek baar dekh lena data type according to Quesiton <<<========
+class Solution {
+public:
+    int findnoways(int ind1, int ind2, string &s1, string &s2, vector<vector<unsigned long long>> &dp) {
+        for(int i = 0; i <= s1.size(); i++){
+            dp[i][0] = 1;
+        }
+
+        for(int j = 1; j <= s2.size(); j++){
+            dp[0][j] = 0;
+        }
+
+        for(int i = 1; i <= s1.size(); i++){
+            for(int j = 1; j <= s2.size(); j++){
+                if(s1[i-1] == s2[j-1]){
+                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+                } else {
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+
+        return dp[ind1][ind2]; 
+    }
+
+    int numDistinct(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+        vector<vector<unsigned long long>> dp(n+1, vector<unsigned long long>(m+1, 0));
+        unsigned long long ans = findnoways(n, m, s, t, dp);
+        return ans;
+    }
+};
+
+
+
+//======================================>>>>> Q9) Edit Distance | (DP-33)   <<<===============================
+// ========================>>>> code karna assaan hi hota hai mostly <<<==================
+// ==========>>>>  only know the concept only you can easily code <<<===============
+class Solution {
+public:
+    int findminDistance(int i , int j , string & s1 , string &s2 , vector<vector<int>> &dp){
+        // base case 
+        if(i < 0 && j < 0){
+            return 0;
+        }
+        if(i < 0){
+            return j+1;
+        }
+        if(j < 0){
+            return i+1;
+        }
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+
+        // match 
+        if(s1[i] == s2[j]){
+            return dp[i][j] = 0 + findminDistance(i-1 , j-1 , s1 , s2 , dp);
+        }
+
+        // notmatc
+        // insertion 
+        int insert = 1 + findminDistance(i-1 , j , s1 , s2 , dp);
+        // deletion 
+        int deletion = 1+ findminDistance(i , j-1 , s1 , s2 , dp);
+        // replacement
+        int replace = 1 + findminDistance(i-1 , j-1 , s1 , s2 , dp);
+
+        return dp[i][j] = min({insert , deletion , replace});
+    }
+    int minDistance(string word1, string word2) {
+        int n = word1.size();
+        int m = word2.size();
+
+        vector<vector<int>>dp(n , vector<int>(m  , -1));
+        int ans = findminDistance(n-1 , m -1 , word1 , word2 , dp);
+        return ans;
+    }
+};
+
+// ===========================>>>>  Q10) Wildcard Matching | (DP-34)  <<<<<========================
+
+class Solution {
+public:
+    bool findismatch(int i, int j, string &s1, string &s2, vector<vector<int>> &dp) {
+        // Base case
+        if (i < 0 && j < 0) {
+            return true;
+        }
+        if (i < 0) {
+            // p[j] should be '*' for this to be true
+            return s2[j] == '*' && findismatch(i, j - 1, s1, s2, dp);
+        }
+        if (j < 0) {
+            return false;
+        }
+        
+        // Check if dp state has been computed
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        // Matching characters or '?'
+        if (s1[i] == s2[j] || s2[j] == '?') {
+            return dp[i][j] = findismatch(i - 1, j - 1, s1, s2, dp);
+        }
+        // Wildcard '*'
+        if (s2[j] == '*') {
+            return dp[i][j] = findismatch(i, j - 1, s1, s2, dp) || findismatch(i - 1, j, s1, s2, dp);
+        }
+        
+        // No match
+        return dp[i][j] = false;
+    }
+    
+    bool isMatch(string s, string p) {
+        int n = s.size();
+        int m = p.size();
+        if (n == 0 && m == 0) {
+            return true;
+        }
+
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return findismatch(n - 1, m - 1, s, p, dp);
+    }
+};
+
+// ========================>>>> stirvar bhaiya hai base case modification <<<<=================
+class Solution {
+public:
+    bool findismatch(int i, int j, string &s1, string &s2, vector<vector<int>> &dp) {
+        // Base case
+        if (i < 0 && j < 0) {
+            return true;
+        }
+        if (i < 0 && j >= 0) {
+            // it only happen wehn p / s2 has only start then true else return false
+            for(int s = 0 ;  s <= j ; s++){
+                if(s2[s] != '*') return false;
+            }
+            return true;
+        }
+        if (j < 0 && i >= 0) {
+            return false;
+        }
+        
+        // Check if dp state has been computed
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        // Matching characters or '?'
+        if (s1[i] == s2[j] || s2[j] == '?') {
+            return dp[i][j] = findismatch(i - 1, j - 1, s1, s2, dp);
+        }
+        // Wildcard '*'
+        if (s2[j] == '*') {
+            return dp[i][j] = findismatch(i, j - 1, s1, s2, dp) || findismatch(i - 1, j, s1, s2, dp);
+        }
+        
+        // No match
+        return dp[i][j] = false;
+    }
+    
+    bool isMatch(string s, string p) {
+        int n = s.size();
+        int m = p.size();
+        if (n == 0 && m == 0) {
+            return true;
+        }
+
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return findismatch(n - 1, m - 1, s, p, dp);
+    }
+};
+
+
+// ================================================================================================================================
+// ===========================================>>>>> DP ON STOCKS <<<<=============================================================
+// ================================================================================================================================
