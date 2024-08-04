@@ -1,0 +1,30 @@
+// ============>>>> Basic so that you can solve questions <<<================
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+
+   string s = "123456";
+
+   // method 1
+//    int value = 0;
+//    for(auto c : s){
+//     value = value * 10 + c -'0';
+//    }
+//    cout<<value;
+
+   // method 2 
+   int value = stoi(s);
+   cout<<value;
+
+return 0;
+}
+
+// ===========>> character to int convertion <<<<=====\
+#include<bits/stdc++.h>
+int main(){
+char c = '4';
+int value = c - '0';
+cout<<c;
+
+}
